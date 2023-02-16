@@ -12,11 +12,20 @@
 
 #include "../minishell.h"
 
+struct termios orig_termios;
+
+void disableRawMode() {
+	printf("\033[0;100mDISABLE-RAW-MODE\033[0m \n");
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios);
+}
+
 void	go_raw(void)
 {
 	struct termios	tc;
 
-	tcgetattr(STDIN_FILENO, &tc);
+	tcgetattr(STDIN_FILENO, &orig_termios);
+	atexit(disableRawMode);
+	tc = orig_termios;
 	tc.c_lflag &= ~(ISIG);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &tc);
 }
