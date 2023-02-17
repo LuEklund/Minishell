@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:44 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/16 17:29:49 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/02/17 13:06:05 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,20 @@ void	go_raw(void)
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &tc);
 }
 
+void	the_handler(int signum)
+{
+	(void)signum;
+	printf("ähäkutti\n");
+	return ;	
+}
+
 int main(void)
 {
 	char	*buf;
 
-	go_raw();
-	buf = NULL;	
+//	go_raw();
+	buf = NULL;
+	signal(SIGINT, the_handler);
 	while (ft_strncmp(buf, "exit", 5))
 	{
 		if (buf)
