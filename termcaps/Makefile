@@ -15,7 +15,6 @@ SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 
 LIB = libft/libft.a
-PRINTF = ft_printf/libftprintf.a
 
 all: $(NAME)
 
@@ -25,7 +24,7 @@ $(LIB):
 	@echo "$(COLOUR_GREEN)libft compilation completed$(COLOUR_END)"
 
 $(NAME): $(LIB) $(OBJ)
-	@cc -lreadline -o $@ $^
+	@cc -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include -o $@ $^
 	@echo "$(COLOUR_GREEN)$@ created$(COLOUR_END)"
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
