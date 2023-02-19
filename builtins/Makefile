@@ -8,7 +8,7 @@ COLOUR_END=\033[0m
 SRC_PATH = src
 OBJ_PATH = obj
 
-SRC_NAME = main.c
+SRC_NAME = main.c pwd.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
@@ -25,7 +25,7 @@ $(LIB):
 	@echo "$(COLOUR_GREEN)libft compilation completed$(COLOUR_END)"
 
 $(NAME): $(LIB) $(OBJ)
-	@cc -lreadline -o $@ $^
+	@cc -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include -o $@ $^
 	@echo "$(COLOUR_GREEN)$@ created$(COLOUR_END)"
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c

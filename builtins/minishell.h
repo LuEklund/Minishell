@@ -21,4 +21,11 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+
+int	display_curdir();
+int	change_dir(char *path);
+int	get_env();
+int	env_export(char *new_var);
+int	unset_env(char *rm_var);
+int	echo(char *str, int flag);
 #endif

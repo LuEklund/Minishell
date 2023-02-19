@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <ctype.h>
 struct termios orig_termios;
 
 
@@ -37,18 +36,36 @@ void	enableRawMode(void)
 	raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
 	raw.c_oflag &= ~(OPOST);
 	raw.c_cflag |= (CS8);
-	raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
-	raw.c_cc[VMIN] = 0;
-	raw.c_cc[VTIME] = 4;
+	raw.c_lflag &= ~(ICANON | IEXTEN | ISIG);
 
 	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1)
 		die("tcsetattr");
+}
+
+int	check_input(char *in_str)
+{
+	if (!ft_strncmp(in_str, "exit", 5))
+		return (0);
+	else if (!ft_strncmp(in_str, "pwd", 3))
+		return (display_curdir());
+	else if (!ft_strncmp(in_str, "cd", 2))
+		return (change_dir(".."));
+	else if (!ft_strncmp(in_str, "env", 3))
+		return (get_env());
+	else if (!ft_strncmp(in_str, "export", 6))
+		return (env_export("MY_VAR=Hello, World!"));
+	else if (!ft_strncmp(in_str, "unset", 5))
+		return (unset_env("MY_VAR"));
+	else if (!ft_strncmp(in_str, "echo", 4))
+		return (echo("echo test", 1));
+	return (1);
 }
 
 
 int	main(void)
 {
 	char	*buf;
+	// char	c;
 
 	enableRawMode();
 	buf = NULL;	
@@ -57,6 +74,8 @@ int	main(void)
 		if (buf)
 			free(buf);
 		buf = readline("\033[0;32mDinoshell>\033[0m ");
+		if (!check_input(buf))
+			break ;
 		if (!ft_strncmp(buf, "exit", 5))
 			break ;
 	}
