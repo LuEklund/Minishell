@@ -7,7 +7,7 @@ COLOUR_END=\033[0m
 
 SRC_PATH = src
 
-SRC_NAME = main.c
+SRC_NAME = main.c handle_commands.c utils.c
 
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
 

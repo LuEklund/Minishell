@@ -2,3 +2,5 @@ ctrl c & ctrl f print out stuff
 ctrl d does weird shit
 ctrl j does what we want ctrl c to do
 ctrl v prints out things
+
+SEEMS TO WORK EXCEPT FOR THE FACT THAT CTRL D STILL GOES OF WHEN THERE IS TEXT BEFORE IT AND CTRL C DOESN'T EVEN THOUGH IT'S SUPPOSED TO
