@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:44 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/22 19:09:02 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/02/22 20:08:39 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,27 @@ void	go_raw(t_data *info)
 {
 	tcgetattr(STDIN_FILENO, &old_term);
 	info->new_term = old_term;
-	info->new_term.c_cc[VEOF] = 3;
-	info->new_term.c_cc[VINTR] = 4;
 	info->new_term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &info->new_term);
 }
 
-void	the_handler(int signum)
+void	the_handler(void)
 {
 	rl_on_new_line();
 	rl_replace_line("exit", 0);
 	rl_redisplay();
 	ft_putstr_fd("\n", 2);
 	tcsetattr(0, TCSANOW, &old_term);
-	exit(signum);
+	exit(0);
 	return ;
 }
 
-void	zzz(int signum)
+void	i_c(int signum)
 {
 	/////broken :(((((((
-	rl_redisplay();
+	ioctl(0, TIOCSTI, "\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
 	(void)signum;
 	return ;
 }
@@ -53,7 +53,7 @@ int main(int ac, char **av, char **ev)
 	info.fd_out = 1; 
 	go_raw(&info);
 	sigemptyset(&info.quit.sa_mask);
-	info.quit.sa_handler = the_handler;
+	info.quit.sa_handler = i_c;
 	info.buf = NULL;
 	sigaction(SIGINT, &info.quit, &info.old_act);
 	sigemptyset(&info.z_act.sa_mask);
@@ -66,7 +66,12 @@ int main(int ac, char **av, char **ev)
 			free(info.buf);
 		info.buf = readline("\033[0;32mDinoshell>\033[0m ");
 		if (info.buf)
+		{
 			handle_buf(&info);
+			add_history(info.buf);
+		}
+		else
+			the_handler();
 	}
 	if (info.buf)
 		free(info.buf);
