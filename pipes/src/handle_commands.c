@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/21 20:13:07 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/02/22 19:08:47 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,21 +87,21 @@ void	arguing(t_data *info)
 {
 	info->check = 1;
 	info->cmd_to_use = NULL;
-	if (!access(info->cmds[info->i], X_OK))
-		info->cmd_to_use = ft_strdup(info->cmds[info->i]);
+	info->args = ft_split(info->cmds[info->i], ' ');
+	if (!info->args)
+		return (ft_putendl_fd("no cmd :(", 2));
+	if (!access(info->args[0], X_OK))
+		info->cmd_to_use = ft_strdup(info->args[0]);
 	else
-		test_paths(info, info->cmds[info->i]);
+		test_paths(info, info->args[0]);
 	if (!info->check)
 		info->check = 1;
 	else
 		info->check = 0;
 	if (!info->cmd_to_use)
-		return (ft_putendl_fd("no cmd :(", 2));
-	info->args = ft_split(info->cmds[info->i], ' ');
-	if (!info->args)
 	{
-		free(info->cmd_to_use);
-		return ;
+		free_ar(info->args);
+		return (ft_putendl_fd("no cmd :(", 2));
 	}
 }
 
@@ -110,13 +110,17 @@ void	handle_buf(t_data *info)
 	pid_t	kiddo;
 
 	info->i = 0;
+	while (info->buf[info->i] && (info->buf[info->i] == ' ' || info->buf[info->i] == '\t' || info->buf[info->i] == '\n'))
+		info->i += 1;
+	if (!info->buf[info->i])
+		return ;
+	info->i = 0;
 	info->cmds = ft_split(info->buf, '|');
 	if (!info->cmds)
 		return (ft_putendl_fd("apua", 2));
 	if (init_pipes(info) < 0)
 		return (ft_putendl_fd("apua 2", 2));
 	find_the_paths(info);
-	print_ar(info->cmds);
 	while (info->cmds[info->i] && !info->check)
 	{
 		is_built_in(info);
@@ -124,15 +128,20 @@ void	handle_buf(t_data *info)
 			arguing(info);
 		if (info->check)
 			break ;
+//		print_ar(info->args);
 		kiddo = fork();
 		if (kiddo < 0)
 			return (ft_putendl_fd("stillbirth?????\n", 2));
 		if (kiddo == 0)
 			the_kindergarden(info);
+		if (kiddo == 0)
+			exit (127);
 		if (!info->built)
 			free_commands(info);
 		info->i += 1;
 	}
+	if (info->pipe_amount != 0)
+		close_pipeline(info);	
 	while ((wait(&info->return_val)) > 0)
 		;
 }

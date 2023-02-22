@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/21 20:16:39 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/02/22 12:42:22 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <fcntl.h>
 # include <signal.h>
 # include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/ioctl.h>
+# include <sys/wait.h>
 
 struct termios		old_term;
 
@@ -59,6 +61,7 @@ void	test_access(t_data *info, char *str);
 void	the_kindergarden(t_data *info);
 void	free_commands(t_data *info);
 
+void	free_ar(char **ar);
 void	close_pipeline(t_data *info);
 
 #endif

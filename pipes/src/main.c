@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:44 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/21 20:07:18 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/02/22 19:09:02 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int main(int ac, char **av, char **ev)
 		return (printf("bro no need for any arguments\n"));
 	(void)av;
 	info.envs = ev; //copy instead pls
+	info.fd_in = 0;
+	info.fd_out = 1; 
 	go_raw(&info);
 	sigemptyset(&info.quit.sa_mask);
 	info.quit.sa_handler = the_handler;
@@ -63,7 +65,8 @@ int main(int ac, char **av, char **ev)
 		if (info.buf)
 			free(info.buf);
 		info.buf = readline("\033[0;32mDinoshell>\033[0m ");
-		handle_buf(&info);
+		if (info.buf)
+			handle_buf(&info);
 	}
 	if (info.buf)
 		free(info.buf);

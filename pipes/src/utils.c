@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 19:47:06 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/21 20:16:17 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/02/22 11:06:29 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,19 @@ void	print_ar(char **ar)
 //			   //
 // REMOVE THIS //
 //			   //
+
+void	free_ar(char **ar)
+{
+	int	i;
+
+	i = 0;
+	while (ar[i])
+	{
+		free(ar[i]);
+		i++;
+	}
+	free(ar);
+}
 
 void	close_pipeline(t_data *info)
 {

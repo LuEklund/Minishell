@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 19:46:56 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/21 20:10:55 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/02/22 16:55:57 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	get_duped(int read, int write)
 
 void	the_kindergarden(t_data *info)
 {
+//	printf("pipe amount is %zu, cmd amount is %zu, i is %zu\n", info->pipe_amount, info->cmd_amount, info->i);
 	if (info->pipe_amount == 0)
 		info->check = get_duped(info->fd_in, info->fd_out);
 	else if (info->i == 0)
@@ -91,14 +92,6 @@ void	the_kindergarden(t_data *info)
 
 void	free_commands(t_data *info)
 {
-	int	i;
-
-	i = 0;
-	while (info->args[i])
-	{
-		free(info->args[i]);
-		i++;
-	}
-	free(info->args);
+	free_ar(info->args);	
 	free(info->cmd_to_use);
 }
