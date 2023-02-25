@@ -49,7 +49,7 @@ int	check_input(char *in_str)
 	else if (!ft_strncmp(in_str, "pwd", 3))
 		return (display_curdir());
 	else if (!ft_strncmp(in_str, "cd", 2))
-		return (change_dir(".."));
+		return (change_dir(in_str));
 	else if (!ft_strncmp(in_str, "env", 3))
 		return (get_env());
 	else if (!ft_strncmp(in_str, "export", 6))

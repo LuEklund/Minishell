@@ -11,19 +11,31 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 
+char	*argumenter(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != ' ')
+		i++;
+	return (&str[++i]);
+}
+
 int	display_curdir()
 {
 	char 	path[4095];
+
 	if (getcwd(path, sizeof(path)))
 		printf("%s\n\r", path);
 	else
-		return(0);
-	return(1);
+		return (0);
+	return (1);
 }
 
 int	change_dir(char *path)
 {
-	if (chdir(path) == 0)
+	// printf("%s\n\r", argumenter(path));
+	if (chdir(argumenter(path)) == 0)
 		return (1);
 	else
 		return (0);
