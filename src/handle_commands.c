@@ -128,7 +128,7 @@ void	handle_buf(t_data *info)
 			arguing(info);
 		if (info->check)
 			break ;
-//		print_ar(info->args);
+		// print_ar(info->args);
 		kiddo = fork();
 		if (kiddo < 0)
 			return (ft_putendl_fd("stillbirth?????\n", 2));
