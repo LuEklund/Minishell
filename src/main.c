@@ -23,7 +23,7 @@ void	go_raw(t_data *info)
 void	the_handler(void)
 {
 	rl_on_new_line();
-	rl_replace_line("exit", 0);
+	// rl_replace_line("exit", 0);
 	rl_redisplay();
 	ft_putstr_fd("\n", 2);
 	tcsetattr(0, TCSANOW, &old_term);
@@ -36,7 +36,7 @@ void	i_c(int signum)
 	/////broken :(((((((
 	ioctl(0, TIOCSTI, "\n");
 	rl_on_new_line();
-	rl_replace_line("", 0);
+	// rl_replace_line("", 0);
 	(void)signum;
 	return ;
 }
