@@ -16,7 +16,7 @@ void	is_built_in(t_data *info)
 {
 	info->built = 0;
 	info->check = 0;
-	if (!ft_strncmp("ecko", info->cmds[info->i], 4))
+	if (!ft_strncmp("echo", info->cmds[info->i], 4))
 		info->built = 1;
 	else if (!ft_strncmp("cd", info->cmds[info->i], 2))
 		info->built = 2;
@@ -83,7 +83,7 @@ void	the_kindergarden(t_data *info)
 	if (!info->check)
 	{
 		if (info->built)
-			exit(0);
+			exit (execute_built(info));
 		else
 			execve(info->cmd_to_use, info->args, info->envs);
 		info->check = 1;

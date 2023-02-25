@@ -64,4 +64,10 @@ void	free_commands(t_data *info);
 void	free_ar(char **ar);
 void	close_pipeline(t_data *info);
 
+//Builtins
+char	**copy_env(char **env_to_copy);
+int		execute_built(t_data *info);
+// int	display_curdir(void);
+// int	change_dir(char *path);
+
 #endif

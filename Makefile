@@ -22,10 +22,12 @@ _SRCS :=  main.c \
 			parse_split.c \
 			utils.c
 
-ALL_SRCS :=	$(addprefix $(SRCS_DIR), $(_SRCS))
+_BUILTIN :=  built.c \
 
+ALL_SRCS :=	$(addprefix $(SRCS_DIR), $(_SRCS)) \
+			$(addprefix $(BUILTIN_DIR), $(_BUILTIN))
 
-SRCS = $(_SRCS)
+SRCS = $(_SRCS) $(_BUILTIN)
 OBJ_FILES = $(SRCS:.c=.o)
 OBJS = $(patsubst %, $(OBJS_DIR)%, $(SRCS:.c=.o))
 
@@ -46,6 +48,9 @@ $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
+	@cc $(FLAGS) -c $< -o $@
+
+$(OBJS_DIR)%.o: $(BUILTIN_DIR)%.c
 	@cc $(FLAGS) -c $< -o $@
 
 clean:

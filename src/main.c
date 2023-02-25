@@ -48,7 +48,7 @@ int main(int ac, char **av, char **ev)
 	if (ac != 1)
 		return (printf("bro no need for any arguments\n"));
 	(void)av;
-	info.envs = ev; //copy instead pls
+	info.envs = copy_env(ev);
 	info.fd_in = 0;
 	info.fd_out = 1; 
 	go_raw(&info);
