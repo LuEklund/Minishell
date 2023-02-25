@@ -1,0 +1,4 @@
+ctrl c & ctrl f print out stuff
+ctrl d does weird shit
+ctrl j does what we want ctrl c to do
+ctrl v prints out things
