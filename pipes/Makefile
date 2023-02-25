@@ -7,7 +7,7 @@ COLOUR_END=\033[0m
 
 SRC_PATH = src
 
-SRC_NAME = main.c
+SRC_NAME = main.c handle_commands.c pipe_utils.c parse_split.c utils.c
 
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
 
@@ -21,7 +21,7 @@ $(LIB):
 	@echo "$(COLOUR_GREEN)libft compilation completed$(COLOUR_END)"
 
 $(NAME): $(LIB) $(SRC)
-	@cc -Wall -Werror -Wextra -ltermcap -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include -o $@ $^
+	@cc -Wall -Werror -Wextra -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include -o $@ $^
 	@echo "$(COLOUR_GREEN)$@ created$(COLOUR_END)"
 
 clean:
