@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:44 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/22 20:04:43 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/02/28 17:06:29 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,17 @@ void	go_raw(void)
 {
 	tcgetattr(STDIN_FILENO, &info.old_term);
 	info.new_term = info.old_term;	
-	info.new_term.c_lflag &= ~(ECHOCTL | ISIG);
+	info.new_term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &info.new_term);
 }
 
 void	the_handler(t_data *info)
 {
-	rl_replace_line("exit", 0);
-	rl_on_new_line();
 	rl_redisplay();
-	ft_putstr_fd("\n", 2);
+//	write(1, "\x1b[2J", 4);
+	write(1, "\x1b[12;40H", 3);
 	tcsetattr(0, TCSANOW, &info->old_term);
 	exit(0);
-	return ;
 }
 
 void	i_c(int signum)
@@ -39,7 +37,6 @@ void	i_c(int signum)
 	ioctl(0, TIOCSTI, "\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
-//	rl_on_new_line();
 	return ;
 }
 

@@ -21,7 +21,7 @@ $(LIB):
 	@echo "$(COLOUR_GREEN)libft compilation completed$(COLOUR_END)"
 
 $(NAME): $(LIB) $(SRC)
-	@cc -Wall -Werror -Wextra -ltermcap -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include -o $@ $^
+	@cc -Wall -Werror -Wextra -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include -o $@ $^
 	@echo "$(COLOUR_GREEN)$@ created$(COLOUR_END)"
 
 clean:
