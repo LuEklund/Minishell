@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/22 19:08:47 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/02/23 18:40:56 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	arguing(t_data *info)
 {
 	info->check = 1;
 	info->cmd_to_use = NULL;
-	info->args = ft_split(info->cmds[info->i], ' ');
+	info->args = parse_split(info->cmds[info->i], ' ');
 	if (!info->args)
 		return (ft_putendl_fd("no cmd :(", 2));
 	if (!access(info->args[0], X_OK))
@@ -115,7 +115,7 @@ void	handle_buf(t_data *info)
 	if (!info->buf[info->i])
 		return ;
 	info->i = 0;
-	info->cmds = ft_split(info->buf, '|');
+	info->cmds = parse_split(info->buf, '|');
 	if (!info->cmds)
 		return (ft_putendl_fd("apua", 2));
 	if (init_pipes(info) < 0)

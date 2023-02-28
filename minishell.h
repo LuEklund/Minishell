@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/22 12:42:22 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/02/24 13:04:21 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,22 @@ typedef struct s_data
 	int					check;
 }	t_data;
 
+<<<<<<< HEAD:minishell.h
 void rl_replace_line (const char *text, int clear_undo);
+=======
+typedef struct s_split
+{
+	int	h;
+	int	h2;
+	int	i;
+	int	i2;
+	int	i3;
+	int	l;
+	int	h2i;
+	int	q;
+	int	sq;
+}	t_split;
+>>>>>>> nlonka:pipes/minishell.h
 
 /////
 void	print_ar(char **ar);
@@ -65,6 +80,7 @@ void	free_commands(t_data *info);
 
 void	free_ar(char **ar);
 void	close_pipeline(t_data *info);
+char	**parse_split(char const *str, char c);
 
 //Builtins
 int		display_curdir();

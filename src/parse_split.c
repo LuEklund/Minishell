@@ -6,19 +6,46 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:07:38 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/22 11:07:47 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/02/28 16:25:06 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	string_amount(char const *str, char c)
+static int	quote_check(char const *str, int i, int *q, int *sq)
 {
-	int	i;
-	int	ans;
+	if (*q == 1 && str[i] == '\"')
+		*q = 0;
+	else if (*sq == 1 && str[i] == '\'')
+		*sq = 0;
+	else if (*q == 0 && *sq == 0 && str[i] == '\"')
+		*q = 1;
+	else if (*sq == 0 && *q == 0 && str[i] == '\'')
+		*sq = 1;
+	i++;
+	return (i);
+}
 
-	i = 0;
+int	quote_see(char const *str, t_split help)
+{
+	if (help.sq == 0 && str[help.i3] == '\"')
+		return (0);
+	if (help.q == 0 && str[help.i3] == '\'')
+		return (0);
+	if (help.q == 1 && str[help.i3] == '\"')
+		return (0);
+	if (help.sq == 1 && str[help.i3] == '\'')
+		return (0);
+	return (1);
+}
+
+static int	string_amount(char const *str, char c, int q, int sq)
+{
+	int	ans;
+	int	i;
+
 	ans = 1;
+	i = q + sq;
 	while (str[i] == c && str[i] != '\0')
 		i++;
 	if (str[i] == '\0')
@@ -27,12 +54,12 @@ static int	string_amount(char const *str, char c)
 	{
 		while (str[i] == c)
 		{
-			if (str[i + 1] != c && str[i + 1] != '\0')
+			if (str[i + 1] != c && str[i + 1] != '\0' && sq + q == 0)
 				ans++;
-			i++;
+			i = quote_check(str, i, &q, &sq);
 		}
 		if (str[i] != '\0')
-			i++;
+			i = quote_check(str, i, &q, &sq);
 	}
 	if (ans == 0 && str[0] != '\0')
 		return (1);
@@ -41,53 +68,51 @@ static int	string_amount(char const *str, char c)
 	return (ans);
 }
 
-static char	**ansllocator(char **ans, char const *str, char c, int h)
+static char	**ansllocator(char **ans, char const *str, char c, t_split help)
 {
-	int	i;
-	int	i2;
-	int	i3;
-	int	l;
-	int	h2;
-
-	i = 0;
-	i2 = 0;
-	i3 = 0;
-	h2 = 0;
-	while (i2 < h)
+	while (help.i2 < help.h)
 	{
-		while (str[i3] == c && str[i3] != '\0')
-			i3++;
-		while (str[i3] != c && str[i3] != '\0')
+		if (str[help.i3] == '\'')
+			help.sq = help.sq + 1 % 2;
+		if (str[help.i3] == '\"')
+			help.q = help.q + 1 % 2;
+		while (str[help.i3] == c && str[help.i3] != '\0' && help.q + help.sq == 0)
+			help.i3 += 1;
+		while ((str[help.i3] != c || help.q + help.sq != 0) && str[help.i3] != '\0')
 		{
-			i3++;
-			i++;
+			if (c == '|' || quote_see(str, help))
+				help.i += 1;
+			help.i3 = quote_check(str, help.i3, &help.q, &help.sq);
 		}
-		l = i - h2;
-		h2 = h2 + l;
-		ans[i2] = (char *) malloc (sizeof(char) * (l + 1));
-		i2++;
+		help.l = help.i - help.h2;
+		help.h2 = help.h2 + help.l;
+		ans[help.i2] = (char *) malloc (sizeof(char) * (help.l + 1));
+		help.i2 += 1;
 	}
 	return (ans);
 }
 
-static char	**string_separator_7000(char **ans, char const *str, char c, int h)
+static char	**string_separator_7000(char **ans, char const *str, char c, t_split help)
 {
-	int	i;
-	int	i2;
-	int	i3;
-
-	i = 0;
-	i2 = 0;
-	i3 = 0;
-	while (i2 < h)
+	while (help.i2 < help.h)
 	{
-		while (str[i3] == c && str[i3] != '\0')
-			i3++;
-		while (str[i3] != c && str[i3] != '\0')
-			ans[i2][i++] = str[i3++];
-		ans[i2][i] = '\0';
-		i2++;
-		i = 0;
+		if (str[help.i3] == '\'')
+			help.sq = help.sq + 1 % 2;
+		if (str[help.i3] == '\"')
+			help.q = help.q + 1 % 2;
+		while (str[help.i3] == c && str[help.i3] != '\0' && help.q + help.sq == 0)
+			help.i3 += 1;
+		while ((str[help.i3] != c || help.q + help.sq != 0) && str[help.i3] != '\0')
+		{
+			if (quote_see(str, help) || c == '|')
+				ans[help.i2][help.i] = str[help.i3];
+			if (quote_see(str, help) || c == '|')
+				help.i += 1;
+			help.i3 = quote_check(str, help.i3, &help.q, &help.sq);
+		}
+		ans[help.i2][help.i] = '\0';
+		help.i2 += 1;
+		help.i = 0;
 	}
 	return (ans);
 }
@@ -115,22 +140,42 @@ static char	**check_malloc(char **ans, int h)
 	return (ans);
 }
 
+void	init_help(t_split *help, int h)
+{
+	help->h = h;
+	help->i = 0;
+	help->i2 = 0;
+	help->i3 = 0;
+	help->l = 0;
+	help->h2 = 0;
+	help->q = 0;
+	help->sq = 0;
+}
+
 char	**parse_split(char const *str, char c)
 {
 	int		h;
 	char	**ans;
+	t_split	help;
 
 	if (str == NULL)
 		return (NULL);
-	h = string_amount(str, c);
+	//maybe expand env variables here
+	if (str && str[0] == '\'')
+		h = string_amount(str, c, 0, 1);
+	else if (str && str[0] == '\"')
+		h = string_amount(str, c, 1, 0);
+	else
+		h = string_amount(str, c, 0, 0);
 	ans = (char **) malloc(sizeof(char *) * (h + 1));
 	if (ans == NULL)
 		return (NULL);
 	ans[h] = 0;
-	ans = ansllocator(ans, str, c, h);
+	init_help(&help, h);
+	ans = ansllocator(ans, str, c, help);
 	ans = check_malloc(ans, h);
 	if (ans == NULL)
 		return (NULL);
-	ans = string_separator_7000(ans, str, c, h);
+	ans = string_separator_7000(ans, str, c, help);
 	return (ans);
 }
