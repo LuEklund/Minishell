@@ -50,6 +50,8 @@ typedef struct s_data
 	int					check;
 }	t_data;
 
+void rl_replace_line (const char *text, int clear_undo);
+
 /////
 void	print_ar(char **ar);
 ////
@@ -65,6 +67,12 @@ void	free_ar(char **ar);
 void	close_pipeline(t_data *info);
 
 //Builtins
+int		display_curdir();
+int		change_dir(char *path);
+
+int		env_export(t_data *info, char *new_var);
+int		unset_env(t_data *info, char *rm_var);
+int		display_env(t_data *info);
 char	**copy_env(char **env_to_copy);
 int		execute_built(t_data *info);
 // int	display_curdir(void);

@@ -83,7 +83,8 @@ void	the_kindergarden(t_data *info)
 	if (!info->check)
 	{
 		if (info->built)
-			exit (execute_built(info));
+			exit(1);
+			// exit (execute_built(info));
 		else
 			execve(info->cmd_to_use, info->args, info->envs);
 		info->check = 1;

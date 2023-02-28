@@ -126,6 +126,8 @@ void	handle_buf(t_data *info)
 		is_built_in(info);
 		if (!info->built)
 			arguing(info);
+		else
+			execute_built(info);
 		if (info->check)
 			break ;
 		// print_ar(info->args);

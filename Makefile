@@ -8,7 +8,8 @@ COLOUR_BLUE=\033[0;34m
 COLOUR_END=\033[0m
 
 #Flags
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra 
+READLINE = -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
 
 #Direcory locations
 SRCS_DIR = src/
@@ -23,6 +24,8 @@ _SRCS :=  main.c \
 			utils.c
 
 _BUILTIN :=  built.c \
+				directory.c \
+				enviorment.c
 
 ALL_SRCS :=	$(addprefix $(SRCS_DIR), $(_SRCS)) \
 			$(addprefix $(BUILTIN_DIR), $(_BUILTIN))
@@ -41,17 +44,17 @@ $(LIB):
 	@echo "$(COLOUR_GREEN)libft compilation completed$(COLOUR_END)"
 
 $(NAME): $(LIB) $(OBJS_DIR) $(OBJS)
-	@cc $(FLAGS) $(OBJS) -o $@ -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include -L ./libft -lft
+	@cc $(FLAGS) $(OBJS) -o $@ $(READLINE) -L ./libft -lft
 	@echo "$(COLOUR_GREEN)$@ created$(COLOUR_END)"
 
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
-	@cc $(FLAGS) -c $< -o $@
+	@cc $(FLAGS) -c $< -o $@ 
 
 $(OBJS_DIR)%.o: $(BUILTIN_DIR)%.c
-	@cc $(FLAGS) -c $< -o $@
+	@cc $(FLAGS) -c $< -o $@ 
 
 clean:
 	@make clean -C libft
