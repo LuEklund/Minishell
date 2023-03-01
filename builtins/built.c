@@ -78,16 +78,12 @@ int	execute_built(t_data *info)
 	}
 	else if (info->built == 6)
 	{
-		env_export(info, argumenter(*info->cmds));
+		env_export(info, info->args[1]);
 	}
 	else if (info->built == 7)
 	{
 		// printf("display_env\n\r");
 		display_env(info, 0);
-	}
-	else
-	{
-		printf("error\n\r");
 	}
 	return (0);
 }

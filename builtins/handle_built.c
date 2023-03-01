@@ -27,6 +27,7 @@ void	fake_it(t_data *info)
 
 void	bob_the_builtin(t_data *info)
 {
+	info->check = 1;
 	if (info->built == 1 || info->built == 3 || info->built == 7)
 		info->check = 0;
 	else if (info->built == 6 && !info->args[1])
