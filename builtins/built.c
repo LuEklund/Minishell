@@ -6,7 +6,7 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 10:49:35 by leklund           #+#    #+#             */
-/*   Updated: 2023/02/19 10:49:39 by leklund          ###   ########.fr       */
+/*   Updated: 2023/03/01 13:35:45 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -44,12 +44,21 @@ static char	*argumenter(char *str)
 	return (&str[++i]);
 }
 
-int	echo(char *str, int flag)
+int	echo(t_data *info)
 {
-	printf("%s", str);
+	int	i;
+	int	flag;
+
+	i = 1;
+	flag = 0;
+	//handle -n here
+	while (info->args[i])
+	{
+		printf("%s", info->args[i]);
+		i++;
+	}
 	if (!flag)
 		printf("\n");
-	printf("\r");
 	return (1);
 }
 
@@ -58,33 +67,19 @@ int	execute_built(t_data *info)
 	if (info->built == 1)
 	{
 		// printf("echo\n\r");
-		echo(*info->cmds, 0);
-	}
-	else if (info->built == 2)
-	{
-		// printf("change_dir: %s\n\r", *info->cmds);
-		change_dir(argumenter(*info->cmds));
+		echo(info);
 	}
 	else if (info->built == 3)
 	{
 		// printf("display_curdir\n\r");
 		display_curdir();
 	}
-	else if (info->built == 4)
-	{
-		printf("exit\n\r");
-		// exit (0);
-	}
-	else if (info->built == 5)
-	{
-		// printf("unset_env\n\r");
-		unset_env(info, argumenter(*info->cmds));
-	}
 	else if (info->built == 6)
 	{
-		printf("env_export: [%s]\n\r", *info->cmds);
-		printf("env_export_arged: [%s]\n\r", argumenter(*info->cmds));
-		env_export(info, argumenter(*info->cmds));
+	//	printf("env_export: [%s]\n\r", *info->cmds);
+	//	printf("env_export_arged: [%s]\n\r", argumenter(*info->cmds));
+	//	env_export(info, argumenter(*info->cmds));
+		display_env(info);
 	}
 	else if (info->built == 7)
 	{

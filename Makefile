@@ -21,11 +21,12 @@ _SRCS :=  main.c \
 			handle_commands.c \
 			pipe_utils.c \
 			parse_split.c \
+			handle_built.c \
 			utils.c
 
 _BUILTIN :=  built.c \
 				directory.c \
-				enviorment.c
+				environment.c
 
 ALL_SRCS :=	$(addprefix $(SRCS_DIR), $(_SRCS)) \
 			$(addprefix $(BUILTIN_DIR), $(_BUILTIN))
@@ -49,17 +50,21 @@ $(NAME): $(LIB) $(OBJS_DIR) $(OBJS)
 
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
+	@echo "$(COLOUR_BLUE)object directory created$(COLOUR_END)"
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 	@cc $(FLAGS) -c $< -o $@ 
+	@echo "$(COLOUR_BLUE)$@ created$(COLOUR_END)"
 
 $(OBJS_DIR)%.o: $(BUILTIN_DIR)%.c
 	@cc $(FLAGS) -c $< -o $@ 
+	@echo "$(COLOUR_BLUE)$@ created$(COLOUR_END)"
 
 clean:
 	@make clean -C libft
-	@rm -f $(OBJS)
 	@echo "$(COLOUR_BLUE)libft object files cleaned$(COLOUR_END)"
+	@rm -f $(OBJS)
+	@echo "$(COLOUR_BLUE)object directory cleaned$(COLOUR_END)"
 
 fclean: clean
 	@rm -rf $(OBJS_DIR)
@@ -71,8 +76,6 @@ fclean: clean
 re: fclean all
 
 bonus: fclean all
-
-
 
 # SRC_PATH = src
 

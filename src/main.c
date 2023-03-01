@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:44 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/22 20:08:39 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/01 13:21:38 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int main(int ac, char **av, char **ev)
 	info.z_act.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &info.z_act, &info.old_act);
 	sigaction(SIGTSTP, &info.z_act, &info.old_act);
-	while (ft_strncmp(info.buf, "exit", 5))
+	while (37)
 	{
 		if (info.buf)
 			free(info.buf);
@@ -68,6 +68,8 @@ int main(int ac, char **av, char **ev)
 		if (info.buf)
 		{
 			handle_buf(&info);
+			if (info.exit)
+				break ;
 			add_history(info.buf);
 		}
 		else
