@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/16 17:30:47 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/02/28 16:58:45 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,23 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <signal.h>
 # include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/ioctl.h>
 
+void	rl_replace_line(const char *mutsis, int faijas);
 
-int	display_curdir();
-int	change_dir(char *path);
-int	get_env();
-int	env_export(char *new_var);
-int	unset_env(char *rm_var);
-int	echo(char *str, int flag);
+typedef struct s_data
+{
+	struct termios		old_term;
+	struct termios		new_term;
+	struct sigaction	quit;
+	struct sigaction	old_act;
+	struct sigaction	z_act;
+	char				*buf;
+
+}	t_data;
+
 #endif

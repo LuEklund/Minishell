@@ -6,7 +6,7 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:02:28 by leklund           #+#    #+#             */
-/*   Updated: 2023/02/27 17:02:30 by leklund          ###   ########.fr       */
+/*   Updated: 2023/03/01 13:08:57 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -105,10 +105,10 @@ int	env_export(t_data *info, char *new_var)
 	}
 	if (!valid_var(new_var))
 	{
-		printf("NOT VALID\n\r");
+		printf("NOT VALID\n");
 		return (0);
 	}
-		printf("VALID\n\r");
+		printf("VALID\n");
 	i = 0;
 	while (info->envs[i] != NULL)
 		i++;

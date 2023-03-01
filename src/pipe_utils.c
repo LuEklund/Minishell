@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 19:46:56 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/22 16:55:57 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/01 13:35:41 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@ void	is_built_in(t_data *info)
 {
 	info->built = 0;
 	info->check = 0;
-	if (!ft_strncmp("echo", info->cmds[info->i], 4))
+	if (!ft_strncmp("echo", info->args[0], 5))
 		info->built = 1;
-	else if (!ft_strncmp("cd", info->cmds[info->i], 2))
+	else if (!ft_strncmp("cd", info->args[0], 3))
 		info->built = 2;
-	else if (!ft_strncmp("pwd", info->cmds[info->i], 3))
+	else if (!ft_strncmp("pwd", info->args[0], 4))
 		info->built = 3;
-	else if (!ft_strncmp("exit", info->cmds[info->i], 4))
+	else if (!ft_strncmp("exit", info->args[0], 5))
 		info->built = 4;
-	else if (!ft_strncmp("unset", info->cmds[info->i], 5))
+	else if (!ft_strncmp("unset", info->args[0], 6))
 		info->built = 5;
-	else if (!ft_strncmp("export", info->cmds[info->i], 6))
+	else if (!ft_strncmp("export", info->args[0], 7))
 		info->built = 6;
-	else if (!ft_strncmp("env", info->cmds[info->i], 3))
+	else if (!ft_strncmp("env", info->args[0], 4))
 		info->built = 7;
 }
 
@@ -68,7 +68,6 @@ int	get_duped(int read, int write)
 
 void	the_kindergarden(t_data *info)
 {
-//	printf("pipe amount is %zu, cmd amount is %zu, i is %zu\n", info->pipe_amount, info->cmd_amount, info->i);
 	if (info->pipe_amount == 0)
 		info->check = get_duped(info->fd_in, info->fd_out);
 	else if (info->i == 0)
@@ -80,13 +79,11 @@ void	the_kindergarden(t_data *info)
 				info->pipe[(info->i * 2) + 1]);
 	if (!info->check && info->pipe_amount != 0)
 		close_pipeline(info);
+	if (!info->check && info->built)
+		exit(execute_built(info));
 	if (!info->check)
 	{
-		if (info->built)
-			exit(1);
-			// exit (execute_built(info));
-		else
-			execve(info->cmd_to_use, info->args, info->envs);
+		execve(info->cmd_to_use, info->args, info->envs);
 		info->check = 1;
 	}
 }

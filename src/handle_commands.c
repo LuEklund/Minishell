@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/22 19:08:47 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/01 13:34:33 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	init_pipes(t_data *info)
 	size_t	i;
 
 	i = 0;
+	info->i = 0;
 	info->cmd_amount = 0;
 	while (info->cmds[info->cmd_amount])
 		info->cmd_amount += 1;
@@ -85,11 +86,15 @@ void	test_paths(t_data *info, char *str)
 
 void	arguing(t_data *info)
 {
+	info->exit = 0;
 	info->check = 1;
 	info->cmd_to_use = NULL;
-	info->args = ft_split(info->cmds[info->i], ' ');
+	info->args = parse_split(info->cmds[info->i], ' ');
 	if (!info->args)
 		return (ft_putendl_fd("no cmd :(", 2));
+	is_built_in(info);
+	if (info->built)
+		return (bob_the_builtin(info));
 	if (!access(info->args[0], X_OK))
 		info->cmd_to_use = ft_strdup(info->args[0]);
 	else
@@ -100,6 +105,7 @@ void	arguing(t_data *info)
 		info->check = 0;
 	if (!info->cmd_to_use)
 	{
+		printf("args is %s\n", info->args[0]);
 		free_ar(info->args);
 		return (ft_putendl_fd("no cmd :(", 2));
 	}
@@ -109,37 +115,23 @@ void	handle_buf(t_data *info)
 {
 	pid_t	kiddo;
 
-	info->i = 0;
-	while (info->buf[info->i] && (info->buf[info->i] == ' ' || info->buf[info->i] == '\t' || info->buf[info->i] == '\n'))
-		info->i += 1;
-	if (!info->buf[info->i])
-		return ;
-	info->i = 0;
-	info->cmds = ft_split(info->buf, '|');
+	info->cmds = parse_split(info->buf, '|');
 	if (!info->cmds)
 		return (ft_putendl_fd("apua", 2));
 	if (init_pipes(info) < 0)
-		return (ft_putendl_fd("apua 2", 2));
+		return (ft_putendl_fd("apua 2", 2), free(info->cmds));
 	find_the_paths(info);
 	while (info->cmds[info->i] && !info->check)
 	{
-		is_built_in(info);
-		if (!info->built)
-			arguing(info);
-		else
-			execute_built(info);
-		if (info->check)
+		arguing(info);
+		if (info->check || info->exit)
 			break ;
-		// print_ar(info->args);
 		kiddo = fork();
 		if (kiddo < 0)
 			return (ft_putendl_fd("stillbirth?????\n", 2));
 		if (kiddo == 0)
 			the_kindergarden(info);
-		if (kiddo == 0)
-			exit (127);
-		if (!info->built)
-			free_commands(info);
+		free_commands(info);
 		info->i += 1;
 	}
 	if (info->pipe_amount != 0)
