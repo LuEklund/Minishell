@@ -11,14 +11,28 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 
-int	display_env(t_data *info)
+int	display_env(t_data *info, int export_type)
 {
-	int i;
+	int	i;
+	int	i2;
+	char c;
 
 	i = 0;
+	i2 = 0;
+	c = 34;
 	while (info->envs[i] != NULL)
 	{
-		printf("%s\n\r", info->envs[i]);
+		if (export_type)
+		{
+			i2 = 0;
+			printf("declare -x ");
+			while (info->envs[i][i2] != '\0' && info->envs[i][i2] != '=')
+				printf("%c", info->envs[i][i2++]);
+			printf("%c%c", info->envs[i][i2++], c);
+			printf("%s%c\n", info->envs[i]+i2, c);
+		}
+		else
+			printf("%s\n\r", info->envs[i]);
 		i++;
 	}
 	return (1);
@@ -84,10 +98,9 @@ int	env_export(t_data *info, char *new_var)
 	char		**new_env;
 	int			i;
 
-		printf("STRING [%s]\n\r", new_var);
 	if(!new_var)
 	{
-		display_env(info);
+		display_env(info, 1);
 		return (1);
 	}
 	if (!valid_var(new_var))
@@ -115,6 +128,5 @@ int	env_export(t_data *info, char *new_var)
 
 	free(info->envs);
 	info->envs = new_env;
-	// display_env(info);
 	return (1);
 }
