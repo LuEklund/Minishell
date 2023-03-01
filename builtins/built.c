@@ -6,7 +6,7 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 10:49:35 by leklund           #+#    #+#             */
-/*   Updated: 2023/03/01 13:35:45 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/01 13:55:03 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -32,17 +32,17 @@ char	**copy_env(char **env_to_copy)
 	return (new_env);
 }
 
-static char	*argumenter(char *str)
-{
-	int	i;
+//static char	*argumenter(char *str)
+//{
+//	int	i;
 
-	i = 0;
-	while (str[i] != ' ' && str[i] != '\0')
-		i++;
-	if (!str[i])
-		return (NULL);
-	return (&str[++i]);
-}
+//	i = 0;
+//	while (str[i] != ' ' && str[i] != '\0')
+//		i++;
+//	if (!str[i])
+//		return (NULL);
+//	return (&str[++i]);
+//}
 
 int	echo(t_data *info)
 {

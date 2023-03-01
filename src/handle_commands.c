@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/01 13:34:33 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/01 14:18:01 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ void	arguing(t_data *info)
 		info->check = 0;
 	if (!info->cmd_to_use)
 	{
-		printf("args is %s\n", info->args[0]);
 		free_ar(info->args);
 		return (ft_putendl_fd("no cmd :(", 2));
 	}
