@@ -92,7 +92,7 @@ int		change_dir(char *path);
 
 int		env_export(t_data *info, char *new_var);
 int		unset_env(t_data *info, char *rm_var);
-int		display_env(t_data *info);
+int		display_env(t_data *info, int export_type);
 char	**copy_env(char **env_to_copy);
 int		execute_built(t_data *info);
 // int	display_curdir(void);

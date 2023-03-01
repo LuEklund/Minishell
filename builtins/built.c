@@ -25,13 +25,16 @@ char	**copy_env(char **env_to_copy)
 	i = 0;
 	while (env_to_copy[i] != NULL)
 	{
-		new_env[i] = env_to_copy[i];
+		new_env[i] = (char *)malloc(sizeof(char) * ft_strlen(env_to_copy[i]) + 1);
+		ft_strlcpy(new_env[i], env_to_copy[i], ft_strlen(env_to_copy[i]) + 1);
+		// new_env[i] = env_to_copy[i];
 		i++;
 	}
 	new_env[i] = NULL;
 	return (new_env);
 }
 
+<<<<<<< HEAD
 //static char	*argumenter(char *str)
 //{
 //	int	i;
@@ -43,6 +46,19 @@ char	**copy_env(char **env_to_copy)
 //		return (NULL);
 //	return (&str[++i]);
 //}
+=======
+// static char	*argumenter(char *str)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (str[i] != ' ' && str[i] != '\0')
+// 		i++;
+// 	if (!str[i])
+// 		return (NULL);
+// 	return (&str[++i]);
+// }
+>>>>>>> 7906bd35c1ccfd503710837a27d2c97a321aae47
 
 int	echo(t_data *info)
 {
@@ -76,15 +92,12 @@ int	execute_built(t_data *info)
 	}
 	else if (info->built == 6)
 	{
-	//	printf("env_export: [%s]\n\r", *info->cmds);
-	//	printf("env_export_arged: [%s]\n\r", argumenter(*info->cmds));
-	//	env_export(info, argumenter(*info->cmds));
-		display_env(info);
+		env_export(info, argumenter(*info->cmds));
 	}
 	else if (info->built == 7)
 	{
 		// printf("display_env\n\r");
-		display_env(info);
+		display_env(info, 0);
 	}
 	else
 	{
