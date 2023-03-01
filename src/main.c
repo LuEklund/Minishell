@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:44 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/01 13:21:38 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/01 17:47:36 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,11 @@ void	go_raw(t_data *info)
 
 void	the_handler(void)
 {
-	rl_on_new_line();
-	rl_replace_line("exit", 0);
-	rl_redisplay();
-	ft_putstr_fd("\n", 2);
+	write(1, "\x1b[A", 3);
+	write(1, "\x1b[11C", 5);
+	write(1, "exit\n", 5);
 	tcsetattr(0, TCSANOW, &old_term);
 	exit(0);
-	return ;
 }
 
 void	i_c(int signum)

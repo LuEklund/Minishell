@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 12:22:20 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/01 14:18:03 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/01 17:43:14 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	fake_it(t_data *info)
 
 void	bob_the_builtin(t_data *info)
 {
+	info->check = 1;
 	if (info->built == 1 || info->built == 3 || info->built == 7)
 		info->check = 0;
 	else if (info->built == 6 && !info->args[1])
