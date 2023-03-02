@@ -11,13 +11,17 @@ SRC_NAME = main.c
 
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
 
-LIB = libft/libft.a
+LIB_PATH = ../libft/
+
+LIB_NAME = libft.a
+
+LIB = $(addprefix $(LIB_PATH)/,$(LIB_NAME))
 
 all: $(NAME)
 
 $(LIB):
-	@make all -C libft
-	@make bonus -C libft
+	@make all -C $(LIB_PATH)
+	@make bonus -C $(LIB_PATH)
 	@echo "$(COLOUR_GREEN)libft compilation completed$(COLOUR_END)"
 
 $(NAME): $(LIB) $(SRC)
@@ -25,12 +29,12 @@ $(NAME): $(LIB) $(SRC)
 	@echo "$(COLOUR_GREEN)$@ created$(COLOUR_END)"
 
 clean:
-	@make clean -C libft
+	@make clean -C $(LIB_PATH)
 	@echo "$(COLOUR_BLUE)libft object files cleaned$(COLOUR_END)"
 
 fclean: clean
 	@rm -f $(LIB)
-	@echo "$(COLOUR_RED)libft.a removed$(COLOUR_END)"
+	@echo "$(COLOUR_RED)$(LIB_NAME) removed$(COLOUR_END)"
 	@rm -f $(NAME)
 	@echo "$(COLOUR_RED)$(NAME) removed$(COLOUR_END)"
 

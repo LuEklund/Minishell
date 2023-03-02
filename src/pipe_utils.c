@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 19:46:56 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/01 13:35:41 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/02 12:06:31 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void	the_kindergarden(t_data *info)
 		close_pipeline(info);
 	if (!info->check && info->built)
 		exit(execute_built(info));
+	if (!ft_strncmp(info->cmd_to_use, " ", 2))
+		exit (0);
 	if (!info->check)
 	{
 		execve(info->cmd_to_use, info->args, info->envs);

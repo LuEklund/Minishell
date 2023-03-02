@@ -6,7 +6,11 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:44 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/01 13:21:38 by nlonka           ###   ########.fr       */
+<<<<<<< HEAD
+/*   Updated: 2023/03/01 17:51:10 by nlonka           ###   ########.fr       */
+=======
+/*   Updated: 2023/03/02 14:26:50 by nlonka           ###   ########.fr       */
+>>>>>>> nlonka
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +26,11 @@ void	go_raw(t_data *info)
 
 void	the_handler(void)
 {
-	rl_on_new_line();
-	rl_replace_line("exit", 0);
-	rl_redisplay();
-	ft_putstr_fd("\n", 2);
+	write(1, "\x1b[A", 3);
+	write(1, "\x1b[11C", 5);
+	write(1, "exit\n", 5);
 	tcsetattr(0, TCSANOW, &old_term);
 	exit(0);
-	return ;
 }
 
 void	i_c(int signum)
@@ -41,6 +43,22 @@ void	i_c(int signum)
 	return ;
 }
 
+void	init_values(t_data *info)
+{
+	ft_strlcpy(info->dino, "\033[0;31mDinoshell:\033[0m", 25);
+	info->fd_in = 0;
+	info->fd_out = 1; 
+	go_raw(info);
+	sigemptyset(&info->quit.sa_mask);
+	info->quit.sa_handler = i_c;
+	info->buf = NULL;
+	sigaction(SIGINT, &info->quit, &info->old_act);
+	sigemptyset(&info->z_act.sa_mask);
+	info->z_act.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &info->z_act, &info->old_act);
+	sigaction(SIGTSTP, &info->z_act, &info->old_act);
+}
+
 int main(int ac, char **av, char **ev)
 {
 	t_data	info;
@@ -49,17 +67,7 @@ int main(int ac, char **av, char **ev)
 		return (printf("bro no need for any arguments\n"));
 	(void)av;
 	info.envs = copy_env(ev);
-	info.fd_in = 0;
-	info.fd_out = 1; 
-	go_raw(&info);
-	sigemptyset(&info.quit.sa_mask);
-	info.quit.sa_handler = i_c;
-	info.buf = NULL;
-	sigaction(SIGINT, &info.quit, &info.old_act);
-	sigemptyset(&info.z_act.sa_mask);
-	info.z_act.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &info.z_act, &info.old_act);
-	sigaction(SIGTSTP, &info.z_act, &info.old_act);
+	init_values(&info);
 	while (37)
 	{
 		if (info.buf)
