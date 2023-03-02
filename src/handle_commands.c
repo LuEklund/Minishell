@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/01 17:46:11 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/02 14:40:56 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	find_the_paths(t_data *info)
 	while (info->envs[i][i2] != '/')
 		i2++;
 	info->paths = ft_split(info->envs[i] + i2, ':');
-	if (!info->paths)
+	if (!info->paths || !info->paths[0])
 		return (ft_putendl_fd("split failed", 2));
 	info->check = 0;
 }
@@ -90,8 +90,11 @@ void	arguing(t_data *info)
 	info->check = 1;
 	info->cmd_to_use = NULL;
 	info->args = parse_split(info->cmds[info->i], ' ');
-	if (!info->args)
-		return (ft_putendl_fd("no cmd :(", 2));
+	if (!info->args || !info->args[0])
+	{
+		info->return_val = 258;
+		return (ft_putstr_fd(info->dino, 2), ft_putendl_fd(" syntax error near unexpected token `|'", 2));
+	}
 	is_built_in(info);
 	if (info->built)
 		return (bob_the_builtin(info));
@@ -115,8 +118,8 @@ void	handle_buf(t_data *info)
 	pid_t	kiddo;
 
 	info->cmds = parse_split(info->buf, '|');
-	if (!info->cmds)
-		return (ft_putendl_fd("apua", 2));
+	if (!info->cmds || !info->cmds[0])
+		return ;
 	if (init_pipes(info) < 0)
 		return (ft_putendl_fd("apua 2", 2), free(info->cmds));
 	find_the_paths(info);
