@@ -78,20 +78,28 @@ int	unset_env(t_data *info, char *rm_var)
 	return (1);
 }
 
+int	export_error_handler(t_data *info, char *new_var)
+{
+	if (!new_var)
+	{
+		display_env(info, 1);
+		return (0);
+	}
+	if (new_var[0] && !((new_var[0] >= 65 && new_var[0] <= 90) || (new_var[0] >= 97 && new_var[0] <= 122)))
+	{
+		printf("invalid first char");
+		return (0);
+	}
+	return (1);
+}
+
 int	env_export(t_data *info, char *new_var)
 {
 	char		**new_env;
 	int			i;
 
-	if (!new_var)
-	{
-		display_env(info, 1);
-		return (1);
-	}
-	if (new_var[0] && new_var[0] == '=')
+	if (!export_error_handler(info, new_var))
 		return (0);
-	// if (change_env_variable(info, "HI=", "test"))
-	// 	return (1);
 	if (change_env_variable(info, new_var))
 		return (1);
 	i = 0;

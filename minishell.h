@@ -89,7 +89,7 @@ char	**parse_split(char const *str, char c);
 
 //Builtins
 int		display_curdir();
-int		change_dir(char *path);
+int		change_dir(t_data *info);
 
 int		change_env_variable(t_data *info, char *var);
 int		find_equal_sign(char *str);
