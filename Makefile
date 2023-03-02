@@ -22,6 +22,7 @@ _SRCS :=  main.c \
 			pipe_utils.c \
 			parse_split.c \
 			handle_built.c \
+			expand_envs.c \
 			utils.c
 
 _BUILTIN :=  built.c \

@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/02 14:23:13 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/02 18:14:32 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_data
 	char				**cmds;
 	char				*cmd_to_use;
 	char				**args;
+	struct s_split		*split;
 	size_t				i;
 	int					fd_in;
 	int					fd_out;
@@ -57,15 +58,16 @@ void rl_replace_line (const char *text, int clear_undo);
 
 typedef struct s_split
 {
-	int	h;
-	int	h2;
-	int	i;
-	int	i2;
-	int	i3;
-	int	l;
-	int	h2i;
-	int	q;
-	int	sq;
+	int		h;
+	int		h2;
+	int		i;
+	int		i2;
+	int		i3;
+	int		l;
+	int		h2i;
+	int		q;
+	int		sq;
+	char	c;
 }	t_split;
 
 
@@ -75,6 +77,7 @@ void	print_ar(char **ar);
 
 void	bob_the_builtin(t_data *info);
 
+int		expand_envs(const char *str, t_data *info, t_split *help);
 
 void	handle_buf(t_data *info);
 
@@ -85,7 +88,7 @@ void	free_commands(t_data *info);
 
 void	free_ar(char **ar);
 void	close_pipeline(t_data *info);
-char	**parse_split(char const *str, char c);
+char	**parse_split(char const *str, char c, t_data *info);
 
 //Builtins
 int		display_curdir();

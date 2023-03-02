@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/02 14:40:56 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/02 18:13:11 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	arguing(t_data *info)
 	info->exit = 0;
 	info->check = 1;
 	info->cmd_to_use = NULL;
-	info->args = parse_split(info->cmds[info->i], ' ');
+	info->args = parse_split(info->cmds[info->i], ' ', info);
 	if (!info->args || !info->args[0])
 	{
 		info->return_val = 258;
@@ -117,7 +117,7 @@ void	handle_buf(t_data *info)
 {
 	pid_t	kiddo;
 
-	info->cmds = parse_split(info->buf, '|');
+	info->cmds = parse_split(info->buf, '|', info);
 	if (!info->cmds || !info->cmds[0])
 		return ;
 	if (init_pipes(info) < 0)

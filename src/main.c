@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:44 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/02 14:26:50 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/02 16:26:36 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ void	init_values(t_data *info)
 {
 	ft_strlcpy(info->dino, "\033[0;31mDinoshell:\033[0m", 25);
 	info->fd_in = 0;
-	info->fd_out = 1; 
+	info->fd_out = 1;
+	info->return_val = 0;	
 	go_raw(info);
 	sigemptyset(&info->quit.sa_mask);
 	info->quit.sa_handler = i_c;
