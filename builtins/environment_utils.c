@@ -25,33 +25,35 @@ int	find_equal_sign(char *str)
 	return (0);
 }
 
-int	change_env_variable(t_data *info, char *var_name, char *var_info)
+int	change_env_variable(t_data *info, char *var)
 {
 	int	i;
 	int	len;
-	int	len_info;
+	int	has_equal;
 
 	i = 0;
-	len = find_equal_sign(var_name);
+	has_equal = 0;
+	len = find_equal_sign(var);
 	if (!len)
-		len = ft_strlen(var_name);
+		len = ft_strlen(var);
 	while (info->envs[i] != NULL)
 	{
-		// printf("[%d] [%s] == [%s], len: %d\n",i , var_name, info->envs[i], len);
-		if (!ft_strncmp(info->envs[i], var_name, len))
+		if (!ft_strncmp(info->envs[i], var, len))
 		{
-			printf("good\n");
-			len_info = ft_strlen(var_info);
+			len = ft_strlen(var);
+			if (find_equal_sign(info->envs[i]) && !find_equal_sign((var)))
+				has_equal = 1;
 			free(info->envs[i]);
-			info->envs[i] = (char *)malloc(sizeof(char) * (len + len_info + 1));
-			ft_strlcpy(info->envs[i], var_name, len + 1);
-			printf("[%s]\n", info->envs[i]);
-			ft_strlcpy(&info->envs[i][len], var_info, len_info + 1);
-			printf("[%s]\n", info->envs[i]);
+			info->envs[i] = (char *)malloc(sizeof(char) * (len + has_equal + 1));
+			ft_strlcpy(info->envs[i], var, len + 1);
+			if (has_equal && info->envs[i][len] != '=')
+			{
+				info->envs[i][len] = '=';
+				info->envs[i][len + 1] = '\0';
+			}
 			return (1);
 		}
 		i++;
 	}
-	printf("not ex\n");
 	return (0);
 }

@@ -90,7 +90,7 @@ char	**parse_split(char const *str, char c);
 int		display_curdir();
 int		change_dir(char *path);
 
-int		change_env_variable(t_data *info, char *var_name, char *var_info);
+int		change_env_variable(t_data *info, char *var);
 int		find_equal_sign(char *str);
 int		env_export(t_data *info, char *new_var);
 int		unset_env(t_data *info, char *rm_var);

@@ -28,10 +28,9 @@ int	display_env(t_data *info, int export_type)
 			printf("declare -x ");
 			while (info->envs[i][i2] != '\0' && info->envs[i][i2] != '=')
 				printf("%c", info->envs[i][i2++]);
-			printf("=%c", c);
 			if (info->envs[i][i2++])
-				printf("%s", info->envs[i]+i2);
-			printf("%c\n", c);
+				printf("=%c%s%c",c ,info->envs[i]+i2, c);
+			printf("\n");
 		}
 		else if (find_equal_sign(info->envs[i]))
 			printf("%s\n\r", info->envs[i]);
@@ -91,7 +90,9 @@ int	env_export(t_data *info, char *new_var)
 	}
 	if (new_var[0] && new_var[0] == '=')
 		return (0);
-	if (change_env_variable(info, new_var, new_var + find_equal_sign(new_var)))
+	// if (change_env_variable(info, "HI=", "test"))
+	// 	return (1);
+	if (change_env_variable(info, new_var))
 		return (1);
 	i = 0;
 	while (info->envs[i] != NULL)
