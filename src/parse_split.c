@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:07:38 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/02 18:15:32 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/06 11:05:03 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,10 @@ static char	**ansllocator(char **ans, char const *str, t_data *info, t_split hel
 		{
 			if (str[help.i3] == '$' && help.sq == 0 && str[help.i3 + 1])
 			{
-				if (expand_envs(str, info, &help))
+				if (expand_envs(str, info, &help, ans))
 					continue ;
 			}
-			if (help.c == '|' || quote_see(str, help))
+			if (help.c != ' ' || quote_see(str, help))
 				help.i += 1;
 			help.i3 = quote_check(str, help.i3, &help.q, &help.sq);
 		}
@@ -99,7 +99,7 @@ static char	**ansllocator(char **ans, char const *str, t_data *info, t_split hel
 
 static char	**string_separator_7000(char **ans, char const *str, t_data *info, t_split help)
 {
-	(void)info;
+	help.check = 1;
 	while (help.i2 < help.h)
 	{
 		if (str[help.i3] == '\'')
@@ -110,9 +110,12 @@ static char	**string_separator_7000(char **ans, char const *str, t_data *info, t
 			help.i3 += 1;
 		while (str[help.i3] != '\0' && (str[help.i3] != help.c || help.q + help.sq != 0))
 		{
-			if (quote_see(str, help) || help.c == '|')
+			if (str[help.i3] == '$' && help.sq == 0 && str[help.i3 + 1] \
+					&& expand_envs(str, info, &help, ans))
+				continue ;
+			if (quote_see(str, help) || help.c != ' ')
 				ans[help.i2][help.i] = str[help.i3];
-			if (quote_see(str, help) || help.c == '|')
+			if (quote_see(str, help) || help.c != ' ')
 				help.i += 1;
 			help.i3 = quote_check(str, help.i3, &help.q, &help.sq);
 		}
@@ -182,6 +185,7 @@ char	**parse_split(char const *str, char c, t_data *info)
 		return (NULL);
 	ans[h] = 0;
 	init_help(info, h, c);
+	help.check = 0;
 	ans = ansllocator(ans, str, info, *(info->split));
 	ans = check_malloc(ans, h);
 	if (ans == NULL)

@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/02 18:14:32 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/06 11:24:38 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ typedef struct s_split
 	int		i2;
 	int		i3;
 	int		l;
-	int		h2i;
 	int		q;
 	int		sq;
 	char	c;
+	int		check;
 }	t_split;
 
 
@@ -77,7 +77,7 @@ void	print_ar(char **ar);
 
 void	bob_the_builtin(t_data *info);
 
-int		expand_envs(const char *str, t_data *info, t_split *help);
+int		expand_envs(const char *str, t_data *info, t_split *help, char **ans);
 
 void	handle_buf(t_data *info);
 
