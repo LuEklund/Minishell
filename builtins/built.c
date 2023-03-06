@@ -34,32 +34,6 @@ char	**copy_env(char **env_to_copy)
 	return (new_env);
 }
 
-<<<<<<< HEAD
-//static char	*argumenter(char *str)
-//{
-//	int	i;
-
-//	i = 0;
-//	while (str[i] != ' ' && str[i] != '\0')
-//		i++;
-//	if (!str[i])
-//		return (NULL);
-//	return (&str[++i]);
-//}
-=======
-// static char	*argumenter(char *str)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (str[i] != ' ' && str[i] != '\0')
-// 		i++;
-// 	if (!str[i])
-// 		return (NULL);
-// 	return (&str[++i]);
-// }
->>>>>>> 7906bd35c1ccfd503710837a27d2c97a321aae47
-
 int	echo(t_data *info)
 {
 	int	i;
@@ -92,16 +66,12 @@ int	execute_built(t_data *info)
 	}
 	else if (info->built == 6)
 	{
-		env_export(info, argumenter(*info->cmds));
+		env_export(info, info->args[1]);
 	}
 	else if (info->built == 7)
 	{
 		// printf("display_env\n\r");
 		display_env(info, 0);
-	}
-	else
-	{
-		printf("error\n\r");
 	}
 	return (0);
 }
