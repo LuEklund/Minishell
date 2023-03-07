@@ -28,7 +28,8 @@ _SRCS :=  main.c \
 _BUILTIN :=  built.c \
 				directory.c \
 				environment.c \
-				environment_utils.c
+				environment_utils.c \
+				env_unset.c
 
 ALL_SRCS :=	$(addprefix $(SRCS_DIR), $(_SRCS)) \
 			$(addprefix $(BUILTIN_DIR), $(_BUILTIN))

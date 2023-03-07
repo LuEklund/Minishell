@@ -66,7 +66,7 @@ int	execute_built(t_data *info)
 	}
 	else if (info->built == 6)
 	{
-		env_export(info, info->args[1]);
+		env_export(info, 0);
 	}
 	else if (info->built == 7)
 	{
