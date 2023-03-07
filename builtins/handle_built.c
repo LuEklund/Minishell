@@ -37,9 +37,9 @@ void	bob_the_builtin(t_data *info)
 	else if (info->built == 4 && info->i == 0 && !info->cmds[1])
 		info->exit = 1;
 	else if (info->built == 5 && info->i == 0 && !info->cmds[1])
-		unset_env(info, info->args[1]);
+		unset_env(info, 0);
 	else if (info->built == 6 && info->i == 0 && !info->cmds[1])
-		env_export(info, info->args[1]);
+		env_export(info, 0);
 	else
 		fake_it(info);
 	if (!info->check)
