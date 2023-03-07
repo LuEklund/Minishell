@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 19:47:06 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/22 11:06:29 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/07 19:37:20 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	print_ar(char **ar)
 		printf("%s\n", ar[i]);
 		i++;
 	}
+	///IIIIIIIIIIIIIII DELEEETE MEEEEEE
 }
 
 //			   //
@@ -54,5 +55,21 @@ void	close_pipeline(t_data *info)
 	{
 		close(info->pipe[i]);
 		i++;
+	}
+}
+
+void	empty_redi_list(t_data *info)
+{
+	t_redi	*latter;
+	t_redi	*current;
+
+	current = info->redi_list;
+	while (current)
+	{
+		if (current->file_name)
+			free(current->file_name);
+		latter = current;
+		current = current->next;
+		free(latter);
 	}
 }

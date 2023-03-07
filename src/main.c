@@ -5,16 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/16 16:36:44 by nlonka            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/03/02 16:26:36 by nlonka           ###   ########.fr       */
-=======
-<<<<<<< HEAD
-/*   Updated: 2023/03/01 17:51:10 by nlonka           ###   ########.fr       */
-=======
-/*   Updated: 2023/03/02 14:26:50 by nlonka           ###   ########.fr       */
->>>>>>> nlonka
->>>>>>> master
+/*   Created: 2023/03/06 11:36:15 by nlonka            #+#    #+#             */
+/*   Updated: 2023/03/07 20:19:21 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +14,8 @@
 
 void	go_raw(t_data *info)
 {
-	tcgetattr(STDIN_FILENO, &old_term);
-	info->new_term = old_term;
+	tcgetattr(STDIN_FILENO, &g_old_term);
+	info->new_term = g_old_term;
 	info->new_term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &info->new_term);
 }
@@ -33,7 +25,7 @@ void	the_handler(void)
 	write(1, "\x1b[A", 3);
 	write(1, "\x1b[11C", 5);
 	write(1, "exit\n", 5);
-	tcsetattr(0, TCSANOW, &old_term);
+	tcsetattr(0, TCSANOW, &g_old_term);
 	exit(0);
 }
 
@@ -49,7 +41,7 @@ void	i_c(int signum)
 
 void	init_values(t_data *info)
 {
-	ft_strlcpy(info->dino, "\033[0;31mDinoshell:\033[0m", 25);
+	ft_strlcpy(info->dino, "\033[0;31mDinoshell: \033[0m", 25);
 	info->fd_in = 0;
 	info->fd_out = 1;
 	info->return_val = 0;	
@@ -91,6 +83,6 @@ int main(int ac, char **av, char **ev)
 	if (info.buf)
 		free(info.buf);
 	ft_putstr_fd("\033[0;95mexit\033[0m 🦕\n", 2);
-	tcsetattr(0, TCSANOW, &old_term);
+	tcsetattr(0, TCSANOW, &g_old_term);
 	return (0);
 }

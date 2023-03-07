@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/02 18:13:11 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/07 20:23:10 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@ int	init_pipes(t_data *info)
 {
 	size_t	i;
 
+	info->redi_list = NULL;
+	info->all_red_n = 0;
+	if (redirection_parser(info, 0, 0))
+		return (-1);
 	i = 0;
 	info->i = 0;
 	info->cmd_amount = 0;
@@ -93,13 +97,17 @@ void	arguing(t_data *info)
 	if (!info->args || !info->args[0])
 	{
 		info->return_val = 258;
-		return (ft_putstr_fd(info->dino, 2), ft_putendl_fd(" syntax error near unexpected token `|'", 2));
+		return (ft_putstr_fd(info->dino, 2), \
+		ft_putendl_fd("syntax error near unexpected token `|'", 2));
 	}
 	is_built_in(info);
 	if (info->built)
 		return (bob_the_builtin(info));
 	if (!access(info->args[0], X_OK))
+	{
 		info->cmd_to_use = ft_strdup(info->args[0]);
+		info->check = 1;
+	}
 	else
 		test_paths(info, info->args[0]);
 	if (!info->check)
@@ -119,9 +127,11 @@ void	handle_buf(t_data *info)
 
 	info->cmds = parse_split(info->buf, '|', info);
 	if (!info->cmds || !info->cmds[0])
-		return ;
+		return (ft_putstr_fd(info->dino, 2), \
+			ft_putendl_fd("syntax error near unexpected token `||'", 2));
 	if (init_pipes(info) < 0)
-		return (ft_putendl_fd("apua 2", 2), free(info->cmds));
+		return (empty_redi_list(info), free(info->cmds), \
+		ft_putstr_fd(info->dino, 2), ft_putendl_fd("syntax error near unexpected token `newline'", 2));
 	find_the_paths(info);
 	while (info->cmds[info->i] && !info->check)
 	{
@@ -136,8 +146,8 @@ void	handle_buf(t_data *info)
 		free_commands(info);
 		info->i += 1;
 	}
-	if (info->pipe_amount != 0)
-		close_pipeline(info);	
+	close_pipeline(info);	
 	while ((wait(&info->return_val)) > 0)
 		;
+	empty_redi_list(info);
 }

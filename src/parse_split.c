@@ -6,13 +6,13 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:07:38 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/06 11:05:03 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/07 14:38:06 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	quote_check(char const *str, int i, int *q, int *sq)
+int	quote_check(char const *str, int i, int *q, int *sq)
 {
 	if (*q == 1 && str[i] == '\"')
 		*q = 0;

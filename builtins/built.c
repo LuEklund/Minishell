@@ -6,7 +6,7 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 10:49:35 by leklund           #+#    #+#             */
-/*   Updated: 2023/03/01 13:55:03 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/06 11:40:55 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -34,7 +34,7 @@ char	**copy_env(char **env_to_copy)
 	return (new_env);
 }
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 //static char	*argumenter(char *str)
 //{
 //	int	i;
@@ -46,7 +46,7 @@ char	**copy_env(char **env_to_copy)
 //		return (NULL);
 //	return (&str[++i]);
 //}
-=======
+//=======
 // static char	*argumenter(char *str)
 // {
 // 	int	i;
@@ -58,7 +58,7 @@ char	**copy_env(char **env_to_copy)
 // 		return (NULL);
 // 	return (&str[++i]);
 // }
->>>>>>> 7906bd35c1ccfd503710837a27d2c97a321aae47
+//>>>>>>> 7906bd35c1ccfd503710837a27d2c97a321aae47
 
 int	echo(t_data *info)
 {
@@ -92,7 +92,7 @@ int	execute_built(t_data *info)
 	}
 	else if (info->built == 6)
 	{
-		env_export(info, argumenter(*info->cmds));
+		display_env(info, 1);	
 	}
 	else if (info->built == 7)
 	{

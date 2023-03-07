@@ -19,6 +19,8 @@ OBJS_DIR = obj/
 #Sources by folder
 _SRCS :=  main.c \
 			handle_commands.c \
+			redirection.c \
+			redirection2.c \
 			pipe_utils.c \
 			parse_split.c \
 			handle_built.c \
