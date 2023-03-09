@@ -20,11 +20,14 @@ OBJS_DIR = obj/
 _SRCS :=  main.c \
 			handle_commands.c \
 			redirection.c \
-			redirection2.c \
-			pipe_utils.c \
+			open_files.c \
+			here_doc.c \
+			piping.c \
+			finding_execs.c \
 			parse_split.c \
 			handle_built.c \
 			expand_envs.c \
+			pipe_utils.c \
 			utils.c
 
 _BUILTIN :=  built.c \

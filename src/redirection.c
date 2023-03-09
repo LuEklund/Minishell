@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:21:18 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/07 20:24:50 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/08 18:13:42 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	print_list(t_redi *current)
 			printf(":rd");
 		else
 			printf(":th");
-		printf(" node is of type %d, in pipe %d spot %d\n", current->type, current->pipe_n, current->red_n);
+		printf(" node is of type %d, in pipe %zu spot %zu\n", current->type, current->pipe_n, current->red_n);
 		current = current->next;
 		i++;
 	}
@@ -115,5 +115,5 @@ int	redirection_parser(t_data *info, int i, int i2)
 		i2 = 0;
 		i++;
 	}
-	return (continue_redir(info));
+	return (open_files(info));
 }

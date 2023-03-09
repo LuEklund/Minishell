@@ -6,11 +6,64 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 16:25:20 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/06 11:39:09 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/08 17:42:53 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	copy_ret(t_data *info, t_split *help, char **ans, int len)
+{
+	int	ret;
+	int	safe;
+
+	if (info->return_val != 258)
+		ret = info->return_val % 255;
+	else
+		ret = 258;
+	if (ret < 0)
+	{
+		ret = -ret;
+		ans[help->i2][help->i] = '-';
+		len++;
+	}
+	safe = len;
+	while (len)
+	{
+		ans[help->i2][help->i + len - 1] = ret % 10 + '0';
+		ret = ret / 10;
+		len--;
+	}
+	help->i += safe;
+	return (1);
+}
+
+int	return_value(t_data *info, t_split *help, char **ans)
+{
+	int	len;
+	int	ret;
+
+	len = 1;
+	if (info->return_val != 258)
+		ret = info->return_val % 255;
+	else
+		ret = 258;
+	if (ret < 0)
+	{
+		ret = -ret;
+		len++;
+	}
+	while (ret / 10)
+	{
+		ret = ret / 10;
+		len++;
+	}
+	help->i3 += 2;
+	if (help->check)
+		return (copy_ret(info, help, ans, len));
+	help->i += len;
+	return (1);
+}
 
 void	envy(int i, t_split *help, t_data *info, char **ans)
 {
@@ -44,10 +97,7 @@ void	find_the_right_env(char *str2, t_split *help, t_data *info, char **ans)
 	if (!info->envs[i])
 		return ;
 	if (help->check)
-	{
-		envy(i, help, info, ans);
-		return ;
-	}
+		return (envy(i, help, info, ans));
 	while (info->envs[i][i2] != '=')
 		i2++;
 	i3 = i2 + 1;
@@ -63,6 +113,8 @@ int	expand_envs(const char *s1, t_data *info, t_split *he, char **ans)
 	char	*s2;
 
 	i = 0;
+	if (s1[he->i3 + 1] == '?')
+		return (return_value(info, he, ans));
 	while (s1[i + 1 + he->i3] && s1[i + 1 + he->i3] != '\"' && s1[i + 1 + he->i3] != '\'' \
 			&& s1[i + 1 + he->i3] != ' ' && s1[i + 1 + he->i3] != '|')
 		i++;
