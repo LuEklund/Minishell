@@ -28,30 +28,15 @@ int	display_env(t_data *info, int export_type)
 			printf("declare -x ");
 			while (info->envs[i][i2] != '\0' && info->envs[i][i2] != '=')
 				printf("%c", info->envs[i][i2++]);
-			printf("%c%c", info->envs[i][i2++], c);
-			printf("%s%c\n", info->envs[i]+i2, c);
+			if (info->envs[i][i2++])
+				printf("=%c%s%c",c ,info->envs[i]+i2, c);
+			printf("\n");
 		}
-		else
+		else if (find_equal_sign(info->envs[i]))
 			printf("%s\n\r", info->envs[i]);
 		i++;
 	}
 	return (1);
-}
-
-int	valid_var(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (str[i] && str[i] == '=')
-		return (0);
-	while (str[i])
-	{
-		if (str[i] == '=')
-			return (1);
-		i++;
-	}
-	return (0);
 }
 
 int	unset_env(t_data *info, char *rm_var)
@@ -98,17 +83,17 @@ int	env_export(t_data *info, char *new_var)
 	char		**new_env;
 	int			i;
 
-	if(!new_var)
+	if (!new_var)
 	{
 		display_env(info, 1);
 		return (1);
 	}
-	if (!valid_var(new_var))
-	{
-		printf("NOT VALID\n");
+	if (new_var[0] && new_var[0] == '=')
 		return (0);
-	}
-		printf("VALID\n");
+	// if (change_env_variable(info, "HI=", "test"))
+	// 	return (1);
+	if (change_env_variable(info, new_var))
+		return (1);
 	i = 0;
 	while (info->envs[i] != NULL)
 		i++;

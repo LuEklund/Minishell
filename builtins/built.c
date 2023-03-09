@@ -34,6 +34,7 @@ char	**copy_env(char **env_to_copy)
 	return (new_env);
 }
 
+<<<<<<< HEAD
 //<<<<<<< HEAD
 //static char	*argumenter(char *str)
 //{
@@ -60,6 +61,8 @@ char	**copy_env(char **env_to_copy)
 // }
 //>>>>>>> 7906bd35c1ccfd503710837a27d2c97a321aae47
 
+=======
+>>>>>>> master
 int	echo(t_data *info)
 {
 	int	i;
@@ -92,16 +95,16 @@ int	execute_built(t_data *info)
 	}
 	else if (info->built == 6)
 	{
+<<<<<<< HEAD
 		display_env(info, 1);	
+=======
+		env_export(info, info->args[1]);
+>>>>>>> master
 	}
 	else if (info->built == 7)
 	{
 		// printf("display_env\n\r");
 		display_env(info, 0);
-	}
-	else
-	{
-		printf("error\n\r");
 	}
 	return (0);
 }
