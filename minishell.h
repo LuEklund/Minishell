@@ -143,11 +143,12 @@ void	bob_the_builtin(t_data *info);
 
 
 int		display_curdir();
-int		change_dir(char *path);
+int		change_dir(t_data *info);
 
 int		change_env_variable(t_data *info, char *var);
+int		export_error_handler(t_data *info, char *new_var);
 int		find_equal_sign(char *str);
-int		env_export(t_data *info, char *new_var);
+int		env_export(t_data *info, char *manual_add);
 int		unset_env(t_data *info, char *rm_var);
 int		display_env(t_data *info, int export_type);
 char	**copy_env(char **env_to_copy);

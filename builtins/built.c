@@ -6,9 +6,10 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 10:49:35 by leklund           #+#    #+#             */
-/*   Updated: 2023/03/09 09:50:59 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/09 09:52:49 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../minishell.h"
 
 char	**copy_env(char **env_to_copy)
@@ -34,20 +35,58 @@ char	**copy_env(char **env_to_copy)
 	return (new_env);
 }
 
+int	handle_word(t_data *info, int i,int file, char *last_char)
+{
+	int	i2;
+
+	i2 = 0;
+	while (info->args[i][i2])
+	{
+		if (info->args[i][i2] == '>')
+			file = 1;
+		if (!file)
+			write(1, &info->args[i][i2], 1);
+		*last_char = info->args[i][i2];
+		i2++;
+	}
+	if (*last_char == '>')
+		file = 1;
+	else
+	{
+		if (info->args[i + 1] && info->args[i + 1][0] != '>')
+			write(1, " ", 1);
+		file = 0;
+	}
+	return (file);
+}
+
 int	echo(t_data *info)
 {
-	int	i;
-	int	flag;
+	int		i;
+	int		new_line;
+	int		file;
+	char	last_char;
 
 	i = 1;
-	flag = 0;
-	//handle -n here
+	new_line = 2;
+	file = 0;
+	last_char = 0;
+	if (info->args[i][0] == '-' && info->args[i][1] == 'n')
+	{
+		while(info->args[i][new_line] == 'n')
+			new_line++;
+		if (!info->args[i][new_line])
+		{
+			new_line = 0;
+			i++;
+		}
+	}
 	while (info->args[i])
 	{
-		printf("%s", info->args[i]);
+		file = handle_word(info, i, file, &last_char);
 		i++;
 	}
-	if (!flag)
+	if (new_line)
 		printf("\n");
 	return (1);
 }
