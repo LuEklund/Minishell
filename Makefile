@@ -19,10 +19,15 @@ OBJS_DIR = obj/
 #Sources by folder
 _SRCS :=  main.c \
 			handle_commands.c \
-			pipe_utils.c \
+			redirection.c \
+			open_files.c \
+			here_doc.c \
+			piping.c \
+			finding_execs.c \
 			parse_split.c \
 			handle_built.c \
 			expand_envs.c \
+			pipe_utils.c \
 			utils.c
 
 _BUILTIN :=  built.c \

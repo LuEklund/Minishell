@@ -6,7 +6,7 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 10:49:35 by leklund           #+#    #+#             */
-/*   Updated: 2023/03/01 13:55:03 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/06 11:40:55 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -34,6 +34,7 @@ char	**copy_env(char **env_to_copy)
 	return (new_env);
 }
 
+<<<<<<< HEAD
 int	handle_word(t_data *info, int i,int file, char *last_char)
 {
 	int	i2;
@@ -59,6 +60,37 @@ int	handle_word(t_data *info, int i,int file, char *last_char)
 	return (file);
 }
 
+=======
+<<<<<<< HEAD
+//<<<<<<< HEAD
+//static char	*argumenter(char *str)
+//{
+//	int	i;
+
+//	i = 0;
+//	while (str[i] != ' ' && str[i] != '\0')
+//		i++;
+//	if (!str[i])
+//		return (NULL);
+//	return (&str[++i]);
+//}
+//=======
+// static char	*argumenter(char *str)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (str[i] != ' ' && str[i] != '\0')
+// 		i++;
+// 	if (!str[i])
+// 		return (NULL);
+// 	return (&str[++i]);
+// }
+//>>>>>>> 7906bd35c1ccfd503710837a27d2c97a321aae47
+
+=======
+>>>>>>> master
+>>>>>>> nlonka
 int	echo(t_data *info)
 {
 	int		i;
@@ -104,7 +136,15 @@ int	execute_built(t_data *info)
 	}
 	else if (info->built == 6)
 	{
+<<<<<<< HEAD
 		env_export(info, 0);
+=======
+<<<<<<< HEAD
+		display_env(info, 1);	
+=======
+		env_export(info, info->args[1]);
+>>>>>>> master
+>>>>>>> nlonka
 	}
 	else if (info->built == 7)
 	{

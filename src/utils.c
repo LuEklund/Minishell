@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 19:47:06 by nlonka            #+#    #+#             */
-/*   Updated: 2023/02/22 11:06:29 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/09 09:45:25 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	print_ar(char **ar)
 		printf("%s\n", ar[i]);
 		i++;
 	}
+	///IIIIIIIIIIIIIII DELEEETE MEEEEEE
 }
 
 //			   //
@@ -45,14 +46,26 @@ void	free_ar(char **ar)
 	free(ar);
 }
 
-void	close_pipeline(t_data *info)
+void	get_outed(t_data info)
 {
-	size_t	i;
+	unlink(".dinoshell_heredoc373_tmp");
+	get_duped(info.safe_in, info.safe_out);
+	tcsetattr(0, TCSANOW, &info.old_term);
+}
 
-	i = 0;
-	while (i != info->pipe_amount)
+void	empty_redi_list(t_data *info)
+{
+	t_redi	*latter;
+	t_redi	*current;
+
+	current = info->redi_list;
+	while (current)
 	{
-		close(info->pipe[i]);
-		i++;
+		close(current->fd);
+		if (current->file_name)
+			free(current->file_name);
+		latter = current;
+		current = current->next;
+		free(latter);
 	}
 }

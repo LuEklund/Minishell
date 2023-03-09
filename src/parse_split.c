@@ -6,13 +6,13 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:07:38 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/06 11:05:03 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/08 13:31:17 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	quote_check(char const *str, int i, int *q, int *sq)
+int	quote_check(char const *str, int i, int *q, int *sq)
 {
 	if (*q == 1 && str[i] == '\"')
 		*q = 0;
@@ -163,6 +163,7 @@ void	init_help(t_data *info, int h, char c)
 	help->q = 0;
 	help->sq = 0;
 	help->c = c;
+	help->check = 0;
 }
 
 char	**parse_split(char const *str, char c, t_data *info)
@@ -185,7 +186,6 @@ char	**parse_split(char const *str, char c, t_data *info)
 		return (NULL);
 	ans[h] = 0;
 	init_help(info, h, c);
-	help.check = 0;
 	ans = ansllocator(ans, str, info, *(info->split));
 	ans = check_malloc(ans, h);
 	if (ans == NULL)
