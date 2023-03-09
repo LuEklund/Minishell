@@ -5,25 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-<<<<<<< HEAD
-/*   Created: 2023/03/06 11:36:15 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/08 18:56:24 by nlonka           ###   ########.fr       */
-=======
-/*   Created: 2023/02/16 16:36:44 by nlonka            #+#    #+#             */
-<<<<<<< HEAD
-<<<<<<< HEAD
-/*   Updated: 2023/03/02 16:26:36 by nlonka           ###   ########.fr       */
-=======
-<<<<<<< HEAD
-/*   Updated: 2023/03/01 17:51:10 by nlonka           ###   ########.fr       */
-=======
-/*   Updated: 2023/03/02 14:26:50 by nlonka           ###   ########.fr       */
->>>>>>> nlonka
->>>>>>> master
-=======
-/*   Updated: 2023/03/02 14:26:50 by nlonka           ###   ########.fr       */
->>>>>>> b0a9e510c2de5a8e5f6d40f40c3ceab9e14cb403
->>>>>>> master
+/*   Created: 2023/03/09 09:50:01 by nlonka            #+#    #+#             */
+/*   Updated: 2023/03/09 09:50:11 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +31,6 @@ void	the_handler(t_data info)
 
 void	i_c(int signum)
 {
-	/////broken :(((((((
 	ioctl(0, TIOCSTI, "\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
