@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 10:32:03 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/08 18:55:30 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/10 17:14:56 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@ int	find_file(t_redi *current, t_data *info)
 {
 	int i;
 	int	len;
+	int	i2;
 
+	i2 = 0;
 	i = current->i + 1;
-	while (info->cmds[current->pipe_n][i] != ' ')
+	while (info->cmds[current->pipe_n][i] && info->cmds[current->pipe_n][i] == ' ')
 		i++;
-	i++;
 	len = i;
 	while (info->cmds[current->pipe_n][len] && info->cmds[current->pipe_n][len] != ' ')
 		len++;
@@ -28,10 +29,11 @@ int	find_file(t_redi *current, t_data *info)
 	current->file_name = malloc(sizeof(char) * (len + 1));
 	while (info->cmds[current->pipe_n][i] && info->cmds[current->pipe_n][i] != ' ')
 	{
-		current->file_name[i - (current->i + 2)] = info->cmds[current->pipe_n][i];
+		current->file_name[i2] = info->cmds[current->pipe_n][i];
 		i++;
+		i2++;
 	}
-	current->file_name[i - (current->i + 1)] = '\0';
+	current->file_name[i2] = '\0';
 	return (0);
 }
 

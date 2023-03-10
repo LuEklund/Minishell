@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/08 18:15:19 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/10 20:18:12 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,13 @@
 # include <readline/history.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
+# include <dirent.h>
+
+typedef struct s_wild
+{
+	int				i;
+	struct s_wild	*next;
+}	t_wild;
 
 typedef struct s_redi
 {
@@ -67,6 +74,7 @@ typedef struct s_data
 	int					hd;
 	int					q;
 	int					sq;
+	struct s_wild		*wild_list;
 	int					check;
 	int					check2;
 	int					safe_out;
@@ -84,6 +92,7 @@ typedef struct s_split
 	int		q;
 	int		sq;
 	char	c;
+	int		expand_type;
 	int		check;
 }	t_split;
 
@@ -97,6 +106,12 @@ void	print_ar(char **ar);
 //redirection.c
 int		redirection_parser(t_data *info, int i, int i2);
 
+//wild_cards.c
+void	wild_card_check(t_data *info);
+
+//ft_ls.c
+char	**ft_ls(void);
+
 //open_files.c
 int		open_files(t_data *info);
 
@@ -105,6 +120,9 @@ void	get_hd_file(t_redi *current, t_data *info);
 
 //expand_envs.c
 int		expand_envs(const char *str, t_data *info, t_split *help, char **ans);
+
+//redir_input_parser.c
+int		redir_input_parser(const char *str, t_split *help);
 
 //handle_commands.c
 void	handle_buf(t_data *info);
@@ -130,6 +148,7 @@ void	free_commands(t_data *info);
 void	free_ar(char **ar);
 void	get_outed(t_data info);
 void	empty_redi_list(t_data *info);
+void	empty_wild_list(t_data *info);
 
 //parse_split.c
 int		quote_check(char const *str, int i, int *q, int *sq);

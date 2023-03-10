@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 16:25:20 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/08 17:42:53 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/10 16:22:47 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,17 @@ int	copy_ret(t_data *info, t_split *help, char **ans, int len)
 	return (1);
 }
 
-int	return_value(t_data *info, t_split *help, char **ans)
+int	return_value(t_data *info, t_split *help, char const *str, char **ans)
 {
 	int	len;
 	int	ret;
 
 	len = 1;
+	ret = 258;
+	if (help->expand_type > 1)
+		return (redir_input_parser(str, help));
 	if (info->return_val != 258)
 		ret = info->return_val % 255;
-	else
-		ret = 258;
 	if (ret < 0)
 	{
 		ret = -ret;
@@ -113,8 +114,8 @@ int	expand_envs(const char *s1, t_data *info, t_split *he, char **ans)
 	char	*s2;
 
 	i = 0;
-	if (s1[he->i3 + 1] == '?')
-		return (return_value(info, he, ans));
+	if (he->expand_type)
+		return (return_value(info, he, s1, ans));
 	while (s1[i + 1 + he->i3] && s1[i + 1 + he->i3] != '\"' && s1[i + 1 + he->i3] != '\'' \
 			&& s1[i + 1 + he->i3] != ' ' && s1[i + 1 + he->i3] != '|')
 		i++;

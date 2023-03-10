@@ -6,19 +6,11 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 09:50:01 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/09 09:50:11 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/10 19:20:44 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	go_raw(t_data *info)
-{
-	tcgetattr(STDIN_FILENO, &info->old_term);
-	info->new_term = info->old_term;
-	info->new_term.c_lflag &= ~(ECHOCTL);
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &info->new_term);
-}
 
 void	the_handler(t_data info)
 {
@@ -38,6 +30,12 @@ void	i_c(int signum)
 	return ;
 }
 
+void	history_handler(char *str)
+{
+	if (ft_strncmp(str, "", 1))
+		add_history(str);
+}
+
 void	init_values(t_data *info)
 {
 	ft_strlcpy(info->dino, "\033[0;31mDinoshell: \033[0m", 25);
@@ -45,8 +43,12 @@ void	init_values(t_data *info)
 	info->fd_out = 1;
 	info->safe_out = dup(1);
 	info->safe_in = dup(0);
-	info->return_val = 0;	
-	go_raw(info);
+	info->return_val = 0;
+	info->exit = 0;
+	tcgetattr(STDIN_FILENO, &info->old_term);
+	info->new_term = info->old_term;
+	info->new_term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &info->new_term);
 	sigemptyset(&info->quit.sa_mask);
 	info->quit.sa_handler = i_c;
 	info->buf = NULL;
@@ -73,7 +75,7 @@ int main(int ac, char **av, char **ev)
 			handle_buf(&info);
 			if (info.exit)
 				break ;
-			add_history(info.buf);
+			history_handler(info.buf);
 			free(info.buf);
 		}
 		else

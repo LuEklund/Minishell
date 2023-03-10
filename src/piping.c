@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 11:11:39 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/08 17:50:30 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/10 13:33:16 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void	the_piper(t_data *info)
 void	the_kindergarden(t_data *info)
 {
 	the_piper(info);
+	close(info->fd_in);
+	close(info->fd_out);
 	if (!info->check && info->pipe_amount != 0)
 		close_pipeline(info);
 	if (!info->check && info->built)
@@ -77,4 +79,5 @@ void	the_kindergarden(t_data *info)
 		execve(info->cmd_to_use, info->args, info->envs);
 		info->check = 1;
 	}
+	exit(1);
 }

@@ -6,7 +6,7 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 10:49:35 by leklund           #+#    #+#             */
-/*   Updated: 2023/03/09 09:52:49 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/10 12:56:09 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,11 @@ int	echo(t_data *info)
 	}
 	while (info->args[i])
 	{
-		file = handle_word(info, i, file, &last_char);
+		printf("%s", info->args[i]);
+		//file = handle_word(info, i, file, &last_char);
 		i++;
+		if (info->args[i])
+			printf(" ");
 	}
 	if (new_line)
 		printf("\n");

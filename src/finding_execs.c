@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 13:10:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/08 13:13:17 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/10 19:32:35 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void	arguing(t_data *info)
 		return (ft_putstr_fd(info->dino, 2), \
 		ft_putendl_fd("syntax error near unexpected token `|'", 2));
 	}
+	wild_card_check(info);
 	is_built_in(info);
 	if (info->built)
 		return (bob_the_builtin(info));

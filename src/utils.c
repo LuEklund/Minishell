@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 19:47:06 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/09 09:45:25 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/10 20:21:55 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	print_ar(char **ar)
 	i = 0;
 	while (ar[i])
 	{
-		printf("%s\n", ar[i]);
+		printf("'%s'\n", ar[i]);
 		i++;
 	}
 	///IIIIIIIIIIIIIII DELEEETE MEEEEEE
@@ -32,6 +32,7 @@ void	print_ar(char **ar)
 //			   //
 // REMOVE THIS //
 //			   //
+
 
 void	free_ar(char **ar)
 {
@@ -48,8 +49,11 @@ void	free_ar(char **ar)
 
 void	get_outed(t_data info)
 {
-	unlink(".dinoshell_heredoc373_tmp");
+	close_pipeline(&info);
 	get_duped(info.safe_in, info.safe_out);
+	close(info.fd_in);
+	close(info.fd_out);
+	unlink(".dinoshell_heredoc373_tmp");
 	tcsetattr(0, TCSANOW, &info.old_term);
 }
 
@@ -64,6 +68,20 @@ void	empty_redi_list(t_data *info)
 		close(current->fd);
 		if (current->file_name)
 			free(current->file_name);
+		latter = current;
+		current = current->next;
+		free(latter);
+	}
+}
+
+void	empty_wild_list(t_data *info)
+{
+	t_wild	*latter;
+	t_wild	*current;
+
+	current = info->wild_list;
+	while (current)
+	{
 		latter = current;
 		current = current->next;
 		free(latter);

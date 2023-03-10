@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/08 18:57:04 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/10 19:39:52 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	syntax_error(t_data *info, int var)
 	}
 }
 
-void	handle_buf(t_data *info)
+void	handle_pipe(t_data *info)
 {
 	pid_t	kiddo;
 
@@ -53,4 +53,17 @@ void	handle_buf(t_data *info)
 	while ((wait(&info->return_val)) > 0)
 		;
 	empty_redi_list(info);
+}
+
+void	handle_buf(t_data *info)
+{
+	int		i;
+
+	i = 0;
+	while (info->buf[i] && (info->buf[i] == ' ' || \
+				(info->buf[i] > 8 && info->buf[i] < 14)))
+		i++;
+	if (!info->buf[i])
+		return ;
+	handle_pipe(info);
 }
