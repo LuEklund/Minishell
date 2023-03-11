@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:03:38 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/10 20:36:06 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/11 16:29:54 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	allocate_array(char **ans, int len, int i)
 		if (!ans[i])
 			exit(write(2, "memory error\n", 13));
 		len = 0;
+		i++;
 		dir = readdir(dh);
 	}
 	closedir(dh);
@@ -56,12 +57,10 @@ void	copy_files(char **ans, int i, int i2)
 			dir = readdir(dh);
 			continue ;
 		}
-		printf("%s\n", dir->d_name);
 		while (dir->d_name[i2])
 		{
 			ans[i][i2] = dir->d_name[i2];
 			i2++;
-			printf("%s\n", dir->d_name);
 		}
 		ans[i][i2] = '\0';
 		i2 = 0;

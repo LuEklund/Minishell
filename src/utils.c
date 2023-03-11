@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 19:47:06 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/10 20:21:55 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/11 16:06:08 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,21 @@ void	empty_wild_list(t_data *info)
 	while (current)
 	{
 		latter = current;
+		current = current->next;
+		free(latter);
+	}
+}
+
+void	empty_args_list(t_data *info)
+{
+	t_args	*latter;
+	t_args	*current;
+
+	current = info->args_list;
+	while (current)
+	{
+		latter = current;
+		free(current->arg);
 		current = current->next;
 		free(latter);
 	}

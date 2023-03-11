@@ -29,6 +29,7 @@ _SRCS :=  main.c \
 			expand_envs.c \
 			redir_input_parser.c \
 			wild_cards.c \
+			wild_utils.c \
 			ft_ls.c \
 			pipe_utils.c \
 			utils.c

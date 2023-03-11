@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/10 20:18:12 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/11 16:28:44 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@
 # include <sys/ioctl.h>
 # include <sys/wait.h>
 # include <dirent.h>
+
+typedef struct s_args
+{
+	char			*arg;
+	int				i;
+	struct s_args	*next;
+}	t_args;
 
 typedef struct s_wild
 {
@@ -58,6 +65,7 @@ typedef struct s_data
 	char				**cmds;
 	char				*cmd_to_use;
 	char				**args;
+	struct s_args		*args_list;
 	struct s_split		*split;
 	size_t				i;
 	int					fd_in;
@@ -101,6 +109,7 @@ void rl_replace_line (const char *text, int clear_undo);
 
 /////
 void	print_ar(char **ar);
+void	print_list(t_args *current);
 ////
 
 //redirection.c
@@ -108,6 +117,13 @@ int		redirection_parser(t_data *info, int i, int i2);
 
 //wild_cards.c
 void	wild_card_check(t_data *info);
+
+//wild_utils.c
+void	add_to_list(char *str, t_args *current, int i);
+void	remove_from_list(t_data *info, char *str, t_args *current);
+t_args	*new_arg(char *str, int i);
+t_args	*copy_ar_to_list(char **ar);
+char	**copy_list_to_ar(t_args *current);
 
 //ft_ls.c
 char	**ft_ls(void);
@@ -149,6 +165,7 @@ void	free_ar(char **ar);
 void	get_outed(t_data info);
 void	empty_redi_list(t_data *info);
 void	empty_wild_list(t_data *info);
+void	empty_args_list(t_data *info);
 
 //parse_split.c
 int		quote_check(char const *str, int i, int *q, int *sq);

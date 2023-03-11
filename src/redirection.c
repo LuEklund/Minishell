@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:21:18 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/10 17:13:32 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/11 16:16:34 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	start_quotes(t_data *info, int *i)
 //////
 //////
 
-void	print_list(t_redi *current)
+void	print_list(t_args *current)
 {
 	int	i = 1;
 
@@ -84,7 +84,8 @@ void	print_list(t_redi *current)
 			printf(":rd");
 		else
 			printf(":th");
-		printf(" node is of type %d, in pipe %zu spot %zu\n", current->type, current->pipe_n, current->red_n);
+	//	printf(" node is of type %d, in pipe %zu spot %zu\n", current->type, current->pipe_n, current->red_n);
+		printf(" node has index %d and arg '%s'\n", current->i, current->arg);
 		current = current->next;
 		i++;
 	}
