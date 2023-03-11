@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/11 16:28:44 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/11 19:36:48 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_data
 	size_t				pipe_amount;
 	size_t				cmd_amount;
 	int					*pipe;
+	pid_t				*kiddo;
 	int					built;
 	int					return_val;
 	int					exit;
@@ -111,6 +112,11 @@ void rl_replace_line (const char *text, int clear_undo);
 void	print_ar(char **ar);
 void	print_list(t_args *current);
 ////
+
+//kid_signals.c
+void	slashing(int signum);
+void	kid_c(int signum);
+void	mute_signals(t_data *info);
 
 //redirection.c
 int		redirection_parser(t_data *info, int i, int i2);

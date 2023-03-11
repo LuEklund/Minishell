@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 09:50:01 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/10 19:20:44 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/11 19:39:38 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,19 @@ void	history_handler(char *str)
 		add_history(str);
 }
 
+void	set_signals(t_data *info)
+{
+	info->pipe_amount = 0;
+	sigemptyset(&info->quit.sa_mask);
+	info->quit.sa_handler = i_c;
+	info->buf = NULL;
+	sigaction(SIGINT, &info->quit, &info->old_act);
+	sigemptyset(&info->z_act.sa_mask);
+	info->z_act.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &info->z_act, &info->old_act);
+	sigaction(SIGTSTP, &info->z_act, &info->old_act);
+}
+
 void	init_values(t_data *info)
 {
 	ft_strlcpy(info->dino, "\033[0;31mDinoshell: \033[0m", 25);
@@ -49,14 +62,6 @@ void	init_values(t_data *info)
 	info->new_term = info->old_term;
 	info->new_term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &info->new_term);
-	sigemptyset(&info->quit.sa_mask);
-	info->quit.sa_handler = i_c;
-	info->buf = NULL;
-	sigaction(SIGINT, &info->quit, &info->old_act);
-	sigemptyset(&info->z_act.sa_mask);
-	info->z_act.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &info->z_act, &info->old_act);
-	sigaction(SIGTSTP, &info->z_act, &info->old_act);
 }
 
 int main(int ac, char **av, char **ev)
@@ -69,6 +74,7 @@ int main(int ac, char **av, char **ev)
 	init_values(&info);
 	while (37)
 	{
+		set_signals(&info);
 		info.buf = readline("\033[0;32mDinoshell>\033[0m ");
 		if (info.buf)
 		{

@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 13:10:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/10 19:32:35 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/11 19:15:04 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,11 @@ void	find_execs(t_data *info)
 		info->check = 0;
 	if (!info->cmd_to_use)
 	{
+		ft_putstr_fd(info->dino, 2);
+		ft_putstr_fd(info->args[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
 		free_ar(info->args);
-		return (ft_putendl_fd("no cmd :(", 2));
+		exit (127);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 10:32:03 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/10 17:14:56 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/11 17:59:46 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,25 +71,9 @@ int	open_outfile(t_redi *current, t_data *info)
 
 int	here_doc(t_redi *current, t_data *info)
 {
-	pid_t	help_child;
-	int		status;
-
 	find_file(current, info);
 	info->hd = 1;
-	help_child = fork();
-	if (help_child < 0)
-		exit(write(2, "fork error\n", 11));
-	if (help_child == 0)
-		get_hd_file(current, info);
-	waitpid(help_child, &status, 0);
-	if (status == 21)
-		exit(1);
-	if (status == 37)
-	{
-		write(1, "\x1b[A\x1b[11C", 5);
-		unlink(".dinoshell_heredoc373_tmp");
-		return (2);
-	}
+	get_hd_file(current, info);
 	current->fd = open(".dinoshell_heredoc373_tmp", O_RDONLY);
 	if (current->fd < 0)
 		exit(write(2, "temporary file error\n", 21));

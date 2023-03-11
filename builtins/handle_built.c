@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 12:22:20 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/06 11:40:16 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/11 19:46:19 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ void	bob_the_builtin(t_data *info)
 	else if (info->built == 2 && info->i == 0 && !info->cmds[1])
 		change_dir(info);
 	else if (info->built == 4 && info->i == 0 && !info->cmds[1])
+	{
 		info->exit = 1;
+		exit(-32);
+	}
 	else if (info->built == 5 && info->i == 0 && !info->cmds[1])
 		unset_env(info, 0);
 	else if (info->built == 6 && info->i == 0 && !info->cmds[1])

@@ -31,6 +31,7 @@ _SRCS :=  main.c \
 			wild_cards.c \
 			wild_utils.c \
 			ft_ls.c \
+			kid_signals.c \
 			pipe_utils.c \
 			utils.c
 

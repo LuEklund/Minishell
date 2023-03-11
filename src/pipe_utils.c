@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 13:10:30 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/10 16:01:00 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/11 19:37:46 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@ int	init_pipes(t_data *info)
 	while (info->cmds[info->cmd_amount])
 		info->cmd_amount += 1;
 	info->pipe_amount = (info->cmd_amount - 1) * 2;
+	info->kiddo = malloc(sizeof(pid_t) * info->cmd_amount);
 	info->pipe = malloc(sizeof(int) * info->pipe_amount);
 	if (!info->pipe)
-		return (write(2, "oijoi\n", 6) - 7);
+		exit(write(2, "memory error\n", 13));
 	while (i < info->cmd_amount)
 	{
 		if (pipe(info->pipe + 2 * i) < 0)

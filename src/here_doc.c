@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 18:02:14 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/10 17:19:16 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/11 17:54:53 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	get_hd_file(t_redi *current, t_data *info)
 		if (!buffy)
 		{
 			close(fd);
-			exit(37);
+			exit (0);
 		}
 		if (!(ft_strncmp(current->file_name, buffy, len)) \
 				&& (buffy[len] == '\n' || buffy[len] == '\0'))
@@ -40,5 +40,4 @@ void	get_hd_file(t_redi *current, t_data *info)
 	}
 	close(fd);
 	free(buffy);
-	exit(0);
 }
