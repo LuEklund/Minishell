@@ -6,110 +6,23 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/02 14:40:56 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/08 18:57:04 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	init_pipes(t_data *info)
+void	syntax_error(t_data *info, int var)
 {
-	size_t	i;
-
-	i = 0;
-	info->i = 0;
-	info->cmd_amount = 0;
-	while (info->cmds[info->cmd_amount])
-		info->cmd_amount += 1;
-	info->pipe_amount = (info->cmd_amount - 1) * 2;
-	info->pipe = malloc(sizeof(int) * info->pipe_amount);
-	if (!info->pipe)
-		return (write(2, "oijoi\n", 6) - 7);
-	while (i < info->cmd_amount)
-	{
-		if (pipe(info->pipe + 2 * i) < 0)
-			return (-1);
-		i++;
-	}
-	return (1);
-}
-
-void	find_the_paths(t_data *info)
-{
-	int	i;
-	int	i2;
-
-	i = 0;
-	i2 = 0;
-	info->check = 1;
-	while (info->envs[i])
-	{
-		if (!(ft_strncmp(info->envs[i], "PATH=", 5)))
-			break ;
-		i++;
-	}
-	if (!info->envs[i])
-		return (ft_putendl_fd("no paths", 2));
-	while (info->envs[i][i2] != '/')
-		i2++;
-	info->paths = ft_split(info->envs[i] + i2, ':');
-	if (!info->paths || !info->paths[0])
-		return (ft_putendl_fd("split failed", 2));
-	info->check = 0;
-}
-
-void	test_paths(t_data *info, char *str)
-{
-	size_t	i;
-	size_t	safe;
-	char	*cmd;
-
-	i = 0;
-	info->check = 0;
-	while (str[i] != ' ' && str[i])
-		i++;
-	cmd = malloc(sizeof(char) * (i + 2));
-	if (!cmd)
-		return ;
-	cmd[0] = '/';
-	cmd[i + 1] = '\0';
-	safe = i;
-	i = 1;
-	while (i != safe + 1)
-	{
-		cmd[i] = str[i - 1];
-		i++;
-	}
-	test_access(info, cmd);
-	free(cmd);
-}
-
-void	arguing(t_data *info)
-{
-	info->exit = 0;
-	info->check = 1;
-	info->cmd_to_use = NULL;
-	info->args = parse_split(info->cmds[info->i], ' ');
-	if (!info->args || !info->args[0])
-	{
-		info->return_val = 258;
-		return (ft_putstr_fd(info->dino, 2), ft_putendl_fd(" syntax error near unexpected token `|'", 2));
-	}
-	is_built_in(info);
-	if (info->built)
-		return (bob_the_builtin(info));
-	if (!access(info->args[0], X_OK))
-		info->cmd_to_use = ft_strdup(info->args[0]);
+	info->return_val = 258;
+	ft_putstr_fd(info->dino, 2);
+	if (var)
+		ft_putendl_fd("syntax error near unexpected token `||'", 2);
 	else
-		test_paths(info, info->args[0]);
-	if (!info->check)
-		info->check = 1;
-	else
-		info->check = 0;
-	if (!info->cmd_to_use)
 	{
-		free_ar(info->args);
-		return (ft_putendl_fd("no cmd :(", 2));
+		empty_redi_list(info);
+		free(info->cmds);
+		ft_putendl_fd("syntax error near unexpected token `newline'", 2);
 	}
 }
 
@@ -117,11 +30,11 @@ void	handle_buf(t_data *info)
 {
 	pid_t	kiddo;
 
-	info->cmds = parse_split(info->buf, '|');
+	info->cmds = parse_split(info->buf, '|', info);
 	if (!info->cmds || !info->cmds[0])
-		return ;
+		return (syntax_error(info, 1));
 	if (init_pipes(info) < 0)
-		return (ft_putendl_fd("apua 2", 2), free(info->cmds));
+		return (syntax_error(info, 0));
 	find_the_paths(info);
 	while (info->cmds[info->i] && !info->check)
 	{
@@ -136,8 +49,8 @@ void	handle_buf(t_data *info)
 		free_commands(info);
 		info->i += 1;
 	}
-	if (info->pipe_amount != 0)
-		close_pipeline(info);	
+	close_pipeline(info);	
 	while ((wait(&info->return_val)) > 0)
 		;
+	empty_redi_list(info);
 }

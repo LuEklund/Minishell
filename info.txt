@@ -1,0 +1,2 @@
+SEGFAULTS WITH ONLY SPACES
+|| works in syntax
