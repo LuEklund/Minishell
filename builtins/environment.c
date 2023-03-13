@@ -41,12 +41,32 @@ int	display_env(t_data *info, int export_type)
 
 int	export_error_handler(t_data *info, char *new_var)
 {
-	(void) info;
-	if (new_var[0] && !((new_var[0] >= 65 && new_var[0] <= 90) || (new_var[0] >= 97 && new_var[0] <= 122)))
+	if (new_var[0]
+		&& !((new_var[0] >= 65 && new_var[0] <= 90)
+			|| (new_var[0] >= 97 && new_var[0] <= 122)))
 	{
+		ft_putstr_fd(info->dino, 2);
+		ft_putstr_fd(" export: '", 2);
+		ft_putstr_fd(new_var, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
 		return (0);
 	}
 	return (1);
+}
+
+static int	contain_flag(t_data *info, char *var)
+{
+	if (var[0] && var[0] == '-')
+	{
+		ft_putstr_fd(info->dino, 2);
+		ft_putstr_fd(" export: ", 2);
+		ft_putchar_fd(var[0], 2);
+		ft_putchar_fd(var[1], 2);
+		ft_putstr_fd(": invalid option\n", 2);
+		ft_putstr_fd("export: usage: export [name[=value] ...]\n", 1);
+		return (1);
+	}
+	return (0);
 }
 
 int	export_env_function(t_data *info, char *new_var)
@@ -55,7 +75,7 @@ int	export_env_function(t_data *info, char *new_var)
 	int			i;
 
 	if (!export_error_handler(info, new_var))
-		printf("\033[0;32mDinoshell>\033[0m export: `%s': not a valid identifier\n", new_var);
+		return (0);
 	else
 	{
 		if (!change_env_variable(info, new_var))
@@ -90,6 +110,8 @@ int	env_export(t_data *info, char *manual_add)
 
 	if (manual_add)
 	{
+		if (contain_flag(info, manual_add))
+			return (0);
 		export_env_function(info, manual_add);
 	}
 	else
@@ -100,6 +122,8 @@ int	env_export(t_data *info, char *manual_add)
 			display_env(info, 1);
 			return (1);
 		}
+		if (contain_flag(info, info->args[index_var]))
+			return (0);
 		while (info->args[index_var])
 		{
 			export_env_function(info, info->args[index_var]);

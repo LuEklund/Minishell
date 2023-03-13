@@ -22,7 +22,6 @@ int	unset_env_function(t_data *info, char *rm_var)
 	removeable = 0;
 	if (!export_error_handler(info, rm_var))
 	{
-		printf("\033[0;32mDinoshell>\033[0m unset: `%s': not a valid identifier\n", rm_var);
 		return (0);
 	}
 	while (info->envs[i] != NULL)
@@ -56,6 +55,21 @@ int	unset_env_function(t_data *info, char *rm_var)
 	return (1);
 }
 
+static int	contain_flag(t_data *info, char *var)
+{
+	if (var[0] && var[0] == '-')
+	{
+		ft_putstr_fd(info->dino, 2);
+		ft_putstr_fd(" unset: ", 2);
+		ft_putchar_fd(var[0], 2);
+		ft_putchar_fd(var[1], 2);
+		ft_putstr_fd(": invalid option\n", 2);
+		ft_putstr_fd("unset: usage: unset [name ...]\n", 1);
+		return (1);
+	}
+	return (0);
+}
+
 int	unset_env(t_data *info, char *rm_var)
 {
 	int	index_args;
@@ -63,10 +77,14 @@ int	unset_env(t_data *info, char *rm_var)
 	index_args = 1;
 	if (rm_var)
 	{
+		if (contain_flag(info, rm_var))
+			return (0);
 		unset_env_function(info, rm_var);
 	}
 	else
 	{
+		if (contain_flag(info, info->args[index_args]))
+			return (0);
 		while (info->args[index_args])
 		{
 			unset_env_function(info, info->args[index_args]);
