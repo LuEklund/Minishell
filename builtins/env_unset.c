@@ -21,12 +21,19 @@ int	unset_env_function(t_data *info, char *rm_var)
 	i = 0;
 	removeable = 0;
 	if (!export_error_handler(info, rm_var))
-	{
 		return (0);
+	if (find_equal_sign(rm_var))
+	{
+		ft_putstr_fd(info->dino, 2);
+		ft_putstr_fd("unset: `", 2);
+		ft_putstr_fd(rm_var, 2);
+		ft_putstr_fd("`: not a valid identifier\n", 2);
+		return (1);
 	}
 	while (info->envs[i] != NULL)
 	{
-		if (!ft_strncmp(info->envs[i], rm_var, ft_strlen(rm_var)))
+		if (!ft_strncmp(info->envs[i], rm_var, ft_strlen(rm_var))
+			&& info->envs[i][ft_strlen(rm_var)] == rm_var[ft_strlen(rm_var)])
 			removeable = i;
 		i++;
 	}
@@ -78,13 +85,13 @@ int	unset_env(t_data *info, char *rm_var)
 	if (rm_var)
 	{
 		if (contain_flag(info, rm_var))
-			return (0);
+			return (1);
 		unset_env_function(info, rm_var);
 	}
 	else
 	{
 		if (contain_flag(info, info->args[index_args]))
-			return (0);
+			return (1);
 		while (info->args[index_args])
 		{
 			unset_env_function(info, info->args[index_args]);

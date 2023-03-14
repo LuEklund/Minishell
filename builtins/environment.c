@@ -75,7 +75,7 @@ int	export_env_function(t_data *info, char *new_var)
 	int			i;
 
 	if (!export_error_handler(info, new_var))
-		return (0);
+		return (1);
 	else
 	{
 		if (!change_env_variable(info, new_var))
@@ -85,7 +85,7 @@ int	export_env_function(t_data *info, char *new_var)
 				i++;
 			new_env = (char **)malloc(sizeof(char *) * (i + 2));
 			if (!new_env)
-				return (0);
+				return (1);
 			i = 0;
 			while (info->envs[i] != NULL)
 			{
@@ -101,7 +101,7 @@ int	export_env_function(t_data *info, char *new_var)
 			info->envs = new_env;
 		}
 	}
-	return (1);
+	return (0);
 }
 
 int	env_export(t_data *info, char *manual_add)
@@ -111,7 +111,7 @@ int	env_export(t_data *info, char *manual_add)
 	if (manual_add)
 	{
 		if (contain_flag(info, manual_add))
-			return (0);
+			return (1);
 		export_env_function(info, manual_add);
 	}
 	else
@@ -120,15 +120,15 @@ int	env_export(t_data *info, char *manual_add)
 		if (!info->args[index_var])
 		{
 			display_env(info, 1);
-			return (1);
+			return (0);
 		}
 		if (contain_flag(info, info->args[index_var]))
-			return (0);
+			return (1);
 		while (info->args[index_var])
 		{
 			export_env_function(info, info->args[index_var]);
 			index_var++;
 		}	
 	}
-	return (1);
+	return (0);
 }

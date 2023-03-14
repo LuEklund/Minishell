@@ -139,7 +139,7 @@ char	**parse_split(char const *str, char c, t_data *info);
 
 //handle_built.c
 void	is_built_in(t_data *info);
-void	bob_the_builtin(t_data *info);
+int	bob_the_builtin(t_data *info);
 
 
 int		display_curdir();

@@ -34,7 +34,6 @@ char	**copy_env(char **env_to_copy)
 	return (new_env);
 }
 
-<<<<<<< HEAD
 int	handle_word(t_data *info, int i,int file, char *last_char)
 {
 	int	i2;
@@ -60,37 +59,6 @@ int	handle_word(t_data *info, int i,int file, char *last_char)
 	return (file);
 }
 
-=======
-<<<<<<< HEAD
-//<<<<<<< HEAD
-//static char	*argumenter(char *str)
-//{
-//	int	i;
-
-//	i = 0;
-//	while (str[i] != ' ' && str[i] != '\0')
-//		i++;
-//	if (!str[i])
-//		return (NULL);
-//	return (&str[++i]);
-//}
-//=======
-// static char	*argumenter(char *str)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (str[i] != ' ' && str[i] != '\0')
-// 		i++;
-// 	if (!str[i])
-// 		return (NULL);
-// 	return (&str[++i]);
-// }
-//>>>>>>> 7906bd35c1ccfd503710837a27d2c97a321aae47
-
-=======
->>>>>>> master
->>>>>>> nlonka
 int	echo(t_data *info)
 {
 	int		i;
@@ -114,8 +82,11 @@ int	echo(t_data *info)
 	}
 	while (info->args[i])
 	{
-		file = handle_word(info, i, file, &last_char);
+		printf("%s", info->args[i]);
+		// file = handle_word(info, i, file, &last_char);
 		i++;
+		if (info->args[i])
+			printf(" ");
 	}
 	if (new_line)
 		printf("\n");
@@ -127,29 +98,23 @@ int	execute_built(t_data *info)
 	if (info->built == 1)
 	{
 		// printf("echo\n\r");
-		echo(info);
+		return (echo(info));
 	}
 	else if (info->built == 3)
 	{
 		// printf("display_curdir\n\r");
-		display_curdir();
+		return (display_curdir());
 	}
 	else if (info->built == 6)
 	{
-<<<<<<< HEAD
-		env_export(info, 0);
-=======
-<<<<<<< HEAD
-		display_env(info, 1);	
-=======
-		env_export(info, info->args[1]);
->>>>>>> master
->>>>>>> nlonka
+		// env_export(info, 0);
+		// display_env(info, 1);	
+		return (env_export(info, info->args[1]));
 	}
 	else if (info->built == 7)
 	{
 		// printf("display_env\n\r");
-		display_env(info, 0);
+		return (display_env(info, 0));
 	}
 	return (0);
 }
