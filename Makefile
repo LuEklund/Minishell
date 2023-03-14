@@ -32,6 +32,8 @@ _SRCS :=  main.c \
 			wild_utils.c \
 			ft_ls.c \
 			kid_signals.c \
+			error_parser.c \
+			and_or_lists.c \
 			pipe_utils.c \
 			utils.c
 

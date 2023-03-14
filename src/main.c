@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 09:50:01 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/11 19:39:38 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/14 09:42:07 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ int main(int ac, char **av, char **ev)
 			handle_buf(&info);
 			if (info.exit)
 				break ;
-			history_handler(info.buf);
-			free(info.buf);
+			history_handler(info.history_buf);
+			free(info.history_buf);
 		}
 		else
 			the_handler(info);

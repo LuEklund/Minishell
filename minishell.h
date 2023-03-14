@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/11 19:36:48 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/14 10:58:51 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_data
 	char				**envs;
 	char				**paths;
 	char				*buf;
+	char				*history_buf;
 	char				**cmds;
 	char				*cmd_to_use;
 	char				**args;
@@ -84,6 +85,7 @@ typedef struct s_data
 	int					q;
 	int					sq;
 	struct s_wild		*wild_list;
+	struct s_error		*error;
 	int					check;
 	int					check2;
 	int					safe_out;
@@ -105,6 +107,22 @@ typedef struct s_split
 	int		check;
 }	t_split;
 
+typedef struct s_error
+{
+	size_t	i;
+	int		token;
+	int		q;
+	int		sq;
+	int		pipe;
+	int		or;
+	int		amper;
+	int 	and;
+	int		left_par;
+	int		right_par;
+	int		in_red;
+	int		out_red;
+}	t_error;
+
 void rl_replace_line (const char *text, int clear_undo);
 
 
@@ -113,10 +131,17 @@ void	print_ar(char **ar);
 void	print_list(t_args *current);
 ////
 
+//error_parser.c
+int		error_parser(t_data *info);
+
+//and_or_lists.c
+void	check_and_or(t_data *info);
+
 //kid_signals.c
 void	slashing(int signum);
 void	kid_c(int signum);
-void	mute_signals(t_data *info);
+void	kid_signals(t_data *info);
+void	parent_signals(t_data *info);
 
 //redirection.c
 int		redirection_parser(t_data *info, int i, int i2);
@@ -175,6 +200,7 @@ void	empty_args_list(t_data *info);
 
 //parse_split.c
 int		quote_check(char const *str, int i, int *q, int *sq);
+void	init_help(t_data *info, char c, char const *str);
 char	**parse_split(char const *str, char c, t_data *info);
 
 //Builtins

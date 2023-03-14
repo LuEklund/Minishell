@@ -6,34 +6,40 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/11 19:45:47 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/14 10:51:41 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	syntax_error(t_data *info, int var)
+void	syntax_error(t_data *info)
 {
+	t_error	*help;
+
+	help = info->error;
+	if (!info->buf)
+		return ;
 	info->return_val = 258;
 	ft_putstr_fd(info->dino, 2);
-	if (var)
-		ft_putendl_fd("syntax error near unexpected token `||'", 2);
+	ft_putstr_fd("syntax error near unexpected token `", 2);
+	if (!info->buf[help->i])
+		ft_putstr_fd("newline", 2);
 	else
-	{
-		empty_redi_list(info);
-		free(info->cmds);
-		ft_putendl_fd("syntax error near unexpected token `newline'", 2);
-	}
-	exit(69);
+		write(2, &info->buf[help->i], 1);	
+	if (help->and || help->or)
+		write(2, &info->buf[help->i + 1], 1);
+	ft_putendl_fd("'", 2);
+	free(info->buf);
+	free(help);
 }
 
 void	handle_pipe(t_data *info)
 {
 	info->cmds = parse_split(info->buf, '|', info);
 	if (!info->cmds || !info->cmds[0])
-		return (syntax_error(info, 1));
+		exit (1);
 	if (init_pipes(info) < 0)
-		return (syntax_error(info, 0));
+		exit (2);	
 	find_the_paths(info);
 	while (info->cmds[info->i] && !info->check)
 	{
@@ -57,46 +63,35 @@ void	handle_pipe(t_data *info)
 	empty_redi_list(info);
 }
 
+
+
 void	handle_buf(t_data *info)
 {
 	int		i;
 	pid_t	kiddo;
 
 	i = 0;
+	info->history_buf = ft_strdup(info->buf);
+	if (!info->history_buf)
+		exit(write(2, "memory error\n", 13));
+	if (error_parser(info))
+		return (syntax_error(info));
+	free(info->error);
 	kiddo = fork();
+	if (kiddo < 0)
+		exit(write(2, "child process error\n", 19));
 	if (kiddo)
 	{
-		mute_signals(info);
-		while ((wait(&info->return_val)) > 0)
-			;
-		if (info->return_val == 33280)
-		{
-			printf("^C\n");
-			info->return_val = 130;
-		}
-		else if (info->return_val == 33536)
-		{
-			printf("Quit: 3\n");
-			info->return_val = 131;
-		}
-		else if (info->return_val == 17664)
-			info->return_val = 258;
+		parent_signals(info);
+		close_pipeline(info); //////does it work????
+		free(info->buf);
 		return ;
 	}
-	mute_signals(info);
-	sigemptyset(&info->quit.sa_mask);
-	info->quit.sa_handler = kid_c;
-	sigaction(SIGINT, &info->quit, &info->old_act);
-	sigemptyset(&info->z_act.sa_mask);
-	info->z_act.sa_handler = slashing;
-	sigaction(SIGQUIT, &info->z_act, &info->old_act);
-	while (info->buf[i] && (info->buf[i] == ' ' || \
-				(info->buf[i] > 8 && info->buf[i] < 14)))
-		i++;
+	kid_signals(info);
 	if (!info->buf[i])
 		exit (0);
+//	handle_list(info);
 	handle_pipe(info);
 	get_outed(*info);
-	printf("jouuu\n");
 	exit(info->return_val);
 }
