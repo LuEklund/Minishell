@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 12:22:20 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 17:22:49 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 17:26:49 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,5 @@ int	bob_the_builtin(t_data *info)
 	}
 	else
 		fake_it(info);
-	free_ar(info->args);
-	free_ar(info->cmds);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 16:06:39 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 17:31:50 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	handle_pipe(t_data *info)
 	if (init_pipes(info) < 0)
 		exit (2);	
 	find_the_paths(info);
+	info->envs = retrieve_env();
 	while (info->cmds[info->i])
 	{
 		if (arguing(info))
@@ -60,6 +61,7 @@ void	handle_pipe(t_data *info)
 	info->i = 0;
 	while ((waitpid(info->kiddo[info->i], &info->return_val, 0)) > 0)
 		info->i += 1;
+	free_ar(info->envs);
 	free(info->kiddo);
 	empty_redi_list(info);
 }
