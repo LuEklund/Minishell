@@ -6,9 +6,10 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 10:49:35 by leklund           #+#    #+#             */
-/*   Updated: 2023/03/06 11:40:55 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 17:17:29 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../minishell.h"
 
 char	**copy_env(char **env_to_copy)
@@ -83,7 +84,6 @@ int	echo(t_data *info)
 	while (info->args[i])
 	{
 		printf("%s", info->args[i]);
-		// file = handle_word(info, i, file, &last_char);
 		i++;
 		if (info->args[i])
 			printf(" ");
@@ -107,8 +107,6 @@ int	execute_built(t_data *info)
 	}
 	else if (info->built == 6)
 	{
-		// env_export(info, 0);
-		// display_env(info, 1);	
 		return (env_export(info, info->args[1]));
 	}
 	else if (info->built == 7)

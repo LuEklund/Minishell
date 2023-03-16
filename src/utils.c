@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 19:47:06 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/09 09:45:25 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 16:09:39 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	print_ar(char **ar)
 	i = 0;
 	while (ar[i])
 	{
-		printf("%s\n", ar[i]);
+		printf("'%s'\n", ar[i]);
 		i++;
 	}
 	///IIIIIIIIIIIIIII DELEEETE MEEEEEE
@@ -32,6 +32,7 @@ void	print_ar(char **ar)
 //			   //
 // REMOVE THIS //
 //			   //
+
 
 void	free_ar(char **ar)
 {
@@ -48,9 +49,12 @@ void	free_ar(char **ar)
 
 void	get_outed(t_data info)
 {
-	unlink(".dinoshell_heredoc373_tmp");
+	close_pipeline(&info);
 	get_duped(info.safe_in, info.safe_out);
-	tcsetattr(0, TCSANOW, &info.old_term);
+	close(info.fd_in);
+	close(info.fd_out);
+	unlink(".dinoshell_heredoc373_tmp");
+	tcsetattr(info.safe_in, TCSAFLUSH, &info.old_term);
 }
 
 void	empty_redi_list(t_data *info)
@@ -65,6 +69,49 @@ void	empty_redi_list(t_data *info)
 		if (current->file_name)
 			free(current->file_name);
 		latter = current;
+		current = current->next;
+		free(latter);
+	}
+}
+
+void	empty_wild_list(t_data *info)
+{
+	t_wild	*latter;
+	t_wild	*current;
+
+	current = info->wild_list;
+	while (current)
+	{
+		latter = current;
+		current = current->next;
+		free(latter);
+	}
+}
+
+void	empty_whelp_list(t_data *info)
+{
+	t_whelp	*latter;
+	t_whelp	*current;
+
+	current = info->wmark_list;
+	while (current)
+	{
+		latter = current;
+		current = current->next;
+		free(latter);
+	}
+}
+
+void	empty_args_list(t_data *info)
+{
+	t_args	*latter;
+	t_args	*current;
+
+	current = info->args_list;
+	while (current)
+	{
+		latter = current;
+		free(current->arg);
 		current = current->next;
 		free(latter);
 	}
