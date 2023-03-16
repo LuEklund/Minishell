@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 21:04:12 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 20:07:33 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 21:39:11 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	go_through_list(t_data *info)
 {
-	create_list(info->buf);
+	t_cond	*head;
+
+	head = create_tree(info->buf, NULL, NULL, NULL);
 	
 
 }

@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 20:28:50 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 20:43:38 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,10 +160,14 @@ void	print_list(t_whelp *current);
 ////
 
 //error_parser.c
+void	get_tokenized(t_error *help, char *str, int var);
 int		error_parser(t_data *info);
 
 //and_or_lists.c
 void	check_and_or(t_data *info);
+
+//trinary_tree.c
+t_cond	*create_tree(char *str);
 
 //kid_signals.c
 void	slashing(int signum);
@@ -212,9 +216,6 @@ int		arguing(t_data *info);
 //piping.c
 int		get_duped(int read, int write);
 void	the_kindergarden(t_data *info);
-
-//trinary_tree.c
-void	create_list(char *str);
 
 //pipe_utils.c
 int		init_pipes(t_data *info);
