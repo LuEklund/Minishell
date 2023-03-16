@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 12:22:20 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 17:26:49 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 18:26:05 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,28 +49,17 @@ int	bob_the_builtin(t_data *info)
 {
 	info->check = 0;
 	if (info->built == 1 || info->built == 3 || info->built == 7)
-		info->check = 0;
+		;
 	else if (info->built == 6 && !info->args[1])
-		info->check = 0;
+		;
 	else if (info->built == 2 && info->i == 0 && !info->cmds[1])
-	{
 		info->built_exec = 1;
-		return (change_dir(info));
-	}
 	else if (info->built == 4 && info->i == 0 && !info->cmds[1])
-	{
 		exit(69);
-	}
 	else if (info->built == 5 && info->i == 0 && !info->cmds[1])
-	{
 		info->built_exec = 1;
-		return (unset_env(info, 0));
-	}
 	else if (info->built == 6 && info->i == 0 && !info->cmds[1])
-	{
 		info->built_exec = 1;
-		return (env_export(info, 0));
-	}
 	else
 		fake_it(info);
 	return (1);
