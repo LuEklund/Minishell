@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 17:11:42 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 20:10:31 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,25 @@
 # include <sys/ioctl.h>
 # include <sys/wait.h>
 # include <dirent.h>
+
+typedef struct s_exit
+{
+	int	safe_in;
+	int	safe_out;
+	struct termios		old_term;
+}	t_exit;
+
+t_exit	g_important;
+
+typedef struct s_cond
+{
+	int				type;
+	int				ret;
+	char			*content;
+	struct s_cond	*first_cond;
+	struct s_cond	*second_cond;
+	struct s_cond	*next;
+}	t_cond;
 
 typedef struct s_args
 {
@@ -62,10 +81,10 @@ typedef struct s_redi
 typedef struct s_data
 {
 	struct termios		new_term;
-	struct termios		old_term;
 	struct sigaction	quit;
 	struct sigaction	old_act;
 	struct sigaction	z_act;
+	struct sigaction	terminate;
 	char				dino[19];
 	char				**envs;
 	char				**paths;
@@ -98,8 +117,6 @@ typedef struct s_data
 	int					built_exec;
 	int					check;
 	int					check2;
-	int					safe_out;
-	int					safe_in;
 }	t_data;
 
 typedef struct s_split
@@ -195,6 +212,9 @@ int		arguing(t_data *info);
 //piping.c
 int		get_duped(int read, int write);
 void	the_kindergarden(t_data *info);
+
+//trinary_tree.c
+void	create_list(char *str);
 
 //pipe_utils.c
 int		init_pipes(t_data *info);

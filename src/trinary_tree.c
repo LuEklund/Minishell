@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   and_or_lists.c                                     :+:      :+:    :+:   */
+/*   trinary_tree.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/11 21:04:12 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 20:07:33 by nlonka           ###   ########.fr       */
+/*   Created: 2023/03/16 20:04:34 by nlonka            #+#    #+#             */
+/*   Updated: 2023/03/16 20:12:49 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	go_through_list(t_data *info)
+void	create_list(char *str)
 {
-	create_list(info->buf);
-	
+	(void)str;	
 
 }

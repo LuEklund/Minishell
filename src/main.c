@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 17:23:00 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 18:23:48 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 20:26:16 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	set_signals(t_data *info)
 	info->z_act.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &info->z_act, &info->old_act);
 	sigaction(SIGTSTP, &info->z_act, &info->old_act);
-	//add sigtrm
+	sigemptyset(&info->z_act.sa_mask);
 }
 
 void	init_values(t_data *info)
@@ -55,14 +55,14 @@ void	init_values(t_data *info)
 	ft_strlcpy(info->dino, "\033[0;31mDinoshell: \033[0m", 25);
 	info->fd_in = 0;
 	info->fd_out = 1;
-	info->safe_out = dup(1);
-	info->safe_in = dup(0);
+	g_important.safe_out = dup(1);
+	g_important.safe_in = dup(0);
 	info->return_val = 0;
 	info->exit = 0;
-	tcgetattr(info->safe_in, &info->old_term);
-	info->new_term = info->old_term;
-//	info->new_term.c_lflag &= ~(ECHOCTL);
-	tcsetattr(info->safe_in, TCSAFLUSH, &info->new_term);
+	tcgetattr(g_important.safe_in, &g_important.old_term);
+	info->new_term = g_important.old_term;
+	info->new_term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(g_important.safe_in, TCSAFLUSH, &info->new_term);
 }
 
 int main(int ac, char **av, char **ev)
@@ -72,10 +72,6 @@ int main(int ac, char **av, char **ev)
 	if (ac != 1 || !av[2])
 		return (printf("bro no need for any arguments\n"));
 	make_env_file(ev);
-	 char **test = retrieve_env();
-	 int i = 0;
-	 while(test[i])
-	 	printf("%s", test[i++]);
 	init_values(&info);
 	while (37)
 	{
