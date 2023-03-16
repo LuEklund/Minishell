@@ -106,6 +106,7 @@ void	find_execs(t_data *info)
 
 int	arguing(t_data *info)
 {
+	info->built_exec = 0;
 	info->exit = 0;
 	info->cmd_to_use = NULL;
 	info->args = parse_split(info->cmds[info->i], ' ', info);

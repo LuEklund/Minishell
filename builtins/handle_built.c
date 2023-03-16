@@ -53,19 +53,28 @@ void	bob_the_builtin(t_data *info)
 	else if (info->built == 6 && !info->args[1])
 		info->check = 0;
 	else if (info->built == 2 && info->i == 0 && !info->cmds[1])
+	{
 		change_dir(info);
+		info->built_exec = 1;
+	}
 	else if (info->built == 4 && info->i == 0 && !info->cmds[1])
 	{
 		info->exit = 1;
 		exit(-32);
 	}
 	else if (info->built == 5 && info->i == 0 && !info->cmds[1])
+	{
 		unset_env(info, 0);
+		info->built_exec = 1;
+	}
 	else if (info->built == 6 && info->i == 0 && !info->cmds[1])
+	{
 		env_export(info, 0);
+		info->built_exec = 1;
+	}
 	else
 		fake_it(info);
-	if (!info->check)
+	if (!info->check || info->built_exec)
 		return ;
 	free_ar(info->args);
 	free_ar(info->cmds);

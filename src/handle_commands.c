@@ -46,7 +46,7 @@ void	handle_pipe(t_data *info)
 			info->i += 1;
 			continue ;
 		}
-		if (info->exit)
+		if (info->exit || info->built_exec)
 			break ;
 		info->kiddo[info->i] = fork();
 		if (info->kiddo[info->i] < 0)

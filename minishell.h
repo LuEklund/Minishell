@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 16:11:49 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 17:11:42 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_data
 	struct s_whelp		*wmark_list;
 	struct s_wild		*wild_list;
 	struct s_error		*error;
+	int					built_exec;
 	int					check;
 	int					check2;
 	int					safe_out;
