@@ -11,6 +11,26 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 
+int	make_env_file(char **env_to_copy)
+{
+	int	fd;
+	int i;
+
+	fd = open(".dinoshell_env777_tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (fd < 0 )
+		return (0);
+	i = 0;
+	while (env_to_copy[i])
+	{
+		write(fd, env_to_copy[i], ft_strlen(env_to_copy[i]));
+		i++;
+		if (env_to_copy[i + 1])
+			write(fd, "\n", 1);
+	}
+	clsoe(fd);
+	return (1);
+}
+
 char	**copy_env(char **env_to_copy)
 {
 	char		**new_env;
@@ -31,6 +51,7 @@ char	**copy_env(char **env_to_copy)
 		i++;
 	}
 	new_env[i] = NULL;
+	make_env_file(new_env);
 	return (new_env);
 }
 

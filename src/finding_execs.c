@@ -112,11 +112,14 @@ void	arguing(t_data *info)
 	if (!info->args || !info->args[0])
 	{
 		info->return_val = 258;
-		return (ft_putstr_fd(info->dino, 2), \
+		return (ft_putstr_fd(info->dino, 2), 
 		ft_putendl_fd("syntax error near unexpected token `|'", 2));
 	}
 	is_built_in(info);
 	if (info->built)
-		return (bob_the_builtin(info));
+	{
+		bob_the_builtin(info);
+		return ;
+	}
 	find_execs(info);
 }

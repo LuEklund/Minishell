@@ -25,6 +25,7 @@
 # include <readline/history.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 
 typedef struct s_redi
 {
