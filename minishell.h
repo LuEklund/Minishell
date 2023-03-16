@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/08 18:15:19 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 17:11:42 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,28 @@
 # include <readline/history.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
+# include <dirent.h>
+
+typedef struct s_args
+{
+	char			*arg;
+	int				i;
+	struct s_args	*next;
+}	t_args;
+
+typedef struct s_wild
+{
+	int				i;
+	struct s_wild	*next;
+}	t_wild;
+
+typedef struct s_whelp
+{
+	int				n;
+	int				h;
+	int				valid;
+	struct s_whelp	*next;
+}	t_whelp;
 
 typedef struct s_redi
 {
@@ -48,9 +70,11 @@ typedef struct s_data
 	char				**envs;
 	char				**paths;
 	char				*buf;
+	char				*history_buf;
 	char				**cmds;
 	char				*cmd_to_use;
 	char				**args;
+	struct s_args		*args_list;
 	struct s_split		*split;
 	size_t				i;
 	int					fd_in;
@@ -58,6 +82,7 @@ typedef struct s_data
 	size_t				pipe_amount;
 	size_t				cmd_amount;
 	int					*pipe;
+	pid_t				*kiddo;
 	int					built;
 	int					return_val;
 	int					exit;
@@ -67,6 +92,10 @@ typedef struct s_data
 	int					hd;
 	int					q;
 	int					sq;
+	struct s_whelp		*wmark_list;
+	struct s_wild		*wild_list;
+	struct s_error		*error;
+	int					built_exec;
 	int					check;
 	int					check2;
 	int					safe_out;
@@ -84,18 +113,62 @@ typedef struct s_split
 	int		q;
 	int		sq;
 	char	c;
+	int		expand_type;
 	int		check;
 }	t_split;
+
+typedef struct s_error
+{
+	size_t	i;
+	int		token;
+	int		q;
+	int		sq;
+	int		pipe;
+	int		or;
+	int		amper;
+	int 	and;
+	int		par;
+	int		in_o;
+	int		out_o;
+	int		in_t;
+	int		out_t;
+}	t_error;
 
 void rl_replace_line (const char *text, int clear_undo);
 
 
 /////
 void	print_ar(char **ar);
+void	print_list(t_whelp *current);
 ////
+
+//error_parser.c
+int		error_parser(t_data *info);
+
+//and_or_lists.c
+void	check_and_or(t_data *info);
+
+//kid_signals.c
+void	slashing(int signum);
+void	kid_c(int signum);
+void	kid_signals(t_data *info);
+void	parent_signals(t_data *info);
 
 //redirection.c
 int		redirection_parser(t_data *info, int i, int i2);
+
+//wild_cards.c
+void	wild_card_check(t_data *info);
+
+//wild_utils.c
+void	add_to_list(char *str, t_args *current, int i);
+void	remove_from_list(t_data *info, char *str, t_args *current);
+t_args	*new_arg(char *str, int i);
+t_args	*copy_ar_to_list(char **ar);
+char	**copy_list_to_ar(t_args *current);
+
+//ft_ls.c
+char	**ft_ls(void);
 
 //open_files.c
 int		open_files(t_data *info);
@@ -106,6 +179,9 @@ void	get_hd_file(t_redi *current, t_data *info);
 //expand_envs.c
 int		expand_envs(const char *str, t_data *info, t_split *help, char **ans);
 
+//redir_input_parser.c
+int		redir_input_parser(const char *str, t_split *help);
+
 //handle_commands.c
 void	handle_buf(t_data *info);
 
@@ -114,7 +190,7 @@ void	test_access(t_data *info, char *str);
 void	find_the_paths(t_data *info);
 void	test_paths(t_data *info, char *str);
 void	find_execs(t_data *info);
-void	arguing(t_data *info);
+int		arguing(t_data *info);
 
 //piping.c
 int		get_duped(int read, int write);
@@ -122,7 +198,7 @@ void	the_kindergarden(t_data *info);
 
 //pipe_utils.c
 int		init_pipes(t_data *info);
-t_redi	*find_note(t_data *info, int type);
+t_redi	*find_node(t_data *info, int type);
 void	close_pipeline(t_data *info);
 void	free_commands(t_data *info);
 
@@ -130,9 +206,13 @@ void	free_commands(t_data *info);
 void	free_ar(char **ar);
 void	get_outed(t_data info);
 void	empty_redi_list(t_data *info);
+void	empty_wild_list(t_data *info);
+void	empty_whelp_list(t_data *info);
+void	empty_args_list(t_data *info);
 
 //parse_split.c
 int		quote_check(char const *str, int i, int *q, int *sq);
+void	init_help(t_data *info, char c, char const *str);
 char	**parse_split(char const *str, char c, t_data *info);
 
 //Builtins

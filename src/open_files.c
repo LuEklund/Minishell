@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 10:32:03 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/08 18:55:30 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/13 14:50:34 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@ int	find_file(t_redi *current, t_data *info)
 {
 	int i;
 	int	len;
+	int	i2;
 
+	i2 = 0;
 	i = current->i + 1;
-	while (info->cmds[current->pipe_n][i] != ' ')
+	while (info->cmds[current->pipe_n][i] && info->cmds[current->pipe_n][i] == ' ')
 		i++;
-	i++;
 	len = i;
 	while (info->cmds[current->pipe_n][len] && info->cmds[current->pipe_n][len] != ' ')
 		len++;
@@ -28,10 +29,11 @@ int	find_file(t_redi *current, t_data *info)
 	current->file_name = malloc(sizeof(char) * (len + 1));
 	while (info->cmds[current->pipe_n][i] && info->cmds[current->pipe_n][i] != ' ')
 	{
-		current->file_name[i - (current->i + 2)] = info->cmds[current->pipe_n][i];
+		current->file_name[i2] = info->cmds[current->pipe_n][i];
 		i++;
+		i2++;
 	}
-	current->file_name[i - (current->i + 1)] = '\0';
+	current->file_name[i2] = '\0';
 	return (0);
 }
 
@@ -69,25 +71,9 @@ int	open_outfile(t_redi *current, t_data *info)
 
 int	here_doc(t_redi *current, t_data *info)
 {
-	pid_t	help_child;
-	int		status;
-
 	find_file(current, info);
 	info->hd = 1;
-	help_child = fork();
-	if (help_child < 0)
-		exit(write(2, "fork error\n", 11));
-	if (help_child == 0)
-		get_hd_file(current, info);
-	waitpid(help_child, &status, 0);
-	if (status == 21)
-		exit(1);
-	if (status == 37)
-	{
-		write(1, "\x1b[A\x1b[11C", 5);
-		unlink(".dinoshell_heredoc373_tmp");
-		return (2);
-	}
+	get_hd_file(current, info);
 	current->fd = open(".dinoshell_heredoc373_tmp", O_RDONLY);
 	if (current->fd < 0)
 		exit(write(2, "temporary file error\n", 21));

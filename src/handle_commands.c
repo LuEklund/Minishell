@@ -6,51 +6,94 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/08 18:57:04 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 17:31:50 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	syntax_error(t_data *info, int var)
+void	syntax_error(t_data *info)
 {
+	t_error	*help;
+
+	help = info->error;
+	if (!info->buf)
+		return ;
 	info->return_val = 258;
 	ft_putstr_fd(info->dino, 2);
-	if (var)
-		ft_putendl_fd("syntax error near unexpected token `||'", 2);
+	ft_putstr_fd("syntax error near unexpected token `", 2);
+	if (!info->buf[help->i])
+		ft_putstr_fd("newline", 2);
 	else
-	{
-		empty_redi_list(info);
-		free(info->cmds);
-		ft_putendl_fd("syntax error near unexpected token `newline'", 2);
-	}
+		write(2, &info->buf[help->i], 1);	
+	if (help->and || help->or || help->out_t || help->in_t)
+		write(2, &info->buf[help->i + 1], 1);
+	ft_putendl_fd("'", 2);
+	free(info->buf);
+	free(help);
 }
 
-void	handle_buf(t_data *info)
+void	handle_pipe(t_data *info)
 {
-	pid_t	kiddo;
-
 	info->cmds = parse_split(info->buf, '|', info);
-	if (!info->cmds || !info->cmds[0])
-		return (syntax_error(info, 1));
 	if (init_pipes(info) < 0)
-		return (syntax_error(info, 0));
+		exit (2);	
 	find_the_paths(info);
-	while (info->cmds[info->i] && !info->check)
+	info->envs = retrieve_env();
+	while (info->cmds[info->i])
 	{
-		arguing(info);
-		if (info->check || info->exit)
+		if (arguing(info))
+		{
+			info->i += 1;
+			continue ;
+		}
+		if (info->exit || info->built_exec)
 			break ;
-		kiddo = fork();
-		if (kiddo < 0)
+		info->kiddo[info->i] = fork();
+		if (info->kiddo[info->i] < 0)
 			return (ft_putendl_fd("stillbirth?????\n", 2));
-		if (kiddo == 0)
+		if (info->kiddo[info->i] == 0)
 			the_kindergarden(info);
 		free_commands(info);
 		info->i += 1;
 	}
-	close_pipeline(info);	
-	while ((wait(&info->return_val)) > 0)
-		;
+	close_pipeline(info);
+	info->i = 0;
+	while ((waitpid(info->kiddo[info->i], &info->return_val, 0)) > 0)
+		info->i += 1;
+	free_ar(info->envs);
+	free(info->kiddo);
 	empty_redi_list(info);
+}
+
+
+
+void	handle_buf(t_data *info)
+{
+	int		i;
+	pid_t	kiddo;
+
+	i = 0;
+	info->history_buf = ft_strdup(info->buf);
+	if (!info->history_buf)
+		exit(write(2, "memory error\n", 13));
+	if (error_parser(info))
+		return (syntax_error(info));
+	free(info->error);
+	kiddo = fork();
+	if (kiddo < 0)
+		exit(write(2, "child process error\n", 19));
+	if (kiddo)
+	{
+		parent_signals(info);
+		close_pipeline(info); //////does it work????
+		free(info->buf);
+		return ;
+	}
+	kid_signals(info);
+	if (!info->buf[i])
+		exit (0);
+	handle_pipe(info);
+	get_outed(*info);
+	exit(info->return_val);
 }

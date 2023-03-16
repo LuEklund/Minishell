@@ -27,6 +27,13 @@ _SRCS :=  main.c \
 			parse_split.c \
 			handle_built.c \
 			expand_envs.c \
+			redir_input_parser.c \
+			wild_cards.c \
+			wild_utils.c \
+			ft_ls.c \
+			kid_signals.c \
+			error_parser.c \
+			and_or_lists.c \
 			pipe_utils.c \
 			utils.c
 

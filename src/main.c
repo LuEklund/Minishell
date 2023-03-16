@@ -5,20 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/06 11:36:15 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/08 18:56:24 by nlonka           ###   ########.fr       */
+/*   Created: 2023/03/16 17:23:00 by nlonka            #+#    #+#             */
+/*   Updated: 2023/03/16 17:23:07 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	go_raw(t_data *info)
-{
-	tcgetattr(STDIN_FILENO, &info->old_term);
-	info->new_term = info->old_term;
-	info->new_term.c_lflag &= ~(ECHOCTL);
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &info->new_term);
-}
 
 void	the_handler(t_data info)
 {
@@ -31,12 +23,31 @@ void	the_handler(t_data info)
 
 void	i_c(int signum)
 {
-	/////broken :(((((((
 	ioctl(0, TIOCSTI, "\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	(void)signum;
 	return ;
+}
+
+void	history_handler(char *str)
+{
+	if (ft_strncmp(str, "", 1))
+		add_history(str);
+}
+
+void	set_signals(t_data *info)
+{
+	info->pipe_amount = 0;
+	sigemptyset(&info->quit.sa_mask);
+	info->quit.sa_handler = i_c;
+	info->buf = NULL;
+	sigaction(SIGINT, &info->quit, &info->old_act);
+	sigemptyset(&info->z_act.sa_mask);
+	info->z_act.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &info->z_act, &info->old_act);
+	sigaction(SIGTSTP, &info->z_act, &info->old_act);
+	//add sigtrm
 }
 
 void	init_values(t_data *info)
@@ -46,16 +57,12 @@ void	init_values(t_data *info)
 	info->fd_out = 1;
 	info->safe_out = dup(1);
 	info->safe_in = dup(0);
-	info->return_val = 0;	
-	go_raw(info);
-	sigemptyset(&info->quit.sa_mask);
-	info->quit.sa_handler = i_c;
-	info->buf = NULL;
-	sigaction(SIGINT, &info->quit, &info->old_act);
-	sigemptyset(&info->z_act.sa_mask);
-	info->z_act.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &info->z_act, &info->old_act);
-	sigaction(SIGTSTP, &info->z_act, &info->old_act);
+	info->return_val = 0;
+	info->exit = 0;
+	tcgetattr(info->safe_in, &info->old_term);
+	info->new_term = info->old_term;
+//	info->new_term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(info->safe_in, TCSAFLUSH, &info->new_term);
 }
 
 int main(int ac, char **av, char **ev)
@@ -72,14 +79,15 @@ int main(int ac, char **av, char **ev)
 	init_values(&info);
 	while (37)
 	{
+		set_signals(&info);
 		info.buf = readline("\033[0;32mDinoshell>\033[0m ");
 		if (info.buf)
 		{
 			handle_buf(&info);
 			if (info.exit)
 				break ;
-			add_history(info.buf);
-			free(info.buf);
+			history_handler(info.history_buf);
+			free(info.history_buf);
 		}
 		else
 			the_handler(info);
