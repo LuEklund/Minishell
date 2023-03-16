@@ -38,8 +38,8 @@ void	handle_pipe(t_data *info)
 	info->cmds = parse_split(info->buf, '|', info);
 	if (init_pipes(info) < 0)
 		exit (2);	
-	find_the_paths(info);
 	info->envs = retrieve_env();
+	find_the_paths(info);
 	while (info->cmds[info->i])
 	{
 		if (arguing(info))

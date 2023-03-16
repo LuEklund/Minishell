@@ -38,7 +38,7 @@ int	change_env_variable(t_data *info, char *var)
 	len = find_equal_sign(var);
 	if (!len)
 		len = ft_strlen(var);
-	env = retrive_env();
+	env = retrieve_env();
 	while (env[i] != NULL)
 	{
 		if (!ft_strncmp(env[i], var, len))

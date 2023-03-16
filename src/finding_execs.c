@@ -113,7 +113,10 @@ int	arguing(t_data *info)
 	wild_card_check(info);
 	is_built_in(info);
 	if (info->built)
-		return (bob_the_builtin(info), 0);
+	{
+		bob_the_builtin(info);
+		return (0);
+	}
 	find_execs(info);
 	if (!info->cmd_to_use)
 		return (1);

@@ -48,5 +48,7 @@ void	parent_signals(t_data *info)
 		printf("\n");
 	if (info->return_val == 131)
 		printf("Quit: 3\n");
+	if (info->return_val == 69)
+		info->exit = 1;
 }
 

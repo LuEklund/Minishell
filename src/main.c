@@ -72,10 +72,10 @@ int main(int ac, char **av, char **ev)
 	if (ac != 1 || !av[2])
 		return (printf("bro no need for any arguments\n"));
 	make_env_file(ev);
-	// char **test = retrive_env();
-	// int i = 0;
-	// while(test[i])
-	// 	printf("%s", test[i++]);
+	 char **test = retrieve_env();
+	 int i = 0;
+	 while(test[i])
+	 	printf("%s", test[i++]);
 	init_values(&info);
 	while (37)
 	{
@@ -87,14 +87,13 @@ int main(int ac, char **av, char **ev)
 			if (info.exit)
 				break ;
 			history_handler(info.history_buf);
-			free(info.history_buf);
 		}
 		else
 			the_handler(info);
 	}
-	if (info.buf)
-		free(info.buf);
+	if (info.history_buf)
+		free(info.history_buf);
 	ft_putstr_fd("\033[0;95mexit\033[0m 🦕\n", 2);
-	get_outed(info);	
+	get_outed(info);
 	return (0);
 }
