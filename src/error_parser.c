@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 13:34:32 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/14 13:01:24 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 16:05:53 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,13 @@ void	reset_token_val(t_error *help)
 	help->pipe = 0;
 	help->and = 0;
 	help->amper = 0;
-	help->out_red = 0;
-	help->in_red = 0;
+	help->out_o = 0;
+	help->in_o = 0;
+	help->out_t = 0;
+	help->in_t = 0;
 }
 
-void	get_tokenized(t_error *help, char *str)
+void	get_tokenized(t_error *help, char *str, int var)
 {
 	reset_token_val(help);
 	help->token = 1;
@@ -91,33 +93,34 @@ void	get_tokenized(t_error *help, char *str)
 		help->and = 1;
 	else if (str && str[help->i] == '&')
 		help->amper = 1;
-	else if (str && str[help->i] == '(')
-		help->left_par += 1;
-	else if (str && str[help->i] == ')')
-	{
-		help->right_par += 1;
-		help->left_par -= 1;
-	}
+	else if (str && str[help->i] == '>' && str[help->i + 1] == '>')
+		help->out_t = 1;
 	else if (str && str[help->i] == '>')
-		help->out_red = 1;
+		help->out_o = 1;
+	else if (str && str[help->i] == '<' && str[help->i + 1] == '<')
+		help->in_t = 1;
 	else if (str && str[help->i] == '<')
-		help->in_red = 1;
+		help->in_o = 1;
 	else
 		help->token = 0;
+	if (str && str[help->i] == '(' && (help->i || !var))
+		help->par += 1;
+	else if (str && str[help->i] == ')')
+		help->par -= 1;
 }
 
 int	parenthesee(t_error *help, char *str)
 {
-	if (str[help->i] != '(' && str[help->i] != ')')
-		return (0);
-	if (help->pipe + help->or + help->amper + help->and != 0)
-		return (0);
 	if (!help->i)
 		return (0);
-	else
+	if (str[help->i] != '(' && str[help->i] != ')')
+		return (0);
+	if (help->par < 0)
 		return (1);
-	if (help->left_par < 0)
+	if (help->amper + help->pipe + help->or + help->and == 0 && \
+		str[help->i] == '(' && str[help->i - 1] != '(')
 		return (1);
+	return (0);	
 }
 
 int	error_parser(t_data *info)
@@ -131,32 +134,31 @@ int	error_parser(t_data *info)
 	help->i = 0;
 	help->q = 0;
 	help->sq = 0;
-	help->left_par = 0;
-	help->right_par = 0;
+	help->par = 0;
 	info->error = help;
 	info->buf = white_space_cleanse(info->buf, NULL, qts, 0);
 	if (!info->buf)
 		return (1);
-	printf("buf is '%s'\n", info->buf);
-	get_tokenized(help, info->buf);
-	if (help->pipe + help->or + help->amper + help->and + help->right_par != 0)
+//	printf("buf is '%s'\n", info->buf);
+	get_tokenized(help, info->buf, 1);
+	if (help->pipe + help->or + help->amper + help->and != 0 || help->par < 0)
 		return (1);
 	while (info->buf[help->i])
 	{
 		help->i = quote_check((char const *)info->buf, help->i, &help->q, &help->sq) - 1;
-		if (help->i && parenthesee && help->token && help->q + help->sq == 0)
+		if (help->i && help->token && help->q + help->sq == 0)
 		{
-			get_tokenized(help, info->buf);
-			if (help->token && !(info->buf[help->i - 1] == '(' && info->buf[help->i] == '(') \
-				&& !(info->buf[help->i - 1] == ')' && info->buf[help->i] == ')'))
+			get_tokenized(help, info->buf, 0);
+			if (help->token && !(info->buf[help->i - 1] == '>' && info->buf[help->i] == '>') \
+				&& !(info->buf[help->i - 1] == '<' && info->buf[help->i] == '<'))
 				return (1);
 		}
-		get_tokenized(help, info->buf);
+		get_tokenized(help, info->buf, 0);
 		if (parenthesee(help, info->buf))
 			return (1);
 		if (help->and || help->or)
 			help->i += 1;
 		help->i = quote_check((char const *)info->buf, help->i, &help->q, &help->sq);
 	}
-	return (help->token);
+	return (help->token + help->par);
 }

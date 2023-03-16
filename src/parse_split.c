@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:07:38 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/13 13:48:38 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 16:29:44 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,36 @@ int	red_c(char const *str, t_split *help, int i, int h)
 	return (help->i3);
 }
 
+void	wild_marker(char const *str, t_split help, t_data *info)
+{
+	t_whelp	*current;
+	t_whelp	*new;
+	
+//	printf("check for '%c', at %c%d\n", help.c, str[help.i3], help.i3);
+	if (str[help.i3] != '*' || help.c != ' ')
+		return ;
+	new = malloc(sizeof(t_whelp));
+	if (!new)
+		exit(write(2, "memory error\n", 13));
+	new->next = NULL;
+	new->h = help.i2;
+	if (help.sq + help.q == 0)
+		new->valid = 1;
+	else
+		new->valid = 0;
+	if (!info->wmark_list)
+	{
+		new->n = 1;
+		info->wmark_list = new;
+		return ;
+	}
+	current = info->wmark_list;
+	while (current->next)
+		current = current->next;
+	current->next = new;
+	new->n = current->n + 1;
+}
+
 static int	string_amount(char const *str, t_split help, int ans, int i)
 {
 	while (str[i] == help.c && str[i] != '\0' && help.q + help.sq == 0)
@@ -126,6 +156,7 @@ static char	**ansllocator(char **ans, char const *str, t_data *info, t_split he)
 		{
 			if (str[he.i3 + 1] && expand_check(str, &he) && expand_envs(str, info, &he, ans))
 					continue ;
+			wild_marker(str, he, info);
 			if (he.c != ' ' || quote_see(str, he))
 				he.i += 1;
 			he.i3 = quote_check(str, he.i3, &he.q, &he.sq);

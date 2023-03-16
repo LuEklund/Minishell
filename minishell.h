@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/14 10:58:51 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 16:11:49 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ typedef struct s_wild
 	int				i;
 	struct s_wild	*next;
 }	t_wild;
+
+typedef struct s_whelp
+{
+	int				n;
+	int				h;
+	int				valid;
+	struct s_whelp	*next;
+}	t_whelp;
 
 typedef struct s_redi
 {
@@ -84,6 +92,7 @@ typedef struct s_data
 	int					hd;
 	int					q;
 	int					sq;
+	struct s_whelp		*wmark_list;
 	struct s_wild		*wild_list;
 	struct s_error		*error;
 	int					check;
@@ -117,10 +126,11 @@ typedef struct s_error
 	int		or;
 	int		amper;
 	int 	and;
-	int		left_par;
-	int		right_par;
-	int		in_red;
-	int		out_red;
+	int		par;
+	int		in_o;
+	int		out_o;
+	int		in_t;
+	int		out_t;
 }	t_error;
 
 void rl_replace_line (const char *text, int clear_undo);
@@ -128,7 +138,7 @@ void rl_replace_line (const char *text, int clear_undo);
 
 /////
 void	print_ar(char **ar);
-void	print_list(t_args *current);
+void	print_list(t_whelp *current);
 ////
 
 //error_parser.c
@@ -179,7 +189,7 @@ void	test_access(t_data *info, char *str);
 void	find_the_paths(t_data *info);
 void	test_paths(t_data *info, char *str);
 void	find_execs(t_data *info);
-void	arguing(t_data *info);
+int		arguing(t_data *info);
 
 //piping.c
 int		get_duped(int read, int write);
@@ -187,7 +197,7 @@ void	the_kindergarden(t_data *info);
 
 //pipe_utils.c
 int		init_pipes(t_data *info);
-t_redi	*find_note(t_data *info, int type);
+t_redi	*find_node(t_data *info, int type);
 void	close_pipeline(t_data *info);
 void	free_commands(t_data *info);
 
@@ -196,6 +206,7 @@ void	free_ar(char **ar);
 void	get_outed(t_data info);
 void	empty_redi_list(t_data *info);
 void	empty_wild_list(t_data *info);
+void	empty_whelp_list(t_data *info);
 void	empty_args_list(t_data *info);
 
 //parse_split.c

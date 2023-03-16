@@ -42,7 +42,7 @@ int	init_pipes(t_data *info)
 	return (1);
 }
 
-t_redi	*find_note(t_data *info, int type)
+t_redi	*find_node(t_data *info, int type)
 {
 	t_redi	*current;
 	t_redi	*ans;

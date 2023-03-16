@@ -30,8 +30,8 @@ void	the_piper(t_data *info)
 	t_redi	*in_node;
 	t_redi	*out_node;
 
-	in_node = find_note(info, 0);
-	out_node = find_note(info, 1);
+	in_node = find_node(info, 0);
+	out_node = find_node(info, 1);
 	if (!in_node)
 	{
 		if (info->i == 0)

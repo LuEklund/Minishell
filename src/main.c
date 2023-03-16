@@ -47,6 +47,7 @@ void	set_signals(t_data *info)
 	info->z_act.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &info->z_act, &info->old_act);
 	sigaction(SIGTSTP, &info->z_act, &info->old_act);
+	//add sigtrm
 }
 
 void	init_values(t_data *info)
@@ -58,10 +59,10 @@ void	init_values(t_data *info)
 	info->safe_in = dup(0);
 	info->return_val = 0;
 	info->exit = 0;
-	tcgetattr(STDIN_FILENO, &info->old_term);
+	tcgetattr(info->safe_in, &info->old_term);
 	info->new_term = info->old_term;
-	info->new_term.c_lflag &= ~(ECHOCTL);
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &info->new_term);
+//	info->new_term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(info->safe_in, TCSAFLUSH, &info->new_term);
 }
 
 int main(int ac, char **av, char **ev)

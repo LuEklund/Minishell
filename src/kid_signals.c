@@ -43,17 +43,10 @@ void	parent_signals(t_data *info)
 	sigaction(SIGINT, &info->z_act, &info->old_act);
 	while ((wait(&info->return_val)) > 0)
 		;
-	if (info->return_val == 33280)
-	{
-		printf("^C\n");
-		info->return_val = 130;
-	}
-	else if (info->return_val == 33536)
-	{
+	info->return_val = WEXITSTATUS(info->return_val);
+	if (info->return_val == 130)
+		printf("\n");
+	if (info->return_val == 131)
 		printf("Quit: 3\n");
-		info->return_val = 131;
-	}
-	else if (info->return_val == 17664)
-		info->return_val = 258;
 }
 

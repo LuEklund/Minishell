@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/14 10:51:41 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 16:06:39 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	syntax_error(t_data *info)
 		ft_putstr_fd("newline", 2);
 	else
 		write(2, &info->buf[help->i], 1);	
-	if (help->and || help->or)
+	if (help->and || help->or || help->out_t || help->in_t)
 		write(2, &info->buf[help->i + 1], 1);
 	ft_putendl_fd("'", 2);
 	free(info->buf);
@@ -36,15 +36,17 @@ void	syntax_error(t_data *info)
 void	handle_pipe(t_data *info)
 {
 	info->cmds = parse_split(info->buf, '|', info);
-	if (!info->cmds || !info->cmds[0])
-		exit (1);
 	if (init_pipes(info) < 0)
 		exit (2);	
 	find_the_paths(info);
-	while (info->cmds[info->i] && !info->check)
+	while (info->cmds[info->i])
 	{
-		arguing(info);
-		if (info->check || info->exit)
+		if (arguing(info))
+		{
+			info->i += 1;
+			continue ;
+		}
+		if (info->exit)
 			break ;
 		info->kiddo[info->i] = fork();
 		if (info->kiddo[info->i] < 0)
@@ -59,7 +61,6 @@ void	handle_pipe(t_data *info)
 	while ((waitpid(info->kiddo[info->i], &info->return_val, 0)) > 0)
 		info->i += 1;
 	free(info->kiddo);
-	info->return_val = WEXITSTATUS(info->return_val);
 	empty_redi_list(info);
 }
 
@@ -90,7 +91,6 @@ void	handle_buf(t_data *info)
 	kid_signals(info);
 	if (!info->buf[i])
 		exit (0);
-//	handle_list(info);
 	handle_pipe(info);
 	get_outed(*info);
 	exit(info->return_val);

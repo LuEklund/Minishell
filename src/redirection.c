@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:21:18 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/11 16:16:34 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 16:08:16 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	start_quotes(t_data *info, int *i)
 //////
 //////
 
-void	print_list(t_args *current)
+void	print_list(t_whelp *current)
 {
 	int	i = 1;
 
@@ -85,7 +85,7 @@ void	print_list(t_args *current)
 		else
 			printf(":th");
 	//	printf(" node is of type %d, in pipe %zu spot %zu\n", current->type, current->pipe_n, current->red_n);
-		printf(" node has index %d and arg '%s'\n", current->i, current->arg);
+		printf(" node has n %d h %d and validness of %d\n", current->n, current->h, current->valid);
 		current = current->next;
 		i++;
 	}

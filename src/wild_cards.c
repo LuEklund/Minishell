@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 19:09:46 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/11 17:53:30 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 16:16:09 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	process_wild_cards(t_data *info)
 	info->args = copy_list_to_ar(info->args_list);
 	empty_wild_list(info);
 	empty_args_list(info);
+	empty_whelp_list(info);
 }
 
 void	new_wild(t_data *info, int i)
@@ -117,9 +118,12 @@ void	wild_card_check(t_data *info)
 {
 	int		i;
 	int		i2;
+	t_whelp	*current;
 
 	i = 1;
 	i2 = 0;
+	current = info->wmark_list;
+//	print_list(current);
 	info->wild_list = NULL;
 	info->args_list = copy_ar_to_list(info->args);
 	while (info->args[i])
@@ -128,7 +132,9 @@ void	wild_card_check(t_data *info)
 		{
 			if (info->args[i][i2] == '*')
 			{
-				new_wild(info, i);
+				if (current->valid)
+					new_wild(info, i);
+				current = current->next;
 			}
 			i2++;
 		}
@@ -136,6 +142,6 @@ void	wild_card_check(t_data *info)
 		i2 = 0;
 	}
 	if (!info->wild_list)
-		return (empty_args_list(info));
+		return (empty_args_list(info), empty_whelp_list(info));
 	process_wild_cards(info);
 }

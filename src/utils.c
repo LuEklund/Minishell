@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 19:47:06 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/11 20:58:24 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 16:09:39 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	get_outed(t_data info)
 	close(info.fd_in);
 	close(info.fd_out);
 	unlink(".dinoshell_heredoc373_tmp");
-	tcsetattr(0, TCSANOW, &info.old_term);
+	tcsetattr(info.safe_in, TCSAFLUSH, &info.old_term);
 }
 
 void	empty_redi_list(t_data *info)
@@ -80,6 +80,20 @@ void	empty_wild_list(t_data *info)
 	t_wild	*current;
 
 	current = info->wild_list;
+	while (current)
+	{
+		latter = current;
+		current = current->next;
+		free(latter);
+	}
+}
+
+void	empty_whelp_list(t_data *info)
+{
+	t_whelp	*latter;
+	t_whelp	*current;
+
+	current = info->wmark_list;
 	while (current)
 	{
 		latter = current;
