@@ -15,8 +15,8 @@
 
 int	make_env_file(char **env_to_copy)
 {
-	int	fd;
-	int i;
+	int		fd;
+	int 	i;
 
 	fd = open(".dinoshell_env777_tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0 )
@@ -25,8 +25,8 @@ int	make_env_file(char **env_to_copy)
 	while (env_to_copy[i])
 	{
 		write(fd, env_to_copy[i], ft_strlen(env_to_copy[i]));
-		i++;
 		write(fd, "\n", 1);
+		i++;
 	}
 	close(fd);
 	return (1);
@@ -37,6 +37,7 @@ char	**retrieve_env(void)
 	int		fd;
 	int		i;
 	char	*line;
+	char	*new_line;
 	char	**new_env;
 
 	fd = open(".dinoshell_env777_tmp", O_RDWR);
@@ -60,9 +61,15 @@ char	**retrieve_env(void)
 	while (42)
 	{
 		line = get_next_line(fd);
-		new_env[i] = line;
 		if (!line)
+		{
+			new_env[i] = NULL;
 			break ;
+		}
+		new_line = (char *)malloc(sizeof(char) * (ft_strlen(line)));
+		ft_strlcpy(new_line, line, ft_strlen(line));
+		free(line);
+		new_env[i] = new_line;
 		i++;
 	}
 	close(fd);

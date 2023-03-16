@@ -217,6 +217,10 @@ char	**parse_split(char const *str, char c, t_data *info);
 
 //Builtins
 
+//env_utils.c
+int	uppgrade_shell_lvl(t_data *ifno, char **env_to_copy);
+int	find_equal_sign(char *str);
+
 //handle_built.c
 void	is_built_in(t_data *info);
 int		bob_the_builtin(t_data *info);
@@ -230,7 +234,7 @@ int		find_equal_sign(char *str);
 int		env_export(t_data *info, char *manual_add);
 int		unset_env(t_data *info, char *rm_var);
 int		display_env(t_data *info, int export_type);
-char	**copy_env(char **env_to_copy);
+// char	**copy_env(char **env_to_copy);
 int		execute_built(t_data *info);
 // int	display_curdir(void);
 // int	change_dir(char *path);

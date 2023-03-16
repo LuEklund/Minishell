@@ -11,6 +11,35 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 
+int	uppgrade_shell_lvl(t_data *info, char **env_to_copy)
+{
+	int		fd;
+	int 	i;
+	int		shlvl_int;
+	char	*shlvl_char;
+	char	*sh_lvl_str;
+
+	fd = open(".dinoshell_env777_tmp", O_CREAT);
+	if (fd < 0 )
+		return (0);
+	i = 0;
+	while (env_to_copy[i])
+	{
+		if (!ft_strncmp(env_to_copy[i], "SHLVL=", 6))
+		{
+			shlvl_int = ft_atoi(env_to_copy[i] + 6) + 1;
+			shlvl_char = ft_itoa(shlvl_int);
+			sh_lvl_str = ft_strjoin("SHLVL=", shlvl_char);
+			env_export(info, sh_lvl_str);
+			free(shlvl_char);
+			free(sh_lvl_str);
+		}
+		i++;
+	}
+	close(fd);
+	return (1);
+}
+
 int	find_equal_sign(char *str)
 {
 	int	i;

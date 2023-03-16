@@ -13,29 +13,33 @@
 
 int	display_env(t_data *info, int export_type)
 {
-	int	i;
-	int	i2;
-	char c;
+	int		i;
+	int		i2;
+	char 	c;
+	char	**env;
+	(void) info;
 
 	i = 0;
 	i2 = 0;
 	c = 34;
-	while (info->envs[i] != NULL)
+	env = retrieve_env();
+	while (env[i] != NULL)
 	{
 		if (export_type)
 		{
 			i2 = 0;
 			printf("declare -x ");
-			while (info->envs[i][i2] != '\0' && info->envs[i][i2] != '=')
-				printf("%c", info->envs[i][i2++]);
-			if (info->envs[i][i2++])
-				printf("=%c%s%c",c ,info->envs[i]+i2, c);
+			while (env[i][i2] != '\0' && env[i][i2] != '=')
+				printf("%c", env[i][i2++]);
+			if (env[i][i2++])
+				printf("=%c%s%c",c ,env[i]+i2, c);
 			printf("\n");
 		}
-		else if (find_equal_sign(info->envs[i]))
-			printf("%s\n\r", info->envs[i]);
+		else if (find_equal_sign(env[i]))
+			printf("%s\n\r", env[i]);
 		i++;
 	}
+	free_ar(env);
 	return (1);
 }
 
@@ -72,6 +76,7 @@ static int	contain_flag(t_data *info, char *var)
 int	export_env_function(t_data *info, char *new_var)
 {
 	char		**new_env;
+	char		**curr_env;
 	int			i;
 
 	if (!export_error_handler(info, new_var))
@@ -80,16 +85,17 @@ int	export_env_function(t_data *info, char *new_var)
 	{
 		if (!change_env_variable(info, new_var))
 		{
+			curr_env = retrieve_env();
 			i = 0;
-			while (info->envs[i] != NULL)
+			while (curr_env[i] != NULL)
 				i++;
 			new_env = (char **)malloc(sizeof(char *) * (i + 2));
 			if (!new_env)
 				return (1);
 			i = 0;
-			while (info->envs[i] != NULL)
+			while (curr_env[i] != NULL)
 			{
-				new_env[i] = info->envs[i];
+				new_env[i] = curr_env[i];
 				i++;
 			}
 			new_env[i] = (char *)malloc(sizeof(char) * (ft_strlen(new_var) + 1));
@@ -97,12 +103,14 @@ int	export_env_function(t_data *info, char *new_var)
 			i++;
 			new_env[i] = NULL;
 
-			free(info->envs);
-			info->envs = new_env;
+			make_env_file(new_env);
+			free_ar(curr_env);
+			free(new_env);
 		}
 	}
 	return (0);
 }
+
 
 int	env_export(t_data *info, char *manual_add)
 {
@@ -132,3 +140,9 @@ int	env_export(t_data *info, char *manual_add)
 	}
 	return (0);
 }
+
+
+
+
+
+
