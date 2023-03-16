@@ -64,7 +64,11 @@ int main(int ac, char **av, char **ev)
 
 	if (ac != 1 || !av[2])
 		return (printf("bro no need for any arguments\n"));
-	info.envs = copy_env(ev);
+	make_env_file(ev);
+	// char **test = retrive_env();
+	// int i = 0;
+	// while(test[i])
+	// 	printf("%s", test[i++]);
 	init_values(&info);
 	while (37)
 	{

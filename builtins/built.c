@@ -11,26 +11,61 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 
-char	**copy_env(char **env_to_copy)
-{
-	char		**new_env;
-	int			i;
 
+int	make_env_file(char **env_to_copy)
+{
+	int	fd;
+	int i;
+
+	fd = open(".dinoshell_env777_tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (fd < 0 )
+		return (0);
 	i = 0;
-	while (env_to_copy[i] != NULL)
+	while (env_to_copy[i])
+	{
+		write(fd, env_to_copy[i], ft_strlen(env_to_copy[i]));
 		i++;
-	new_env = (char **)malloc(sizeof(char *) * (i + 1));
+		write(fd, "\n", 1);
+	}
+	close(fd);
+	return (1);
+}
+
+char	**retrieve_env(void)
+{
+	int		fd;
+	int		i;
+	char	*line;
+	char	**new_env;
+
+	fd = open(".dinoshell_env777_tmp", O_RDWR);
+	if (fd < 0 )
+		return (0);
+	i = 0;
+	while (42)
+	{
+		line = get_next_line(fd);
+		i++;
+		if (!line)
+			break ;
+		free(line);
+	}
+	new_env = (char **)malloc(sizeof(char *) * i);
 	if (!new_env)
 		return (NULL);
+	close(fd);
+	fd = open(".dinoshell_env777_tmp", O_RDWR);
 	i = 0;
-	while (env_to_copy[i] != NULL)
+	while (42)
 	{
-		new_env[i] = (char *)malloc(sizeof(char) * ft_strlen(env_to_copy[i]) + 1);
-		ft_strlcpy(new_env[i], env_to_copy[i], ft_strlen(env_to_copy[i]) + 1);
-		// new_env[i] = env_to_copy[i];
+		line = get_next_line(fd);
+		new_env[i] = line;
+		if (!line)
+			break ;
 		i++;
 	}
-	new_env[i] = NULL;
+	close(fd);
+	i = 0;
 	return (new_env);
 }
 

@@ -30,30 +30,73 @@ int	change_env_variable(t_data *info, char *var)
 	int	i;
 	int	len;
 	int	has_equal;
+	char **env;
 
+	(void) info;
 	i = 0;
 	has_equal = 0;
 	len = find_equal_sign(var);
 	if (!len)
 		len = ft_strlen(var);
-	while (info->envs[i] != NULL)
+	env = retrive_env();
+	while (env[i] != NULL)
 	{
-		if (!ft_strncmp(info->envs[i], var, len))
+		if (!ft_strncmp(env[i], var, len))
 		{
 			len = ft_strlen(var);
-			if (find_equal_sign(info->envs[i]) && !find_equal_sign((var)))
+			if (find_equal_sign(env[i]) && !find_equal_sign((var)))
 				has_equal = 1;
-			free(info->envs[i]);
-			info->envs[i] = (char *)malloc(sizeof(char) * (len + has_equal + 1));
-			ft_strlcpy(info->envs[i], var, len + 1);
-			if (has_equal && info->envs[i][len] != '=')
+			free(env[i]);
+			env[i] = (char *)malloc(sizeof(char) * (len + has_equal + 1));
+			ft_strlcpy(env[i], var, len + 1);
+			if (has_equal && env[i][len] != '=')
 			{
-				info->envs[i][len] = '=';
-				info->envs[i][len + 1] = '\0';
+				env[i][len] = '=';
+				env[i][len + 1] = '\0';
 			}
+			make_env_file(env);
+			free(env);
 			return (1);
 		}
 		i++;
 	}
 	return (0);
 }
+
+// int	change_env_variable(t_data *info, char *var)
+// {
+// 	int	i;
+// 	int	len;
+// 	int	has_equal;
+// 	int	fd;
+// 	char *line;
+// 	(void) info;
+
+// 	i = 0;
+// 	has_equal = 0;
+// 	fd = open(".dinoshell_env777_tmp", O_RDWR);
+// 	len = find_equal_sign(var);
+// 	if (!len)
+// 		len = ft_strlen(var);
+// 	while (42)
+// 	{
+// 		line = get_next_line(fd);
+// 		if (!ft_strncmp(line, var, len))
+// 		{
+// 			len = ft_strlen(var);
+// 			if (find_equal_sign(line) && !find_equal_sign((var)))
+// 				has_equal = 1;
+// 			if (has_equal && line[len] != '=')
+// 			{
+// 				line[len] = '=';
+// 				line[len + 1] = '\0';
+// 			}
+// 			write(fd, line, len);
+// 			free(line);
+// 			return (1);
+// 		}
+// 		free(line);
+// 		i++;
+// 	}
+// 	return (0);
+// }

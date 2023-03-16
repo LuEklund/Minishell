@@ -139,9 +139,9 @@ char	**parse_split(char const *str, char c, t_data *info);
 
 //handle_built.c
 void	is_built_in(t_data *info);
-int	bob_the_builtin(t_data *info);
-
-
+int		bob_the_builtin(t_data *info);
+char	**retrieve_env(void);
+int		make_env_file(char **env_to_copy);
 int		display_curdir();
 int		change_dir(t_data *info);
 int		change_env_variable(t_data *info, char *var);

@@ -117,6 +117,9 @@ void	arguing(t_data *info)
 	}
 	is_built_in(info);
 	if (info->built)
-		return (bob_the_builtin(info));
+	{
+		bob_the_builtin(info);
+		return ;
+	}
 	find_execs(info);
 }

@@ -64,7 +64,7 @@ int	bob_the_builtin(t_data *info)
 		fake_it(info);
 	if (!info->check)
 		return (1);
-	free_ar(info->args);
-	free_ar(info->cmds);
+	// free_ar(info->args);
+	// free_ar(info->cmds);
 	return (1);
 }
