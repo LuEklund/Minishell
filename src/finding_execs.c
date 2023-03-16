@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 13:10:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 18:20:54 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 19:43:14 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	test_paths(t_data *info, char *str)
 		i++;
 	cmd = malloc(sizeof(char) * (i + 2));
 	if (!cmd)
-		return ;
+		exit(write(2, "memory error\n", 13));
 	cmd[0] = '/';
 	cmd[i + 1] = '\0';
 	safe = i;

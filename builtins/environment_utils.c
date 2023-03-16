@@ -6,12 +6,12 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:21:53 by leklund           #+#    #+#             */
-/*   Updated: 2023/03/01 16:21:58 by leklund          ###   ########.fr       */
+/*   Updated: 2023/03/16 20:29:18 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
 
-int	uppgrade_shell_lvl(t_data *info, char **env_to_copy)
+int	upgrade_shell_lvl(t_data *info, char **env_to_copy)
 {
 	int		fd;
 	int 	i;
