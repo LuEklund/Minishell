@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 17:31:50 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/16 18:22:37 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	handle_pipe(t_data *info)
 			info->i += 1;
 			continue ;
 		}
-		if (info->exit || info->built_exec)
+		if (info->exit)
 			break ;
 		info->kiddo[info->i] = fork();
 		if (info->kiddo[info->i] < 0)
