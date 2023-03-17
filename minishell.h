@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 20:43:38 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/17 18:54:48 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ typedef struct s_cond
 	int				type;
 	int				ret;
 	char			*content;
+	struct s_cond	*up;
 	struct s_cond	*first_cond;
-	struct s_cond	*second_cond;
+	struct s_cond	*sec_cond;
 	struct s_cond	*next;
 }	t_cond;
 
@@ -164,10 +165,10 @@ void	get_tokenized(t_error *help, char *str, int var);
 int		error_parser(t_data *info);
 
 //and_or_lists.c
-void	check_and_or(t_data *info);
+void	go_through_list(t_data *info);
 
 //trinary_tree.c
-t_cond	*create_tree(char *str);
+t_cond	*create_level(char *str, t_cond *head);
 
 //kid_signals.c
 void	slashing(int signum);

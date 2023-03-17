@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 20:13:04 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/17 17:38:38 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	syntax_error(t_data *info)
 	if (!info->buf)
 		return ;
 	info->return_val = 258;
+	printf("at index %zu\n:", help->i);
 	ft_putstr_fd(info->dino, 2);
 	ft_putstr_fd("syntax error near unexpected token `", 2);
 	if (!info->buf[help->i])
@@ -78,6 +79,7 @@ void	handle_buf(t_data *info)
 	if (error_parser(info))
 		return (syntax_error(info));
 	free(info->error);
+	go_through_list(info);
 	kiddo = fork();
 	if (kiddo < 0)
 		exit(write(2, "child process error\n", 19));
@@ -88,6 +90,7 @@ void	handle_buf(t_data *info)
 		free(info->buf);
 		return ;
 	}
+	exit(0);
 	kid_signals(info);
 	if (!info->buf[i])
 		exit (0);
