@@ -19,7 +19,7 @@ int	upgrade_shell_lvl(t_data *info, char **env_to_copy)
 	char	*shlvl_char;
 	char	*sh_lvl_str;
 
-	fd = open(".dinoshell_env777_tmp", O_CREAT);
+	fd = open(g_env_dir, O_CREAT);
 	if (fd < 0 )
 		return (0);
 	i = 0;
@@ -61,13 +61,14 @@ int	change_env_variable(t_data *info, char *var)
 	int	has_equal;
 	char **env;
 
+
 	(void) info;
 	i = 0;
 	has_equal = 0;
 	len = find_equal_sign(var);
 	if (!len)
 		len = ft_strlen(var);
-	env = retrieve_env();
+	env = retrieve_env(info);
 	while (env[i] != NULL)
 	{
 		if (!ft_strncmp(env[i], var, len))
@@ -83,7 +84,7 @@ int	change_env_variable(t_data *info, char *var)
 				env[i][len] = '=';
 				env[i][len + 1] = '\0';
 			}
-			make_env_file(env);
+			make_env_file(info, env);
 			free(env);
 			return (1);
 		}
@@ -92,40 +93,3 @@ int	change_env_variable(t_data *info, char *var)
 	return (0);
 }
 
-// int	change_env_variable(t_data *info, char *var)
-// {
-// 	int	i;
-// 	int	len;
-// 	int	has_equal;
-// 	int	fd;
-// 	char *line;
-// 	(void) info;
-
-// 	i = 0;
-// 	has_equal = 0;
-// 	fd = open(".dinoshell_env777_tmp", O_RDWR);
-// 	len = find_equal_sign(var);
-// 	if (!len)
-// 		len = ft_strlen(var);
-// 	while (42)
-// 	{
-// 		line = get_next_line(fd);
-// 		if (!ft_strncmp(line, var, len))
-// 		{
-// 			len = ft_strlen(var);
-// 			if (find_equal_sign(line) && !find_equal_sign((var)))
-// 				has_equal = 1;
-// 			if (has_equal && line[len] != '=')
-// 			{
-// 				line[len] = '=';
-// 				line[len + 1] = '\0';
-// 			}
-// 			write(fd, line, len);
-// 			free(line);
-// 			return (1);
-// 		}
-// 		free(line);
-// 		i++;
-// 	}
-// 	return (0);
-// }

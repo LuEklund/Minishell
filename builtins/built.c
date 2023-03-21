@@ -9,110 +9,15 @@
 /*   Updated: 2023/03/16 17:17:29 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../minishell.h"
-
-
-int	make_env_file(char **env_to_copy)
-{
-	int		fd;
-	int 	i;
-
-	fd = open(".dinoshell_env777_tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (fd < 0 )
-		return (0);
-	i = 0;
-	while (env_to_copy[i])
-	{
-		write(fd, env_to_copy[i], ft_strlen(env_to_copy[i]));
-		write(fd, "\n", 1);
-		i++;
-	}
-	close(fd);
-	return (1);
-}
-
-char	**retrieve_env(void)
-{
-	int		fd;
-	int		i;
-	char	*line;
-	char	*new_line;
-	char	**new_env;
-
-	fd = open(".dinoshell_env777_tmp", O_RDWR);
-	if (fd < 0 )
-		return (0);
-	i = 0;
-	while (42)
-	{
-		line = get_next_line(fd);
-		i++;
-		if (!line)
-			break ;
-		free(line);
-	}
-	new_env = (char **)malloc(sizeof(char *) * i);
-	if (!new_env)
-		return (NULL);
-	close(fd);
-	fd = open(".dinoshell_env777_tmp", O_RDWR);
-	i = 0;
-	while (42)
-	{
-		line = get_next_line(fd);
-		if (!line)
-		{
-			new_env[i] = NULL;
-			break ;
-		}
-		new_line = (char *)malloc(sizeof(char) * (ft_strlen(line)));
-		ft_strlcpy(new_line, line, ft_strlen(line));
-		free(line);
-		new_env[i] = new_line;
-		i++;
-	}
-	close(fd);
-	i = 0;
-	return (new_env);
-}
-
-int	handle_word(t_data *info, int i,int file, char *last_char)
-{
-	int	i2;
-
-	i2 = 0;
-	while (info->args[i][i2])
-	{
-		if (info->args[i][i2] == '>')
-			file = 1;
-		if (!file)
-			write(1, &info->args[i][i2], 1);
-		*last_char = info->args[i][i2];
-		i2++;
-	}
-	if (*last_char == '>')
-		file = 1;
-	else
-	{
-		if (info->args[i + 1] && info->args[i + 1][0] != '>')
-			write(1, " ", 1);
-		file = 0;
-	}
-	return (file);
-}
 
 int	echo(t_data *info)
 {
 	int		i;
 	int		new_line;
-	int		file;
-	char	last_char;
 
 	i = 1;
 	new_line = 2;
-	file = 0;
-	last_char = 0;
 	if (info->args[i][0] == '-' && info->args[i][1] == 'n')
 	{
 		while(info->args[i][new_line] == 'n')
@@ -132,7 +37,7 @@ int	echo(t_data *info)
 	}
 	if (new_line)
 		printf("\n");
-	return (1);
+	return (0);
 }
 
 int	execute_built(t_data *info)
@@ -142,14 +47,21 @@ int	execute_built(t_data *info)
 		// printf("echo\n\r");
 		return (echo(info));
 	}
-	else if (info->built == 3)
+	else if (info->built == 2)
+	{
+		return (change_dir(info));
+	}
+	else if (info->built == 3)	
 	{
 		// printf("display_curdir\n\r");
 		return (display_curdir());
 	}
-	else if (info->built == 6)
+	else if (info->built == 5)
 	{
-		return (env_export(info, info->args[1]));
+		return (env_unset(info, 0));
+	}else if (info->built == 6)
+	{
+		return (env_export(info, 0));
 	}
 	else if (info->built == 7)
 	{

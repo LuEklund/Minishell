@@ -26,6 +26,10 @@
 # include <sys/ioctl.h>
 # include <sys/wait.h>
 # include <dirent.h>
+# include <sys/stat.h>
+
+// GLobal for now
+char	*g_env_dir;
 
 typedef struct s_exit
 {
@@ -237,26 +241,35 @@ char	**parse_split(char const *str, char c, t_data *info);
 
 //Builtins
 
+//bulit.c
+int		execute_built(t_data *info);
+
+//directory.c
+int		display_curdir();
+char	*get_curdir();
+int		change_dir(t_data *info);
+
+//env_export
+int		env_error_handler(t_data *info, char *new_var, char *type);
+int		env_export(t_data *info, char *manual_add);
+
+//env_unset
+int		env_unset(t_data *info, char *rm_var);
+
 //env_utils.c
 int		upgrade_shell_lvl(t_data *ifno, char **env_to_copy);
 int		find_equal_sign(char *str);
+int		change_env_variable(t_data *info, char *var);
+
+//environment.c
+int		make_env_file_first_time(t_data *info, char **env_to_copy);
+int		make_env_file(t_data *info, char **env_to_copy);
+int		display_env(t_data *info, int export_type);
+char	**retrieve_env(t_data *info);
 
 //handle_built.c
 void	is_built_in(t_data *info);
 int		bob_the_builtin(t_data *info);
-char	**retrieve_env(void);
-int		make_env_file(char **env_to_copy);
-int		display_curdir();
-int		change_dir(t_data *info);
-int		change_env_variable(t_data *info, char *var);
-int		export_error_handler(t_data *info, char *new_var);
-int		find_equal_sign(char *str);
-int		env_export(t_data *info, char *manual_add);
-int		unset_env(t_data *info, char *rm_var);
-int		display_env(t_data *info, int export_type);
-// char	**copy_env(char **env_to_copy);
-int		execute_built(t_data *info);
-// int	display_curdir(void);
-// int	change_dir(char *path);
+
 
 #endif

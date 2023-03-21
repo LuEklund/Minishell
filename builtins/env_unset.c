@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 
-
 int	unset_env_function(t_data *info, char *rm_var)
 {
 	char		**new_environ;
@@ -21,7 +20,7 @@ int	unset_env_function(t_data *info, char *rm_var)
 
 	i = 0;
 	removeable = 0;
-	if (!export_error_handler(info, rm_var))
+	if (!env_error_handler(info, rm_var, "unset"))
 		return (0);
 	if (find_equal_sign(rm_var))
 	{
@@ -31,7 +30,7 @@ int	unset_env_function(t_data *info, char *rm_var)
 		ft_putstr_fd("`: not a valid identifier\n", 2);
 		return (1);
 	}
-	curr_env = retrieve_env();
+	curr_env = retrieve_env(info);
 	while (curr_env[i] != NULL)
 	{
 		if (!ft_strncmp(curr_env[i], rm_var, ft_strlen(rm_var))
@@ -60,7 +59,7 @@ int	unset_env_function(t_data *info, char *rm_var)
 	}
 	new_environ[i] = NULL;
 	free(curr_env);
-	make_env_file(new_environ);
+	make_env_file(info, new_environ);
 	free_ar(new_environ);
 	return (1);
 }
@@ -80,7 +79,7 @@ static int	contain_flag(t_data *info, char *var)
 	return (0);
 }
 
-int	unset_env(t_data *info, char *rm_var)
+int	env_unset(t_data *info, char *rm_var)
 {
 	int	index_args;
 
@@ -100,7 +99,6 @@ int	unset_env(t_data *info, char *rm_var)
 			unset_env_function(info, info->args[index_args]);
 			index_args++;
 		}
-
 	}
 	return (1);
 }

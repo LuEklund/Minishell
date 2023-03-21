@@ -71,7 +71,7 @@ int main(int ac, char **av, char **ev)
 
 	if (ac != 1 || !av[2])
 		return (printf("bro no need for any arguments\n"));
-	make_env_file(ev);
+	make_env_file_first_time(&info, ev);
 	upgrade_shell_lvl(&info, ev);
 	init_values(&info);
 	while (37)
