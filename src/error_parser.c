@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 13:34:32 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 13:06:39 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/21 18:07:03 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ int	error_parser(t_data *info)
 			help->i += 1;
 		help->i = quote_check((char const *)info->buf, help->i, &help->q, &help->sq);
 		if (parenthesee(help, info->buf))
-			return (printf("par problem\n"));
+			return (1);
 	}
 //	printf("token is %d parr is %d\n", help->token, help->par);
 	return (help->token + help->par);

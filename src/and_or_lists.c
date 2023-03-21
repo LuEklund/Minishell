@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 21:04:12 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 14:42:58 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/21 18:06:16 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,12 @@ void	print_tree(t_cond *head, int b, int sub_b, int level)
 void	exec_node(t_cond *current, t_data *info)
 {
 	current->ret = handle_pipe(info, current->content);
-	current->up->ret = current->ret;
+	info->return_val = current->ret;
+	while (current->up)
+	{
+		current->up->ret = current->ret;
+		current = current->up;
+	}
 }
 
 void	traveler(t_cond *current, t_data *info)
@@ -42,22 +47,35 @@ void	traveler(t_cond *current, t_data *info)
 	traveler(current->first_cond, info);
 	if (!current->type)
 		exec_node(current, info);
+//	printf("current type is %d and ret is %d\n", current->type, current->ret);
+//	if (!current->type)
+//		printf("current command is\n%s\nand up is %p\n", current->content, current->up);
 	if ((current->ret && current->type == 1) || (!current->ret && \
 		current->type == 2))
 		traveler(current->sec_cond, info);
-	else if (current->next && ((current->ret && current->next->type == 1) || \
-			(!current->ret && current->next->type == 2)))
+	if (current->next)
+	{
+		current->next->ret = current->ret;
 		traveler(current->next, info);
+	}
+
 }
 
 int	go_through_list(t_data *info)
 {
 	t_cond	*head;
 	char	*str;
+	size_t	i;
 
+	i = 0;
 	str = ft_strdup(info->buf);
-	head = create_level(str, NULL, NULL, 1);
-	print_tree(head, 1, 1, 1);	
+	while (str[i] && (str[i] == '(' || str[i] == ')'))
+		i++;
+	if (!str[i])
+		head = NULL;
+	else
+		head = create_level(str, NULL, NULL, 1);
+//	print_tree(head, 1, 1, 1);	
 //	free(str);
 	info->trinary_tree = head;
 	return (1);

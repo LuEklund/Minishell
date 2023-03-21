@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 13:05:22 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/21 18:02:20 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,10 @@ void	handle_buf(t_data *info)
 		return ;
 	}
 	kid_signals(info);
-	traveler(info->trinary_tree, info);
+	if (info->trinary_tree)
+		traveler(info->trinary_tree, info);
 	unlink(".dinoshell_heredoc373_tmp");
+	if (info->return_val != 127)
+		info->return_val = WEXITSTATUS(info->return_val);
 	exit(info->return_val);
 }

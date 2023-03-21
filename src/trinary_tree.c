@@ -6,13 +6,13 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 12:37:05 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 14:37:14 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/21 18:07:07 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	check_for_logic(char *str)
+int	check_for_logic(char *str, int var)
 {
 	t_error	help;
 
@@ -25,7 +25,9 @@ int	check_for_logic(char *str)
 	{
 		get_tokenized(&help, str, 0);
 //		printf("and val is %d, or val is %d and par val is %d\n", help.and, help.or, help.par);
-		if (help.and || help.or || help.par)
+		if (!var && (help.and || help.or || help.par))
+			return (0);
+		if (var && !help.par && (help.or || help.and))
 			return (0);
 		help.i = quote_check((char const *)str, help.i, &help.q, &help.sq);
 	}
@@ -44,16 +46,17 @@ char	*par_ser(char *str, t_error *help)
 		get_tokenized(help, str, 0);
 	}
 //	printf("i is %zu in par_ser\n", help->i);
-	if (str[help->i])
+	if (str[help->i] || !help->rm_par || check_for_logic(str, 0))
+	{
+//		printf("returning '%s' from here\n", str);
 		return (str);
-	if (!help->rm_par || check_for_logic(str))
-		return (str);
+	}
 	help->q = 0;
 	help->sq = 0;
 	help->par = 0;
 	help->i = 0;
 	reset_token_val(help);
-	printf("we're cutting up\n %s\n now\n", str);
+//	printf("we're cutting up\n %s\n now\n", str);
 	ans = ft_substr((char const *)str, 1, ft_strlen(str) - 2);
 //	printf("cut result\n %s\n now\n", ans);
 //	free(str);
@@ -173,7 +176,7 @@ t_cond	*create_level(char *str, t_cond *back, t_cond *up, int var)
 //		printf("going into par_ser for back %d\n", back->type);
 	str = par_ser(str, &help);
 //	printf("i is %zu\n", help.i);
-	if (check_for_logic(str) && back)
+	if (check_for_logic(str, 1) && back)
 		return (NULL);
 	else if (!str[help.i])
 		return (create_condition_node(str, up, 0));
