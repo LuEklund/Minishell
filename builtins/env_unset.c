@@ -30,7 +30,7 @@ int	unset_env_function(t_data *info, char *rm_var)
 		ft_putstr_fd("`: not a valid identifier\n", 2);
 		return (1);
 	}
-	curr_env = retrieve_env(info);
+	curr_env = retrieve_env();
 	while (curr_env[i] != NULL)
 	{
 		if (!ft_strncmp(curr_env[i], rm_var, ft_strlen(rm_var))

@@ -265,7 +265,7 @@ int		change_env_variable(t_data *info, char *var);
 int		make_env_file_first_time(t_data *info, char **env_to_copy);
 int		make_env_file(t_data *info, char **env_to_copy);
 int		display_env(t_data *info, int export_type);
-char	**retrieve_env(t_data *info);
+char	**retrieve_env();
 
 //handle_built.c
 void	is_built_in(t_data *info);

@@ -47,9 +47,6 @@ int	change_dir(t_data *info)
 	int		return_val;
 	struct stat statbuf;
 
-	curr_dir = get_curdir();
-	if (!curr_dir)
-		return (0);
 	stat(info->args[1], &statbuf);
 	if (!(statbuf.st_mode & S_IFDIR))
 	{
@@ -59,8 +56,10 @@ int	change_dir(t_data *info)
 		ft_putstr_fd(": Not a directory\n", 2);
 		return (1);
 	}
+	curr_dir = get_curdir();
+	if (!curr_dir)
+		return (0);
 	return_val = chdir(info->args[1]);
-	printf("return_val[%d]\n", return_val);
 	if (return_val == 0)
 	{
 		old_pwd_var = ft_strjoin("OLDPWD=", curr_dir);

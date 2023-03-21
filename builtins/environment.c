@@ -66,7 +66,7 @@ int	display_env(t_data *info, int export_type)
 	i = 0;
 	i2 = 0;
 	c = 34;
-	env = retrieve_env(info);
+	env = retrieve_env();
 	while (env[i] != NULL)
 	{
 		if (export_type)
@@ -87,14 +87,13 @@ int	display_env(t_data *info, int export_type)
 	return (1);
 }
 
-char	**retrieve_env(t_data *info)
+char	**retrieve_env()
 {
 	int		fd;
 	int		i;
 	char	*line;
 	char	*new_line;
 	char	**new_env;
-	(void) info;
 
 	// printf("open %s\n", g_env_dir);
 	fd = open(g_env_dir, O_RDWR);

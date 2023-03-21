@@ -64,7 +64,7 @@ int	export_env_function(t_data *info, char *new_var)
 		if (!change_env_variable(info, new_var))
 		{
 			printf("%s - created new\n", new_var);
-			curr_env = retrieve_env(info);
+			curr_env = retrieve_env();
 			i = 0;
 			while (curr_env[i] != NULL)
 				i++;
