@@ -6,7 +6,7 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 10:49:35 by leklund           #+#    #+#             */
-/*   Updated: 2023/03/21 13:08:59 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/21 18:46:37 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -18,7 +18,9 @@ int	echo(t_data *info)
 
 	i = 1;
 	new_line = 2;
-	if (info->args[i][0] == '-' && info->args[i][1] == 'n')
+	///bro i added the info->args[i] check into this vv while loop
+	//it was crashing when echo didn't have args >:(
+	if (info->args[i] && info->args[i][0] == '-' && info->args[i][1] == 'n')
 	{
 		while(info->args[i][new_line] == 'n')
 			new_line++;
