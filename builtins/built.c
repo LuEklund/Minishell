@@ -6,7 +6,7 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 10:49:35 by leklund           #+#    #+#             */
-/*   Updated: 2023/03/16 17:17:29 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/21 13:08:59 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int	echo(t_data *info)
 	}
 	if (new_line)
 		printf("\n");
-	return (1);
+	return (0);
 }
 
 int	execute_built(t_data *info)

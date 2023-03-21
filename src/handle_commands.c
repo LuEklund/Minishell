@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/17 17:38:38 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/21 13:05:22 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	syntax_error(t_data *info)
 	if (!info->buf)
 		return ;
 	info->return_val = 258;
-	printf("at index %zu\n:", help->i);
+//	printf("at index %zu\n:", help->i);
 	ft_putstr_fd(info->dino, 2);
 	ft_putstr_fd("syntax error near unexpected token `", 2);
 	if (!info->buf[help->i])
@@ -34,12 +34,14 @@ void	syntax_error(t_data *info)
 	free(help);
 }
 
-void	handle_pipe(t_data *info)
+int	handle_pipe(t_data *info, char *cmd_str)
 {
-	info->cmds = parse_split(info->buf, '|', info);
+	info->cmds = parse_split(cmd_str, '|', info);
+//	printf("1cmd here is '%s'\n", cmd_str);
 	if (init_pipes(info) < 0)
-		exit (2);	
+		exit (2);
 	info->envs = retrieve_env();
+//	printf("2cmd here is '%s'\n", cmd_str);
 	find_the_paths(info);
 	while (info->cmds[info->i])
 	{
@@ -52,19 +54,22 @@ void	handle_pipe(t_data *info)
 			break ;
 		info->kiddo[info->i] = fork();
 		if (info->kiddo[info->i] < 0)
-			return (ft_putendl_fd("stillbirth?????\n", 2));
+			exit(write(2, "forking errawr🦖\n", 16));	
 		if (info->kiddo[info->i] == 0)
 			the_kindergarden(info);
 		free_commands(info);
 		info->i += 1;
 	}
+//	printf("2.5cmd here is '%s'\n", cmd_str);
 	close_pipeline(info);
 	info->i = 0;
 	while ((waitpid(info->kiddo[info->i], &info->return_val, 0)) > 0)
 		info->i += 1;
+//	printf("3cmd here is '%s'\n", cmd_str);
 	free_ar(info->envs);
 	free(info->kiddo);
 	empty_redi_list(info);
+	return (info->return_val);
 }
 
 void	handle_buf(t_data *info)
@@ -90,11 +95,8 @@ void	handle_buf(t_data *info)
 		free(info->buf);
 		return ;
 	}
-	exit(0);
 	kid_signals(info);
-	if (!info->buf[i])
-		exit (0);
-	handle_pipe(info);
+	traveler(info->trinary_tree, info);
 	unlink(".dinoshell_heredoc373_tmp");
 	exit(info->return_val);
 }

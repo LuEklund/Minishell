@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 13:34:32 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/17 17:47:34 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/21 13:06:39 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int	error_parser(t_data *info)
 	info->buf = white_space_cleanse(info->buf, NULL, qts, 0);
 	if (!info->buf)
 		return (1);
-	printf("buf is '%s'\n", info->buf);
+//	printf("buf is '%s'\n", info->buf);
 	get_tokenized(help, info->buf, 1);
 	if (help->pipe + help->or + help->amper + help->and != 0 || help->par < 0)
 		return (1);
