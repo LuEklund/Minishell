@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 20:28:50 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/21 18:14:10 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ typedef struct s_cond
 	int				type;
 	int				ret;
 	char			*content;
+	struct s_cond	*up;
 	struct s_cond	*first_cond;
-	struct s_cond	*second_cond;
+	struct s_cond	*sec_cond;
+	struct s_cond	*back;
 	struct s_cond	*next;
 }	t_cond;
 
@@ -115,6 +117,7 @@ typedef struct s_data
 	int					hd;
 	int					q;
 	int					sq;
+	struct s_cond		*trinary_tree;
 	struct s_whelp		*wmark_list;
 	struct s_wild		*wild_list;
 	struct s_error		*error;
@@ -141,6 +144,7 @@ typedef struct s_split
 typedef struct s_error
 {
 	size_t	i;
+	int		rm_par;
 	int		token;
 	int		q;
 	int		sq;
@@ -164,10 +168,16 @@ void	print_list(t_whelp *current);
 ////
 
 //error_parser.c
+void	reset_token_val(t_error *help);
+void	get_tokenized(t_error *help, char *str, int var);
 int		error_parser(t_data *info);
 
 //and_or_lists.c
-void	check_and_or(t_data *info);
+void	traveler(t_cond *current, t_data *info);
+int		go_through_list(t_data *info);
+
+//trinary_tree.c
+t_cond	*create_level(char *str, t_cond *back, t_cond *up, int var);
 
 //kid_signals.c
 void	slashing(int signum);
@@ -204,6 +214,7 @@ int		expand_envs(const char *str, t_data *info, t_split *help, char **ans);
 int		redir_input_parser(const char *str, t_split *help);
 
 //handle_commands.c
+int		handle_pipe(t_data *info, char *cmd_str);
 void	handle_buf(t_data *info);
 
 //finding_execs.c
@@ -216,9 +227,6 @@ int		arguing(t_data *info);
 //piping.c
 int		get_duped(int read, int write);
 void	the_kindergarden(t_data *info);
-
-//trinary_tree.c
-void	create_list(char *str);
 
 //pipe_utils.c
 int		init_pipes(t_data *info);

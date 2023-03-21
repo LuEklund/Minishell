@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:21:18 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 16:08:16 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/21 13:06:22 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	redirection_parser(t_data *info, int i, int i2)
 {
 	while (info->cmds[i])
 	{
-		start_quotes(info, &i);
+		start_quotes(info, &i2);
 		info->red_n = 0;
 		while (info->cmds[i][i2])
 		{

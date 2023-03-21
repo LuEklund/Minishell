@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 12:22:20 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 19:36:49 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/21 13:14:10 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	bob_the_builtin(t_data *info)
 		info->built_exec = 1;
 	else if (info->built == 6 && info->i == 0 && !info->cmds[1])
 		info->built_exec = 1;
-	else
-		fake_it(info);
+//	else
+//		fake_it(info);
 	return (1);
 }
