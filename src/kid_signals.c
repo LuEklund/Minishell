@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:06:21 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 17:56:46 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 11:03:06 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,21 @@ void	parent_signals(t_data *info)
 	sigaction(SIGQUIT, &info->z_act, &info->old_act);
 	sigaction(SIGTSTP, &info->z_act, &info->old_act);
 	sigaction(SIGINT, &info->z_act, &info->old_act);
-	tcsetattr(g_important.safe_in, TCSAFLUSH, &g_important.old_term);
+	tcsetattr(info->safe_in, TCSAFLUSH, &info->old_term);
 	while ((wait(&info->return_val)) > 0)
 		;
 	info->return_val = WEXITSTATUS(info->return_val);
-	tcsetattr(g_important.safe_in, TCSAFLUSH, &info->new_term);
+	tcsetattr(info->safe_in, TCSAFLUSH, &info->new_term);
 	if (info->return_val == 130)
 		printf("\n");
 	if (info->return_val == 131)
 		printf("Quit: 3\n");
 	if (info->return_val == 69)
 		info->exit = 1;
+	if (info->return_val == 139)
+	{
+		ft_putstr_fd(info->dino, 2);
+		ft_putendl_fd("Segmentation fault: 11", 2);
+	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 10:49:35 by leklund           #+#    #+#             */
-/*   Updated: 2023/03/21 18:46:37 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 11:11:42 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -57,6 +57,12 @@ int	execute_built(t_data *info)
 	{
 		// printf("display_curdir\n\r");
 		return (display_curdir());
+	}
+	else if (info->built == 4)
+	{
+		if (info->args[1])
+			return (ft_atoi(info->args[1]));
+		return (info->return_val);
 	}
 	else if (info->built == 5)
 	{

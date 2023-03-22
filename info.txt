@@ -7,3 +7,4 @@ cd doesn't work in the child process
 lol segfaults if no || or &&
 on my version echo didn't work properly without args
 lucas was not protecting the echo function's first while loop....
+exit doesn't work with args,,, didn't realize that was a thing

@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 17:23:00 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 12:32:39 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 11:24:34 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	the_handler(t_data info)
 	write(1, "\x1b[11C", 5);
 	write(1, "exit\n", 5);
 	get_outed(info);
-	exit(0);
+	exit(info.return_val);
 }
 
 void	i_c(int signum)
@@ -55,14 +55,35 @@ void	init_values(t_data *info)
 	ft_strlcpy(info->dino, "\033[0;31mDinoshell: \033[0m", 25);
 	info->fd_in = 0;
 	info->fd_out = 1;
-	g_important.safe_out = dup(1);
-	g_important.safe_in = dup(0);
+	info->safe_out = dup(1);
+	info->safe_in = dup(0);
 	info->return_val = 0;
 	info->exit = 0;
-	tcgetattr(g_important.safe_in, &g_important.old_term);
-	info->new_term = g_important.old_term;
+	tcgetattr(info->safe_in, &info->old_term);
+	info->new_term = info->old_term;
 	info->new_term.c_lflag &= ~(ECHOCTL);
-	tcsetattr(g_important.safe_in, TCSAFLUSH, &info->new_term);
+	tcsetattr(info->safe_in, TCSAFLUSH, &info->new_term);
+}
+
+void	find_pos(t_data *info)
+{
+	char	buf[32];
+	size_t	i;
+
+	(void)info;
+	i = 0;
+	if (write(1, "\x1b[6n", 4) != 4)
+		return ;
+	while (i < sizeof(buf) - 1)
+	{
+		if (read(0, &buf[i], 1) != 1)
+			break ;
+		if (buf[i] == 'R')
+			break ;
+		i++;
+	}
+	buf[i] = '\0';
+	printf("\n&buf[1]: '%s'\n", &buf[1]);
 }
 
 int main(int ac, char **av, char **ev)
@@ -78,6 +99,7 @@ int main(int ac, char **av, char **ev)
 	{
 		set_signals(&info);
 		info.buf = readline("\033[0;32mDinoshell>\033[0m ");
+	//	find_pos(&info);
 		if (info.buf)
 		{
 			handle_buf(&info);
@@ -92,5 +114,5 @@ int main(int ac, char **av, char **ev)
 		free(info.history_buf);
 	ft_putstr_fd("\033[0;95mexit\033[0m 🦕\n", 2);
 	get_outed(info);
-	return (0);
+	return (info.return_val);
 }

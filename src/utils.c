@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 19:47:06 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 12:32:50 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/21 19:12:06 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ void	free_ar(char **ar)
 
 void	get_outed(t_data info)
 {
-	get_duped(g_important.safe_in, g_important.safe_out);
+	get_duped(info.safe_in, info.safe_out);
 	close(info.fd_in);
 	close(info.fd_out);
 	unlink(".dinoshell_heredoc373_tmp");
 	unlink(".dinoshell_env777_tmp");
-	tcsetattr(g_important.safe_in, TCSAFLUSH, &g_important.old_term);
+	tcsetattr(info.safe_in, TCSAFLUSH, &info.old_term);
 }
 
 void	empty_redi_list(t_data *info)

@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:21:18 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 13:06:22 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/21 19:33:06 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ void	new_redi_node(t_data *info, int type, int i, int *i2)
 	info->red_n += 1;
 }
 
-void	start_quotes(t_data *info, int *i)
+void	start_quotes(t_data *info, int i, int *i2)
 {
-	if (info->cmds[*i][0] == '\'')
+	if (info->cmds[i][0] == '\'')
 		info->sq = 1;
-	else if (info->cmds[*i][0] == '\"')
+	else if (info->cmds[i][0] == '\"')
 		info->q = 1;
 	else
 	{
@@ -62,7 +62,7 @@ void	start_quotes(t_data *info, int *i)
 		info->q = 0;
 		return ;
 	}
-	*i += 1;
+	*i2 += 1;
 }
 
 //////
@@ -98,7 +98,7 @@ int	redirection_parser(t_data *info, int i, int i2)
 {
 	while (info->cmds[i])
 	{
-		start_quotes(info, &i2);
+		start_quotes(info, i, &i2);
 		info->red_n = 0;
 		while (info->cmds[i][i2])
 		{

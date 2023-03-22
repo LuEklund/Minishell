@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 18:02:20 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 11:03:45 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ int	handle_pipe(t_data *info, char *cmd_str)
 //	printf("1cmd here is '%s'\n", cmd_str);
 	if (init_pipes(info) < 0)
 		exit (2);
-	info->envs = retrieve_env();
 //	printf("2cmd here is '%s'\n", cmd_str);
+	info->envs = retrieve_env();
+//	printf("3cmd here is '%s'\n", cmd_str);
 	find_the_paths(info);
 	while (info->cmds[info->i])
 	{

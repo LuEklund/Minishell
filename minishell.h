@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 18:14:10 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/21 19:06:36 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,6 @@
 
 // GLobal for now
 char	*g_env_dir;
-
-typedef struct s_exit
-{
-	int	safe_in;
-	int	safe_out;
-	struct termios		old_term;
-}	t_exit;
-
-t_exit	g_important;
 
 typedef struct s_cond
 {
@@ -86,11 +77,13 @@ typedef struct s_redi
 
 typedef struct s_data
 {
+	struct termios		old_term;
 	struct termios		new_term;
 	struct sigaction	quit;
 	struct sigaction	old_act;
 	struct sigaction	z_act;
-	struct sigaction	terminate;
+	int					safe_in;
+	int					safe_out;
 	char				dino[19];
 	char				**envs;
 	char				**paths;
