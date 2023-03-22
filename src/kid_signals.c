@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:06:21 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 17:56:46 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 11:29:46 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,13 @@ void	parent_signals(t_data *info)
 	if (info->return_val == 130)
 		printf("\n");
 	if (info->return_val == 131)
-		printf("Quit: 3\n");
+		ft_putstr_fd("Quit: 3\n", 2);
 	if (info->return_val == 69)
 		info->exit = 1;
+	if (info->return_val == 139)
+	{
+		ft_putstr_fd(info->dino, 2);
+		ft_putendl_fd("segmentation fault: 11", 2);
+	}
 }
 

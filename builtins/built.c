@@ -6,7 +6,7 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 10:49:35 by leklund           #+#    #+#             */
-/*   Updated: 2023/03/21 13:08:59 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 11:26:40 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -18,7 +18,7 @@ int	echo(t_data *info)
 
 	i = 1;
 	new_line = 2;
-	if (info->args[i][0] == '-' && info->args[i][1] == 'n')
+	if (info->args[i] && info->args[i][0] == '-' && info->args[i][1] == 'n')
 	{
 		while(info->args[i][new_line] == 'n')
 			new_line++;
