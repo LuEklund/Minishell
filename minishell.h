@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/22 14:15:01 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 15:48:59 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_data
 	struct sigaction	seg_act;
 	struct sigaction	terminate;
 	char				dino[19];
+	int					pos;
 	char				**envs;
 	char				**paths;
 	char				*buf;

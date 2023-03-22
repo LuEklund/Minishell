@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 17:23:00 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/22 13:08:25 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 16:00:08 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,16 @@
 
 void	the_handler(t_data info)
 {
+	int	i;
+
+	i = 1;
 	write(1, "\x1b[A", 3);
 	write(1, "\x1b[11C", 5);
+	while (i != info.pos)
+	{
+		write(1, "\x1b[1C", 5);
+		i++;
+	}
 	write(1, "exit\n", 5);
 	get_outed(info);
 	exit(0);
@@ -61,8 +69,40 @@ void	init_values(t_data *info)
 	info->exit = 0;
 	tcgetattr(g_important.safe_in, &g_important.old_term);
 	info->new_term = g_important.old_term;
-	info->new_term.c_lflag &= ~(ECHOCTL);
+	info->new_term.c_lflag &= ~(ECHOCTL | ICANON);
 	tcsetattr(g_important.safe_in, TCSAFLUSH, &info->new_term);
+}
+
+void	find_pos(t_data *info)
+{
+	char			buf[32];
+	unsigned int	i;
+	unsigned int	i2;
+	char			help[10];
+
+	i = 0;
+	if (write(1, "\x1b[6n", 4) != 4)
+		return ; //error
+	while (i < sizeof(buf) - 1)
+	{
+		if (read(0, &buf[i], 1) != 1)
+			break ;
+		if (buf[i] == 'R')
+			break ;
+		i++;
+	}
+	buf[i] = '\0';
+//	printf("'%s'\n", &buf[1]);
+	i2 = 1;
+	i = 1;
+	while (buf[i2] && buf[i2] != 'R')
+		i2++;
+	while (buf[i] && buf[i] != ';')
+		i++;
+	ft_strlcpy(help, buf + i + 1, i2 - i + 1);
+//	printf("'%s'\n", help);
+	info->pos = ft_atoi(help);
+//	ft_putnbr_fd(info->pos, 2);
 }
 
 int main(int ac, char **av, char **ev)
@@ -77,10 +117,10 @@ int main(int ac, char **av, char **ev)
 	while (37)
 	{
 		set_signals(&info);
+		find_pos(&info);
 		info.buf = readline("\033[0;32mDinoshell>\033[0m ");
 		if (info.buf)
 		{
-	//		printf("hi\n");
 			handle_buf(&info);
 			if (info.exit)
 				break ;
