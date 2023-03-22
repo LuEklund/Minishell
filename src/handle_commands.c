@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/22 13:10:04 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 14:08:01 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,9 @@ void	handle_buf(t_data *info)
 //	printf("5\n");
 	if (info->trinary_tree)
 		traveler(info->trinary_tree, info);
-//	printf("7\n");
 	unlink(".dinoshell_heredoc373_tmp");
-	if (info->return_val != 127 && info->return_val != 11)
+	if (info->return_val != 127 && info->return_val != 6 \
+			&& info->return_val != 10 && info->return_val != 11)
 		info->return_val = WEXITSTATUS(info->return_val);
 	exit(info->return_val);
 }

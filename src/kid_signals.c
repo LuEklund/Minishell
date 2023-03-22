@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:06:21 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/22 13:13:30 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 14:16:38 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	kid_c(int signum)
 void	seg_fault(int signum)
 {
 	(void)signum; ///might be useless??
+	printf("hiii\n");
+
 	exit(139);
 }
 
@@ -53,6 +55,7 @@ void	parent_signals(t_data *info)
 	tcsetattr(g_important.safe_in, TCSAFLUSH, &g_important.old_term);
 	while ((wait(&info->return_val)) > 0)
 		;
+//	printf("ret is %d\n", info->return_val);
 	info->return_val = WEXITSTATUS(info->return_val);
 	tcsetattr(g_important.safe_in, TCSAFLUSH, &info->new_term);
 	if (info->return_val == 130)
@@ -61,7 +64,21 @@ void	parent_signals(t_data *info)
 		ft_putstr_fd("Quit: 3\n", 2);
 	if (info->return_val == 69)
 		info->exit = 1;
-	if (info->return_val == 139 || info->return_val == 11)
+	if (info->return_val == 11)
+	{
 		ft_putendl_fd("Segmentation fault: 11", 2);
+		info->return_val = 139;
+	}
+	if (info->return_val == 6)
+	{
+		ft_putendl_fd("Abort trap: 6", 2);
+		info->return_val = 134;
+	}
+	if (info->return_val == 10)
+	{
+		ft_putendl_fd("Bus error: 10", 2);
+		info->return_val = 138;
+	}
+
 }
 
