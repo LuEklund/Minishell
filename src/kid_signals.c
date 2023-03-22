@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:06:21 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/22 14:16:38 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 15:22:21 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,6 @@ void	kid_c(int signum)
 	exit(130);
 }
 
-void	seg_fault(int signum)
-{
-	(void)signum; ///might be useless??
-	printf("hiii\n");
-
-	exit(139);
-}
-
 void	kid_signals(t_data *info)
 {
 	sigemptyset(&info->quit.sa_mask);
@@ -40,10 +32,6 @@ void	kid_signals(t_data *info)
 	sigemptyset(&info->z_act.sa_mask);
 	info->z_act.sa_handler = slashing;
 	sigaction(SIGQUIT, &info->z_act, &info->old_act);
-//	sigemptyset(&info->seg_act.sa_mask);
-//	info->seg_act.sa_handler = seg_fault;
-//	sigaction(SIGSEGV, &info->seg_act, &info->old_act);
-
 }
 
 void	parent_signals(t_data *info)
