@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:06:21 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/22 11:29:46 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 13:13:30 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ void	kid_c(int signum)
 	exit(130);
 }
 
+void	seg_fault(int signum)
+{
+	(void)signum; ///might be useless??
+	exit(139);
+}
 
 void	kid_signals(t_data *info)
 {
@@ -33,6 +38,10 @@ void	kid_signals(t_data *info)
 	sigemptyset(&info->z_act.sa_mask);
 	info->z_act.sa_handler = slashing;
 	sigaction(SIGQUIT, &info->z_act, &info->old_act);
+//	sigemptyset(&info->seg_act.sa_mask);
+//	info->seg_act.sa_handler = seg_fault;
+//	sigaction(SIGSEGV, &info->seg_act, &info->old_act);
+
 }
 
 void	parent_signals(t_data *info)
@@ -52,10 +61,7 @@ void	parent_signals(t_data *info)
 		ft_putstr_fd("Quit: 3\n", 2);
 	if (info->return_val == 69)
 		info->exit = 1;
-	if (info->return_val == 139)
-	{
-		ft_putstr_fd(info->dino, 2);
-		ft_putendl_fd("segmentation fault: 11", 2);
-	}
+	if (info->return_val == 139 || info->return_val == 11)
+		ft_putendl_fd("Segmentation fault: 11", 2);
 }
 

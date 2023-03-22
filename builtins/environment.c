@@ -6,7 +6,7 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:02:28 by leklund           #+#    #+#             */
-/*   Updated: 2023/03/06 11:48:39 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 13:04:35 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -124,6 +124,7 @@ char	**retrieve_env()
 		}
 		new_line = (char *)malloc(sizeof(char) * (ft_strlen(line)));
 		ft_strlcpy(new_line, line, ft_strlen(line));
+//		printf("new_line '%s'\n", new_line);
 		free(line);
 		new_env[i] = new_line;
 		i++;

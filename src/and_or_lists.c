@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 21:04:12 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 18:06:16 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 13:05:06 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ void	print_tree(t_cond *head, int b, int sub_b, int level)
 
 void	exec_node(t_cond *current, t_data *info)
 {
+//	printf("executing\n");
 	current->ret = handle_pipe(info, current->content);
+//	printf("executed\n");
 	info->return_val = current->ret;
 	while (current->up)
 	{
@@ -69,6 +71,7 @@ int	go_through_list(t_data *info)
 
 	i = 0;
 	str = ft_strdup(info->buf);
+//	printf("str is '%s'\n", str);
 	while (str[i] && (str[i] == '(' || str[i] == ')'))
 		i++;
 	if (!str[i])

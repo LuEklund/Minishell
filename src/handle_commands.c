@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 18:02:20 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 13:10:04 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	handle_pipe(t_data *info, char *cmd_str)
 	info->i = 0;
 	while ((waitpid(info->kiddo[info->i], &info->return_val, 0)) > 0)
 		info->i += 1;
+//	printf("exit is %d\n", info->return_val);
 //	printf("3cmd here is '%s'\n", cmd_str);
 	free_ar(info->envs);
 	free(info->kiddo);
@@ -81,25 +82,32 @@ void	handle_buf(t_data *info)
 	info->history_buf = ft_strdup(info->buf);
 	if (!info->history_buf)
 		exit(write(2, "memory error\n", 13));
+//	printf("1\n");
 	if (error_parser(info))
 		return (syntax_error(info));
+//	printf("2\n");
 	free(info->error);
 	go_through_list(info);
+//	printf("3\n");
 	kiddo = fork();
+//	printf("4\n");
 	if (kiddo < 0)
 		exit(write(2, "child process error\n", 19));
 	if (kiddo)
 	{
+//		printf("6\n");
 		parent_signals(info);
 		close_pipeline(info); //////does it work????
 		free(info->buf);
 		return ;
 	}
 	kid_signals(info);
+//	printf("5\n");
 	if (info->trinary_tree)
 		traveler(info->trinary_tree, info);
+//	printf("7\n");
 	unlink(".dinoshell_heredoc373_tmp");
-	if (info->return_val != 127)
+	if (info->return_val != 127 && info->return_val != 11)
 		info->return_val = WEXITSTATUS(info->return_val);
 	exit(info->return_val);
 }
