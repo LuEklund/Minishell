@@ -14,16 +14,8 @@
 
 void	the_handler(t_data info)
 {
-	int	i;
-
-	i = 1;
 	write(1, "\x1b[A", 3);
 	write(1, "\x1b[11C", 5);
-	while (i != info.pos)
-	{
-		write(1, "\x1b[1C", 4);
-		i++;
-	}
 	write(1, "exit\n", 5);
 	get_outed(info);
 	exit(0);
@@ -69,7 +61,7 @@ void	init_values(t_data *info)
 	info->exit = 0;
 	tcgetattr(g_important.safe_in, &g_important.old_term);
 	info->new_term = g_important.old_term;
-	info->new_term.c_lflag &= ~(ECHOCTL | ICANON);
+	info->new_term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(g_important.safe_in, TCSAFLUSH, &info->new_term);
 }
 
@@ -117,7 +109,7 @@ int main(int ac, char **av, char **ev)
 	while (37)
 	{
 		set_signals(&info);
-		find_pos(&info);
+	//	find_pos(&info);
 		info.buf = readline("\033[0;32mDinoshell>\033[0m ");
 		if (info.buf)
 		{

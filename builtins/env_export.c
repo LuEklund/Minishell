@@ -28,10 +28,10 @@ static int	contain_flag(t_data *info, char *var)
 
 int	env_error_handler(t_data *info, char *new_var, char *type)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	if(new_var[i] == '=')
+	if (new_var[i] == '=')
 		i = -1;
 	while ((i == -1) || (new_var[i] && new_var[i] != '='))
 	{

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 // -9223372036854775808
+// 9223372036854775807
 long long	built_exit(t_data *info)
 {
 	long long	return_val;
@@ -31,6 +32,7 @@ long long	built_exit(t_data *info)
 	}
 	if (info->args[2])
 	{
+		info->exit = 0;
 		ft_putstr_fd(info->dino, 2);
 		ft_putstr_fd("exit: too many arguments\n", 2);
 		return (1);

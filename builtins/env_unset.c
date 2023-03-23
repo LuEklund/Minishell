@@ -34,7 +34,8 @@ int	unset_env_function(t_data *info, char *rm_var)
 	while (curr_env[i] != NULL)
 	{
 		if (!ft_strncmp(curr_env[i], rm_var, ft_strlen(rm_var))
-			|| (find_equal_sign(rm_var) && !ft_strncmp(curr_env[i], rm_var, find_equal_sign(rm_var))))
+			|| (find_equal_sign(rm_var)
+				&& !ft_strncmp(curr_env[i], rm_var, find_equal_sign(rm_var))))
 			removeable = i;
 		i++;
 	}
