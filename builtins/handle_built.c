@@ -55,7 +55,7 @@ int	bob_the_builtin(t_data *info)
 	else if (info->built == 2 && info->i == 0 && !info->cmds[1])
 		info->built_exec = 1;
 	else if (info->built == 4 && info->i == 0 && !info->cmds[1])
-		exit(69);
+		exit (69);
 	else if (info->built == 5 && info->i == 0 && !info->cmds[1])
 		info->built_exec = 1;
 	else if (info->built == 6 && info->i == 0 && !info->cmds[1])

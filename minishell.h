@@ -250,7 +250,8 @@ char	**parse_split(char const *str, char c, t_data *info);
 //Builtins
 
 //bulit.c
-int		execute_built(t_data *info);
+long long	built_exit(t_data *info);
+int			execute_built(t_data *info);
 
 //directory.c
 int		display_curdir();
@@ -273,7 +274,10 @@ int		change_env_variable(t_data *info, char *var);
 int		make_env_file_first_time(t_data *info, char **env_to_copy);
 int		make_env_file(t_data *info, char **env_to_copy);
 int		display_env(t_data *info, int export_type);
-char	**retrieve_env();
+char	**retrieve_env(void);
+
+//exit_val_calc.c
+long long 		exit_atoi(t_data *info, int *sign);
 
 //handle_built.c
 void	is_built_in(t_data *info);
