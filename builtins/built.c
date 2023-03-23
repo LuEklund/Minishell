@@ -6,7 +6,7 @@
 /*   By: leklund <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 10:49:35 by leklund           #+#    #+#             */
-/*   Updated: 2023/03/22 11:26:40 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 11:40:58 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -20,7 +20,7 @@ long long	built_exit(t_data *info)
 		return (0);
 	sign = 1;
 	return_val = exit_atoi(info, &sign);
-	// printf("recived-NUM[%lld]\n", return_val);
+//	 printf("recived-NUM[%lld]\n", return_val);
 	if (return_val < 0)
 	{
 		ft_putstr_fd(info->dino, 2);

@@ -25,7 +25,7 @@ void	print_tree(t_cond *head, int b, int sub_b, int level)
 		return ;
 	print_tree(head->first_cond, b, sub_b, level + 1);
 	print_node(head, b, sub_b, level);
-	print_tree(head->sec_cond, b, sub_b + 1, level);
+	print_tree(head->sec_cond, b, sub_b + 1, level);//
 	print_tree(head->next, b + 1, sub_b, level);
 }
 

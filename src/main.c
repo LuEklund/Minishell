@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 17:23:00 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/22 16:45:48 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 11:37:38 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,5 @@ int main(int ac, char **av, char **ev)
 		free(info.history_buf);
 	ft_putstr_fd("\033[0;95mexit\033[0m 🦕\n", 2);
 	get_outed(info);
-	return (0);
+	return (info.return_val);
 }

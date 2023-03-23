@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 12:22:20 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 13:14:10 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 11:39:45 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	work_built(t_data *info, char **args)
 	{
 		info->exit = 1;
 		info->return_val = built_exit(info);
+//		printf("ret here is %d\n", info->return_val);
 	}
 	else if (info->built == 5)
 		info->return_val = env_unset(info, NULL);

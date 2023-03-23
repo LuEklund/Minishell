@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/22 16:25:27 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 11:34:44 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,7 @@ int		redir_input_parser(const char *str, t_split *help);
 
 //handle_commands.c
 int		handle_pipe(t_data *info, char *cmd_str);
+int		work_pipe(t_data *info, char *cmd_chain);
 void	handle_buf(t_data *info);
 
 //finding_execs.c
@@ -282,6 +283,7 @@ char	**retrieve_env(void);
 long long 		exit_atoi(t_data *info, int *sign);
 
 //handle_built.c
+void	work_built(t_data *info, char **args);
 void	is_built_in(t_data *info, char *arg);
 int		bob_the_builtin(t_data *info);
 

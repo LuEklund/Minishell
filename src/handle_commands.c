@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/22 15:22:04 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 11:34:23 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,13 @@ int	handle_pipe(t_data *info, char *cmd_str)
 	return (info->return_val);
 }
 
-void	work_pipe(t_data *info, char *cmd_chain)
+int	work_pipe(t_data *info, char *cmd_chain)
 {
+	pid_t	kiddo;
+
 	/////check cd && unset && export && exit
 	if (check_if_child(info, cmd_chain))
-		return ;
+		return (info->return_val);
 	kiddo = fork();
 	if (kiddo < 0)
 		exit(write(2, "child process error\n", 19));
@@ -112,7 +114,7 @@ void	work_pipe(t_data *info, char *cmd_chain)
 		parent_signals(info);
 		close_pipeline(info); //////does it work????
 		free(info->buf);
-		return ;
+		return (info->return_val);
 	}
 	kid_signals(info);
 	handle_pipe(info, cmd_chain);
@@ -126,7 +128,6 @@ void	work_pipe(t_data *info, char *cmd_chain)
 void	handle_buf(t_data *info)
 {
 	int		i;
-	pid_t	kiddo;
 
 	i = 0;
 	info->history_buf = ft_strdup(info->buf);
