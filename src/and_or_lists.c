@@ -32,7 +32,7 @@ void	print_tree(t_cond *head, int b, int sub_b, int level)
 void	exec_node(t_cond *current, t_data *info)
 {
 //	printf("executing\n");
-	current->ret = handle_pipe(info, current->content);
+	current->ret = work_pipe(info, current->content);
 //	printf("executed\n");
 	info->return_val = current->ret;
 	while (current->up)

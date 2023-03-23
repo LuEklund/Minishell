@@ -111,12 +111,9 @@ int	arguing(t_data *info)
 	info->cmd_to_use = NULL;
 	info->args = parse_split(info->cmds[info->i], ' ', info);
 	wild_card_check(info);
-	is_built_in(info);
+	is_built_in(info, info->args[0]);
 	if (info->built)
-	{
-		bob_the_builtin(info);
 		return (0);
-	}
 	find_execs(info);
 	if (!info->cmd_to_use)
 		return (1);

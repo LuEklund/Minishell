@@ -12,6 +12,32 @@
 
 #include "../minishell.h"
 
+int	check_if_child(t_data *info, char *str)
+{
+	char	**pipes;
+	char	**no_space;
+	size_t	x;
+	size_t	y;
+
+	x = 0;
+	y = 0;
+	pipes = parse_split(str, '|', info);
+	if (!pipes)
+		exit(write(2, "memory errawr🦖\n", 15));
+	while (pipes[y])
+		y++;
+	if (y > 1)
+		return (free_ar(pipes), 0);
+	no_space = parse_split(pipes[0], ' ', info);
+	free_ar(pipes);
+	is_built_in(info, no_space[0]);
+	if (!(info->built == 2 || info->built == 4 || \
+	info->built == 5 || info->built == 6))
+		return (free_ar(no_space), 0);
+	work_built(info, no_space);
+	return (1);
+}
+
 void	syntax_error(t_data *info)
 {
 	t_error	*help;
@@ -73,6 +99,30 @@ int	handle_pipe(t_data *info, char *cmd_str)
 	return (info->return_val);
 }
 
+void	work_pipe(t_data *info, char *cmd_chain)
+{
+	/////check cd && unset && export && exit
+	if (check_if_child(info, cmd_chain))
+		return ;
+	kiddo = fork();
+	if (kiddo < 0)
+		exit(write(2, "child process error\n", 19));
+	if (kiddo)
+	{
+		parent_signals(info);
+		close_pipeline(info); //////does it work????
+		free(info->buf);
+		return ;
+	}
+	kid_signals(info);
+	handle_pipe(info, cmd_chain);
+	unlink(".dinoshell_heredoc373_tmp");
+	if (info->return_val != 127 && info->return_val != 6 \
+			&& info->return_val != 10 && info->return_val != 11)
+		info->return_val = WEXITSTATUS(info->return_val);
+	exit(info->return_val);
+}
+
 void	handle_buf(t_data *info)
 {
 	int		i;
@@ -82,32 +132,10 @@ void	handle_buf(t_data *info)
 	info->history_buf = ft_strdup(info->buf);
 	if (!info->history_buf)
 		exit(write(2, "memory error\n", 13));
-//	printf("1\n");
 	if (error_parser(info))
 		return (syntax_error(info));
-//	printf("2\n");
 	free(info->error);
 	go_through_list(info);
-//	printf("3\n");
-	kiddo = fork();
-//	printf("4\n");
-	if (kiddo < 0)
-		exit(write(2, "child process error\n", 19));
-	if (kiddo)
-	{
-//		printf("6\n");
-		parent_signals(info);
-		close_pipeline(info); //////does it work????
-		free(info->buf);
-		return ;
-	}
-	kid_signals(info);
-//	printf("5\n");
 	if (info->trinary_tree)
 		traveler(info->trinary_tree, info);
-	unlink(".dinoshell_heredoc373_tmp");
-	if (info->return_val != 127 && info->return_val != 6 \
-			&& info->return_val != 10 && info->return_val != 11)
-		info->return_val = WEXITSTATUS(info->return_val);
-	exit(info->return_val);
 }

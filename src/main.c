@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 17:23:00 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/22 16:00:08 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 16:45:48 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	the_handler(t_data info)
 	write(1, "\x1b[11C", 5);
 	while (i != info.pos)
 	{
-		write(1, "\x1b[1C", 5);
+		write(1, "\x1b[1C", 4);
 		i++;
 	}
 	write(1, "exit\n", 5);

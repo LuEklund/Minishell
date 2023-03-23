@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/22 15:48:59 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/22 16:25:27 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,7 +278,7 @@ int		display_env(t_data *info, int export_type);
 char	**retrieve_env();
 
 //handle_built.c
-void	is_built_in(t_data *info);
+void	is_built_in(t_data *info, char *arg);
 int		bob_the_builtin(t_data *info);
 
 

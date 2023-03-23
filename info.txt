@@ -6,3 +6,4 @@ try 'cat /dev/urandom and spamming ctrl-c until it stops'
 cd doesn't work in the child process
 lol segfaults if no || or &&
 on my version echo didn't work properly without args
+'cat < file a b' doesn't work like it's supposed to
