@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 13:10:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 12:57:18 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 17:20:54 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	test_access(t_data *info, char *str)
 
 	i = 0;
 	info->check = 0;
-	while (info->paths[i] && !(info->check))
+	while (info->paths && info->paths[i] && !(info->check))
 	{
 		info->cmd_to_use = ft_strjoin(info->paths[i], str);
 		if (!info->cmd_to_use)

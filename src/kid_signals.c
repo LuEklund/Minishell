@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:06:21 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/23 17:01:08 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 17:18:29 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,13 @@ void	parent_signals(t_data *info)
 	while ((wait(&info->return_val)) > 0)
 		;
 //	printf("ret is %d\n", info->return_val);
-	info->return_val = WEXITSTATUS(info->return_val);
+	if (info->return_val != 11 && info->return_val != 10)
+		info->return_val = WEXITSTATUS(info->return_val);
 	tcsetattr(g_important.safe_in, TCSAFLUSH, &info->new_term);
 	if (info->return_val == 130)
 		printf("\n");
 	if (info->return_val == 131)
 		ft_putstr_fd("Quit: 3\n", 2);
-	if (info->return_val == 69)
-		info->exit = 1;
 	if (info->return_val == 11)
 	{
 		ft_putendl_fd("Segmentation fault: 11", 2);
