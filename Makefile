@@ -43,7 +43,8 @@ _BUILTIN :=  built.c \
 				environment.c \
 				env_utils.c \
 				env_unset.c \
-				env_export.c
+				env_export.c \
+				exit_val_calc.c
 
 ALL_SRCS :=	$(addprefix $(SRCS_DIR), $(_SRCS)) \
 			$(addprefix $(BUILTIN_DIR), $(_BUILTIN))

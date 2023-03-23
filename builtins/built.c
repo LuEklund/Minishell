@@ -10,6 +10,35 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
+// -9223372036854775808
+long long	built_exit(t_data *info)
+{
+	long long	return_val;
+	int			sign;
+
+	if (!info->args[1])
+		return (0);
+	sign = 1;
+	return_val = exit_atoi(info, &sign);
+	// printf("recived-NUM[%lld]\n", return_val);
+	if (return_val < 0)
+	{
+		ft_putstr_fd(info->dino, 2);
+		ft_putstr_fd("exit: ", 2);
+		ft_putstr_fd(info->args[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		return (return_val);
+	}
+	if (info->args[2])
+	{
+		ft_putstr_fd(info->dino, 2);
+		ft_putstr_fd("exit: too many arguments\n", 2);
+		return (1);
+	}
+	if (sign == -2)
+		return (0);
+	return (return_val * sign);
+}
 
 int	echo(t_data *info)
 {
@@ -55,6 +84,10 @@ int	execute_built(t_data *info)
 	{
 		// printf("display_curdir\n\r");
 		return (display_curdir());
+	}
+	else if (info->built == 4)
+	{
+		return(built_exit(info));
 	}
 	else if (info->built == 5)
 	{
