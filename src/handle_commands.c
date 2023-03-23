@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/23 15:03:35 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 17:00:02 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	syntax_error(t_data *info)
 int	handle_pipe(t_data *info, char *cmd_str)
 {
 	info->cmds = parse_split(cmd_str, '|', info);
+	//	print_ar(info->cmds); /////
 //	printf("1cmd here is '%s'\n", cmd_str);
 	if (init_pipes(info) < 0)
 		exit (2);
@@ -76,7 +77,7 @@ int	handle_pipe(t_data *info, char *cmd_str)
 			info->i += 1;
 			continue ;
 		}
-	//	print_ar(info->args); /////
+//		print_ar(info->args); /////
 		if (info->exit)
 			break ;
 		info->kiddo[info->i] = fork();
@@ -114,7 +115,7 @@ int	work_pipe(t_data *info, char *cmd_chain)
 	{
 		parent_signals(info);
 		close_pipeline(info); //////does it work????
-		free(info->buf);
+		free(cmd_chain);
 		return (info->return_val);
 	}
 	kid_signals(info);

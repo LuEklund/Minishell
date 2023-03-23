@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 21:04:12 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/22 13:05:06 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 16:13:03 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	traveler(t_cond *current, t_data *info)
 		current->next->ret = current->ret;
 		traveler(current->next, info);
 	}
-
 }
 
 int	go_through_list(t_data *info)
