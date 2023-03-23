@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:07:38 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/23 14:55:13 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 16:59:50 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,19 +252,26 @@ char	**parse_split(char const *str, char c, t_data *info)
 	char	**ans;
 	t_split	help;
 
-	info->split = &help;
-	init_help(info, c, str);
 	if (str == NULL)
 		return (NULL);
-	h = string_amount(str, help, 1, help.sq + help.q);
+	info->split = &help;
+	init_help(info, c, str);
+	if (str && str[0] == '\'')
+		help.sq = 1;
+	else if (str && str[0] == '\"')
+		help.q = 1;
+	if (c == ' ')
+		h = string_amount(str, help, 1, help.sq + help.q);
+	else
+		h = string_amount(str, help, 1, 0);
 //	printf("h is %d\n", h);
 	ans = (char **) malloc(sizeof(char *) * (h + 1));
 	if (ans == NULL)
 		return (NULL);
 	ans[h] = 0;
 	help.h = h;
-	help.q = 0;
-	help.sq = 0;
+	if (c == ' ')
+		help.i3 = help.sq + help.q;
 	ans = ansllocator(ans, str, info, *(info->split));
 	ans = check_malloc(ans, h);
 	if (ans == NULL)
