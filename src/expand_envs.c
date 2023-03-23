@@ -46,7 +46,7 @@ int	return_value(t_data *info, t_split *help, char const *str, char **ans)
 	len = 1;
 	ret = 258;
 	if (help->expand_type > 1)
-		return (redir_input_parser(str, help));
+		return (redir_input_parser(str, help, 1));
 	if (info->return_val != 258)
 		ret = info->return_val % 255;
 	if (ret < 0)

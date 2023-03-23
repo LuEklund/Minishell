@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:07:38 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 16:29:44 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 14:55:13 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,20 @@ int	expand_check(char const *str, t_split *help)
 	return (1);
 }
 
-int	red_c(char const *str, t_split *help, int i, int h)
+int	red_c(char const *str, t_split *help, int i)
 {
+	int	safe;
+
+	safe = i;
 	if (help->c != ' ')
 		return (quote_check(str, i, &help->q, &help->sq));
 	help->i3 = i;
 	expand_check(str, help);
 	if (help->expand_type != 3 && help->expand_type != 2)
 		return (quote_check(str, i, &help->q, &help->sq));
-	if (!redir_input_parser(str, help))
+	if (!redir_input_parser(str, help, 0))
 		return (quote_check(str, i, &help->q, &help->sq));
-	if (h == 1)
+	if (!safe)
 		help->i3 += 1;
 	return (help->i3);
 }
@@ -122,7 +125,7 @@ static int	string_amount(char const *str, t_split help, int ans, int i)
 	while (str[i] != '\0')
 	{
 		if (str[i] != '\0')
-			i = red_c(str, &help, i, ans);
+			i = red_c(str, &help, i);
 		while (str[i] == help.c)
 		{
 			if (str[i + 1] != '\0' && str[i + 1] != help.c && str[i + 1] != '>' \
@@ -163,6 +166,7 @@ static char	**ansllocator(char **ans, char const *str, t_data *info, t_split he)
 		}
 		he.l = he.i - he.h2;
 		he.h2 = he.h2 + he.l;
+	//	printf("len for height[%d] is %d\n", he.i2, he.l);
 		ans[he.i2] = (char *) malloc (sizeof(char) * (he.l + 1));
 		he.i2 += 1;
 	}
@@ -253,6 +257,7 @@ char	**parse_split(char const *str, char c, t_data *info)
 	if (str == NULL)
 		return (NULL);
 	h = string_amount(str, help, 1, help.sq + help.q);
+//	printf("h is %d\n", h);
 	ans = (char **) malloc(sizeof(char *) * (h + 1));
 	if (ans == NULL)
 		return (NULL);

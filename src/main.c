@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 17:23:00 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/23 11:37:38 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 14:24:16 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ void	the_handler(t_data info)
 {
 	write(1, "\x1b[A", 3);
 	write(1, "\x1b[11C", 5);
+//	while (i != info.pos)
+//	{
+//		write(1, "\x1b[1C", 4);
+//		i++;
+//	}
 	write(1, "exit\n", 5);
 	get_outed(info);
 	exit(0);
@@ -109,7 +114,11 @@ int main(int ac, char **av, char **ev)
 	while (37)
 	{
 		set_signals(&info);
+<<<<<<< HEAD
 	//	find_pos(&info);
+=======
+	//		find_pos(&info);
+>>>>>>> master
 		info.buf = readline("\033[0;32mDinoshell>\033[0m ");
 		if (info.buf)
 		{
