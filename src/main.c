@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 17:23:00 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/23 11:37:38 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 14:04:22 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	set_signals(t_data *info)
 void	init_values(t_data *info)
 {
 	ft_strlcpy(info->dino, "\033[0;31mDinoshell: \033[0m", 25);
+	info->pos = 1;
 	info->fd_in = 0;
 	info->fd_out = 1;
 	g_important.safe_out = dup(1);
@@ -69,7 +70,7 @@ void	init_values(t_data *info)
 	info->exit = 0;
 	tcgetattr(g_important.safe_in, &g_important.old_term);
 	info->new_term = g_important.old_term;
-	info->new_term.c_lflag &= ~(ECHOCTL | ICANON);
+	info->new_term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(g_important.safe_in, TCSAFLUSH, &info->new_term);
 }
 
@@ -117,7 +118,7 @@ int main(int ac, char **av, char **ev)
 	while (37)
 	{
 		set_signals(&info);
-		find_pos(&info);
+	//	find_pos(&info);
 		info.buf = readline("\033[0;32mDinoshell>\033[0m ");
 		if (info.buf)
 		{

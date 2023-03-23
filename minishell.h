@@ -213,7 +213,7 @@ void	get_hd_file(t_redi *current, t_data *info);
 int		expand_envs(const char *str, t_data *info, t_split *help, char **ans);
 
 //redir_input_parser.c
-int		redir_input_parser(const char *str, t_split *help);
+int		redir_input_parser(const char *str, t_split *help, int var);
 
 //handle_commands.c
 int		handle_pipe(t_data *info, char *cmd_str);

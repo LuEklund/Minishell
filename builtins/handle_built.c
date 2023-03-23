@@ -19,7 +19,6 @@ void	work_built(t_data *info, char **args)
 		info->return_val = change_dir(info);
 	else if (info->built == 4)
 	{
-		info->exit = 1;
 		info->return_val = built_exit(info);
 //		printf("ret here is %d\n", info->return_val);
 	}
