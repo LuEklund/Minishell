@@ -14,7 +14,6 @@
 int	unset_env_function(t_data *info, char *rm_var)
 {
 	char		**new_environ;
-	char		**curr_env;
 	int			i;
 	int			removeable;
 
@@ -30,12 +29,11 @@ int	unset_env_function(t_data *info, char *rm_var)
 		ft_putstr_fd("`: not a valid identifier\n", 2);
 		return (1);
 	}
-	curr_env = retrieve_env();
-	while (curr_env[i] != NULL)
+	while (info->envs[i] != NULL)
 	{
-		if (!ft_strncmp(curr_env[i], rm_var, ft_strlen(rm_var))
+		if (!ft_strncmp(info->envs[i], rm_var, ft_strlen(rm_var))
 			|| (find_equal_sign(rm_var)
-				&& !ft_strncmp(curr_env[i], rm_var, find_equal_sign(rm_var))))
+				&& !ft_strncmp(info->envs[i], rm_var, find_equal_sign(rm_var))))
 			removeable = i;
 		i++;
 	}
@@ -45,23 +43,22 @@ int	unset_env_function(t_data *info, char *rm_var)
 	if (!new_environ)
 		return (0);
 	i = 0;
-	while (curr_env[i] != NULL)
+	while (info->envs[i] != NULL)
 	{
 		if (i != removeable)
 		{
 			if (removeable)
-				new_environ[i] = curr_env[i];
+				new_environ[i] = info->envs[i];
 			else
-				new_environ[i - 1] = curr_env[i];
+				new_environ[i - 1] = info->envs[i];
 		}
 		else
 			removeable = 0;
 		i++;
 	}
 	new_environ[i] = NULL;
-	free(curr_env);
-	make_env_file(info, new_environ);
-	free_ar(new_environ);
+	free(info->envs);
+	info->envs = new_environ;
 	return (1);
 }
 

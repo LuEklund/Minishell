@@ -19,6 +19,7 @@ void	work_built(t_data *info, char **args)
 		info->return_val = change_dir(info);
 	else if (info->built == 4)
 	{
+		info->exit = 1;
 		info->return_val = built_exit(info);
 //		printf("ret here is %d\n", info->return_val);
 	}
@@ -64,6 +65,7 @@ void	is_built_in(t_data *info, char *arg)
 
 int	bob_the_builtin(t_data *info)
 {
+
 	info->check = 0;
 	if (info->built == 1 || info->built == 3 || info->built == 7)
 		;

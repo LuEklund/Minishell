@@ -54,7 +54,6 @@ int	env_error_handler(t_data *info, char *new_var, char *type)
 int	export_env_function(t_data *info, char *new_var)
 {
 	char		**new_env;
-	char		**curr_env;
 	int			i;
 
 	if (!env_error_handler(info, new_var, "export"))
@@ -63,27 +62,24 @@ int	export_env_function(t_data *info, char *new_var)
 	{
 		if (!change_env_variable(info, new_var))
 		{
-			printf("%s - created new\n", new_var);
-			curr_env = retrieve_env();
 			i = 0;
-			while (curr_env[i] != NULL)
+			while (info->envs[i] != NULL)
 				i++;
 			new_env = (char **)malloc(sizeof(char *) * (i + 2));
 			if (!new_env)
 				return (1);
 			i = 0;
-			while (curr_env[i] != NULL)
+			while (info->envs[i] != NULL)
 			{
-				new_env[i] = curr_env[i];
+				new_env[i] = info->envs[i];
 				i++;
 			}
 			new_env[i] = (char *)malloc(sizeof(char) * (ft_strlen(new_var) + 1));
 			ft_strlcpy(new_env[i], new_var, ft_strlen(new_var) + 1);
 			i++;
 			new_env[i] = NULL;
-			make_env_file(info, new_env);
-			free_ar(curr_env);
-			free(new_env);
+			free(info->envs);
+			info->envs = new_env;
 		}
 	}
 	return (0);

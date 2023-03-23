@@ -66,7 +66,7 @@ int	handle_pipe(t_data *info, char *cmd_str)
 //	printf("1cmd here is '%s'\n", cmd_str);
 	if (init_pipes(info) < 0)
 		exit (2);
-	info->envs = retrieve_env();
+//	info->envs = retrieve_env();
 //	printf("2cmd here is '%s'\n", cmd_str);
 	find_the_paths(info);
 	while (info->cmds[info->i])

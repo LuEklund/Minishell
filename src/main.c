@@ -108,17 +108,14 @@ int main(int ac, char **av, char **ev)
 
 	if (ac != 1 || !av[2])
 		return (printf("bro no need for any arguments\n"));
-	make_env_file_first_time(&info, ev);
-	upgrade_shell_lvl(&info, ev);
+	info.envs = copy_env(ev);
+	// make_env_file_first_time(&info, ev);
+	upgrade_shell_lvl(&info, info.envs);
 	init_values(&info);
 	while (37)
 	{
 		set_signals(&info);
-<<<<<<< HEAD
-	//	find_pos(&info);
-=======
 	//		find_pos(&info);
->>>>>>> master
 		info.buf = readline("\033[0;32mDinoshell>\033[0m ");
 		if (info.buf)
 		{

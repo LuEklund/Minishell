@@ -11,130 +11,53 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 
-int	make_env_file_first_time(t_data *info, char **env_to_copy)
+char	**copy_env(char **env_to_copy)
 {
-	int		fd;
-	int 	i;
-	char	*env_place;
-	(void)	info;
+	char		**new_env;
+	int			i;
 
-	env_place = ft_strjoin(get_curdir(), "/.dinoshell_env777_tmp");
-	g_env_dir = env_place;
-	printf("location %s\n", g_env_dir);
-	fd = open(g_env_dir, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (fd < 0 )
-		return (0);
 	i = 0;
-	while (env_to_copy[i])
+	while (env_to_copy[i] != NULL)
+		i++;
+	new_env = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!new_env)
+		return (NULL);
+	i = 0;
+	while (env_to_copy[i] != NULL)
 	{
-		write(fd, env_to_copy[i], ft_strlen(env_to_copy[i]));
-		write(fd, "\n", 1);
+		new_env[i] = (char *)malloc(sizeof(char) * ft_strlen(env_to_copy[i]) + 1);
+		ft_strlcpy(new_env[i], env_to_copy[i], ft_strlen(env_to_copy[i]) + 1);
+		// new_env[i] = env_to_copy[i];
 		i++;
 	}
-	close(fd);
-	return (1);
-}
-
-int	make_env_file(t_data *info, char **env_to_copy)
-{
-	int		fd;
-	int 	i;
-	(void) info;
-
-	fd = open(g_env_dir, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (fd < 0 )
-		return (0);
-	i = 0;
-	while (env_to_copy[i])
-	{
-		write(fd, env_to_copy[i], ft_strlen(env_to_copy[i]));
-		write(fd, "\n", 1);
-		i++;
-	}
-	close(fd);
-	return (1);
+	new_env[i] = NULL;
+	return (new_env);
 }
 
 int	display_env(t_data *info, int export_type)
 {
-	int		i;
-	int		i2;
-	char 	c;
-	char	**env;
-	(void) info;
+	int	i;
+	int	i2;
+	char c;
 
 	i = 0;
 	i2 = 0;
 	c = 34;
-	env = retrieve_env();
-	while (env[i] != NULL)
+	while (info->envs[i] != NULL)
 	{
 		if (export_type)
 		{
 			i2 = 0;
 			printf("declare -x ");
-			while (env[i][i2] != '\0' && env[i][i2] != '=')
-				printf("%c", env[i][i2++]);
-			if (env[i][i2++])
-				printf("=%c%s%c",c ,env[i]+i2, c);
+			while (info->envs[i][i2] != '\0' && info->envs[i][i2] != '=')
+				printf("%c", info->envs[i][i2++]);
+			if (info->envs[i][i2++])
+				printf("=%c%s%c",c ,info->envs[i]+i2, c);
 			printf("\n");
 		}
-		else if (find_equal_sign(env[i]))
-			printf("%s\n\r", env[i]);
+		else if (find_equal_sign(info->envs[i]))
+			printf("%s\n\r", info->envs[i]);
 		i++;
 	}
-	free_ar(env);
 	return (1);
 }
-
-char	**retrieve_env()
-{
-	int		fd;
-	int		i;
-	char	*line;
-	char	*new_line;
-	char	**new_env;
-
-	// printf("open %s\n", g_env_dir);
-	fd = open(g_env_dir, O_RDWR);
-	if (fd < 0 )
-		return (0);
-	i = 0;
-	while (42)
-	{
-		line = get_next_line(fd);
-		i++;
-		if (!line)
-			break ;
-		free(line);
-	}
-	new_env = (char **)malloc(sizeof(char *) * (i));
-	if (!new_env)
-		return (NULL);
-	close(fd);
-	fd = open(g_env_dir, O_RDWR);
-	i = 0;
-	while (42)
-	{
-		line = get_next_line(fd);
-		if (!line)
-		{
-			new_env[i] = NULL;
-			break ;
-		}
-		new_line = (char *)malloc(sizeof(char) * (ft_strlen(line)));
-		ft_strlcpy(new_line, line, ft_strlen(line));
-//		printf("new_line '%s'\n", new_line);
-		free(line);
-		new_env[i] = new_line;
-		i++;
-	}
-	close(fd);
-	return (new_env);
-}
-
-
-
-
-
-

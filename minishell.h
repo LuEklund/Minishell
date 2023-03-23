@@ -274,10 +274,8 @@ int		find_equal_sign(char *str);
 int		change_env_variable(t_data *info, char *var);
 
 //environment.c
-int		make_env_file_first_time(t_data *info, char **env_to_copy);
-int		make_env_file(t_data *info, char **env_to_copy);
+char	**copy_env(char **env_to_copy);
 int		display_env(t_data *info, int export_type);
-char	**retrieve_env(void);
 
 //exit_val_calc.c
 long long 		exit_atoi(t_data *info, int *sign);
