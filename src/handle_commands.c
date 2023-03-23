@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/23 13:43:33 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 15:03:35 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	handle_pipe(t_data *info, char *cmd_str)
 			info->i += 1;
 			continue ;
 		}
-		print_ar(info->args); /////
+	//	print_ar(info->args); /////
 		if (info->exit)
 			break ;
 		info->kiddo[info->i] = fork();

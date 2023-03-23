@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:07:38 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 16:29:44 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 14:55:13 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,11 @@ int	expand_check(char const *str, t_split *help)
 	return (1);
 }
 
-int	red_c(char const *str, t_split *help, int i, int h)
+int	red_c(char const *str, t_split *help, int i)
 {
+	int	safe;
+
+	safe = i;
 	if (help->c != ' ')
 		return (quote_check(str, i, &help->q, &help->sq));
 	help->i3 = i;
@@ -78,7 +81,7 @@ int	red_c(char const *str, t_split *help, int i, int h)
 		return (quote_check(str, i, &help->q, &help->sq));
 	if (!redir_input_parser(str, help, 0))
 		return (quote_check(str, i, &help->q, &help->sq));
-	if (h == 1)
+	if (!safe)
 		help->i3 += 1;
 	return (help->i3);
 }
@@ -122,7 +125,7 @@ static int	string_amount(char const *str, t_split help, int ans, int i)
 	while (str[i] != '\0')
 	{
 		if (str[i] != '\0')
-			i = red_c(str, &help, i, ans);
+			i = red_c(str, &help, i);
 		while (str[i] == help.c)
 		{
 			if (str[i + 1] != '\0' && str[i + 1] != help.c && str[i + 1] != '>' \

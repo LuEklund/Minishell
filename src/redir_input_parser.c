@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 14:35:13 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/10 17:17:06 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/23 15:00:42 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@ int	redir_input_parser(const char *str, t_split *he, int var)
 	int	len;
 
 	len = he->expand_type - 2;
-//	ft_putnbr_fd(len, 2);
-//	ft_putstr_fd("\n", 2);
-
+//	if (!var)
+//		printf("1the len is %d at %c%d\n", len, str[len + he->i3], he->i3);
 	while (str[he->i3 + len] && str[he->i3 + len] != ' ' \
 			&& he->sq + he->q == 0)
 	{
@@ -34,7 +33,7 @@ int	redir_input_parser(const char *str, t_split *he, int var)
 			len++;
 	}
 	he->i3 += len;
-//	ft_putnbr_fd(len, 2);
-//	ft_putstr_fd("\n", 2);
+//	if (!var)
+//		printf("2the len is %d at %c%d\n", len, str[he->i3], he->i3);
 	return (1);
 }
