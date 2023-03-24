@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 11:11:39 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/22 12:22:36 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/24 10:00:24 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	the_piper(t_data *info)
 	if (!in_node)
 	{
 		if (info->i == 0)
-			info->fd_in = dup(g_important.safe_in);
+			info->fd_in = dup(info->fd_in);
 		else
 			info->fd_in = info->pipe[(info->i * 2) - 2];
 	}
@@ -44,7 +44,7 @@ void	the_piper(t_data *info)
 	if (!out_node)
 	{
 		if (info->i == info->cmd_amount - 1)
-			info->fd_out = dup(g_important.safe_out);
+			info->fd_out = dup(info->fd_out);
 		else
 			info->fd_out = info->pipe[(info->i * 2) + 1];
 	}

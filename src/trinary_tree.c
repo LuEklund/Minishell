@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 12:37:05 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/21 18:07:07 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/24 12:23:00 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ t_cond	*create_condition_node(char *str, t_cond *up, int var)
 	new->ret = -1;
 	new->content = content_creator(str, help, var);
 	new->up = up;
+	new->hd_n = 0;
 	new->first_cond = NULL;
 	new->sec_cond = NULL;
 	new->next = NULL;

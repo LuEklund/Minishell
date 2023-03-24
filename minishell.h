@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:36:54 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/23 16:45:53 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/24 13:09:05 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_cond
 {
 	int				type;
 	int				ret;
+	int				hd_n;
 	char			*content;
 	struct s_cond	*up;
 	struct s_cond	*first_cond;
@@ -79,7 +80,10 @@ typedef struct s_redi
 	size_t			pipe_n;
 	size_t			red_n;
 	int				i;
+	int				cmd_n;
 	int				fd;
+	int				used;
+	char			*hd_file;
 	char			*file_name;
 	struct s_redi	*next;
 }	t_redi;
@@ -116,7 +120,10 @@ typedef struct s_data
 	int					red_n;
 	int					all_red_n;
 	struct s_redi		*redi_list;
+	struct s_redi		*hd_list;
 	int					hd;
+	int					hd_error;
+	int					cmd_n;
 	int					q;
 	int					sq;
 	struct s_cond		*trinary_tree;
@@ -204,10 +211,13 @@ char	**copy_list_to_ar(t_args *current);
 char	**ft_ls(void);
 
 //open_files.c
+int		find_file(t_redi *current, t_data *info);
 int		open_files(t_data *info);
 
 //here_doc.c
+t_redi	*copy_hd_node(t_redi *hd, int red_n);
 void	get_hd_file(t_redi *current, t_data *info);
+int		find_hd(t_cond *current, char *str, t_data *info);
 
 //expand_envs.c
 int		expand_envs(const char *str, t_data *info, t_split *help, char **ans);

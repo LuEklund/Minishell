@@ -40,13 +40,13 @@ void	parent_signals(t_data *info)
 	sigaction(SIGQUIT, &info->z_act, &info->old_act);
 	sigaction(SIGTSTP, &info->z_act, &info->old_act);
 	sigaction(SIGINT, &info->z_act, &info->old_act);
-	tcsetattr(g_important.safe_in, TCSAFLUSH, &g_important.old_term);
+	tcsetattr(info->fd_in, TCSAFLUSH, &g_important.old_term);
 	while ((wait(&info->return_val)) > 0)
 		;
 //	printf("ret is %d\n", info->return_val);
 	if (info->return_val != 11 && info->return_val != 10)
 		info->return_val = WEXITSTATUS(info->return_val);
-	tcsetattr(g_important.safe_in, TCSAFLUSH, &info->new_term);
+	tcsetattr(info->fd_in, TCSAFLUSH, &info->new_term);
 	if (info->return_val == 130)
 		printf("\n");
 	if (info->return_val == 131)
@@ -66,6 +66,5 @@ void	parent_signals(t_data *info)
 		ft_putendl_fd("Bus error: 10", 2);
 		info->return_val = 138;
 	}
-
 }
 

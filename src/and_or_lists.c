@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 21:04:12 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/23 16:13:03 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/24 12:34:27 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,26 @@ void	print_tree(t_cond *head, int b, int sub_b, int level)
 	print_tree(head->next, b + 1, sub_b, level);
 }
 
+void	look_for_heredocs(t_cond *head, t_data *info)
+{
+	if (!head || info->hd_error)
+		return ;
+	look_for_heredocs(head->first_cond, info);
+	if (!head->type)
+	{
+		info->hd_error = find_hd(head, head->content, info);
+		info->hd += 1;
+		head->hd_n = info->hd;
+	}
+	look_for_heredocs(head->sec_cond, info);
+	look_for_heredocs(head->next, info);
+}
+
 void	exec_node(t_cond *current, t_data *info)
 {
 //	printf("executing\n");
 	current->ret = work_pipe(info, current->content);
+	info->cmd_n += 1;
 //	printf("executed\n");
 	info->return_val = current->ret;
 	while (current->up)
@@ -79,6 +95,12 @@ int	go_through_list(t_data *info)
 		head = create_level(str, NULL, NULL, 1);
 //	print_tree(head, 1, 1, 1);	
 //	free(str);
-	info->trinary_tree = head;
+	info->hd = 0;
+	info->hd_error = 0;
+	look_for_heredocs(head, info);
+	if (info->hd_error)
+		info->trinary_tree = NULL;
+	else
+		info->trinary_tree = head;
 	return (1);
 }

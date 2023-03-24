@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:00:10 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/23 17:00:02 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/24 12:34:18 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int	work_pipe(t_data *info, char *cmd_chain)
 {
 	pid_t	kiddo;
 
+	printf("hiii\n");
 	/////check cd && unset && export && exit
 	if (check_if_child(info, cmd_chain))
 		return (info->return_val);
@@ -120,7 +121,6 @@ int	work_pipe(t_data *info, char *cmd_chain)
 	}
 	kid_signals(info);
 	handle_pipe(info, cmd_chain);
-	unlink(".dinoshell_heredoc373_tmp");
 	if (info->return_val != 127 && info->return_val != 6 \
 			&& info->return_val != 10 && info->return_val != 11)
 		info->return_val = WEXITSTATUS(info->return_val);
@@ -140,6 +140,8 @@ void	handle_buf(t_data *info)
 //	printf("buf is '%s'\n", info->buf);
 	free(info->error);
 	go_through_list(info);
+	info->cmd_n = 0;
 	if (info->trinary_tree)
 		traveler(info->trinary_tree, info);
+	///unlink heredoc files and empty list
 }

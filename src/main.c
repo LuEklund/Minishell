@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 17:23:00 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/23 16:04:21 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/24 11:50:37 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	history_handler(char *str)
 
 void	set_signals(t_data *info)
 {
+	info->hd = 0;
+	info->hd_list = NULL;
 	info->pipe_amount = 0;
 	sigemptyset(&info->quit.sa_mask);
 	info->quit.sa_handler = i_c;
@@ -60,14 +62,12 @@ void	init_values(t_data *info)
 	ft_strlcpy(info->dino, "\033[0;31mDinoshell: \033[0m", 25);
 	info->fd_in = 0;
 	info->fd_out = 1;
-	g_important.safe_out = dup(1);
-	g_important.safe_in = dup(0);
 	info->return_val = 0;
 	info->exit = 0;
-	tcgetattr(g_important.safe_in, &g_important.old_term);
+	tcgetattr(info->fd_in, &g_important.old_term);
 	info->new_term = g_important.old_term;
 	info->new_term.c_lflag &= ~(ECHOCTL);
-	tcsetattr(g_important.safe_in, TCSAFLUSH, &info->new_term);
+	tcsetattr(info->fd_in, TCSAFLUSH, &info->new_term);
 }
 
 void	find_pos(t_data *info)

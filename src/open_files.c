@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 10:32:03 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/23 17:25:34 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/24 12:34:15 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,6 @@ int	open_outfile(t_redi *current, t_data *info)
 	return (0);
 }
 
-int	here_doc(t_redi *current, t_data *info)
-{
-	find_file(current, info);
-	info->hd = 1;
-	get_hd_file(current, info);
-	current->fd = open(".dinoshell_heredoc373_tmp", O_RDONLY);
-	if (current->fd < 0)
-		exit(write(2, "temporary file error\n", 21));
-	return (0);
-}
-
 int	open_files(t_data *info)
 {
 	t_redi	*current;
@@ -93,7 +82,7 @@ int	open_files(t_data *info)
 		if (current->type == 1)
 			info->check2 = open_infile(current, info);
 		else if (current->type == 2)
-			info->check2 = here_doc(current, info);
+			info->check2 = 0;
 		else
 			info->check2 = open_outfile(current, info);
 		if (info->check2)
