@@ -21,7 +21,6 @@ long long	built_exit(t_data *info)
 		return (0);
 	sign = 1;
 	return_val = exit_atoi(info, &sign);
-//	 printf("recived-NUM[%lld]\n", return_val);
 	if (return_val < 0)
 	{
 		ft_putstr_fd(info->dino, 2);
@@ -51,7 +50,7 @@ int	echo(t_data *info)
 	new_line = 2;
 	if (info->args[i] && info->args[i][0] == '-' && info->args[i][1] == 'n')
 	{
-		while(info->args[i][new_line] == 'n')
+		while (info->args[i][new_line] == 'n')
 			new_line++;
 		if (!info->args[i][new_line])
 		{
@@ -74,34 +73,18 @@ int	echo(t_data *info)
 int	execute_built(t_data *info)
 {
 	if (info->built == 1)
-	{
-		// printf("echo\n\r");
 		return (echo(info));
-	}
 	else if (info->built == 2)
-	{
 		return (change_dir(info));
-	}
-	else if (info->built == 3)	
-	{
-		// printf("display_curdir\n\r");
+	else if (info->built == 3)
 		return (display_curdir());
-	}
 	else if (info->built == 4)
-	{
-		return(built_exit(info));
-	}
+		return (built_exit(info));
 	else if (info->built == 5)
-	{
 		return (env_unset(info, 0));
-	}else if (info->built == 6)
-	{
+	else if (info->built == 6)
 		return (env_export(info, 0));
-	}
 	else if (info->built == 7)
-	{
-		// printf("display_env\n\r");
 		return (display_env(info, 0));
-	}
 	return (0);
 }

@@ -11,16 +11,10 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 
-int	unset_env_function(t_data *info, char *rm_var)
+static int	unset_error_checks(t_data *info, char *rm_var)
 {
-	char		**new_environ;
-	int			i;
-	int			removeable;
-
-	i = 0;
-	removeable = 0;
 	if (!env_error_handler(info, rm_var, "unset"))
-		return (0);
+		return (1);
 	if (find_equal_sign(rm_var))
 	{
 		ft_putstr_fd(info->dino, 2);
@@ -29,6 +23,45 @@ int	unset_env_function(t_data *info, char *rm_var)
 		ft_putstr_fd("`: not a valid identifier\n", 2);
 		return (1);
 	}
+	return (0);
+}
+
+void	make_new_envirno(t_data *info, char **new_environ, int removeable)
+{
+	int	i;
+
+	i = 0;
+	while (info->envs[i] != NULL)
+	{
+		if (i != removeable)
+		{
+			if (removeable)
+				new_environ[i] = info->envs[i];
+			else
+				new_environ[i - 1] = info->envs[i];
+		}
+		else
+		{
+			free(info->envs[i]);
+			removeable = 0;
+		}
+		i++;
+	}
+	new_environ[i] = NULL;
+	free(info->envs);
+	info->envs = new_environ;
+}
+
+int	unset_env_function(t_data *info, char *rm_var)
+{
+	char		**new_environ;
+	int			i;
+	int			removeable;
+
+	i = 0;
+	removeable = 0;
+	if (unset_error_checks(info, rm_var))
+		return (1);
 	while (info->envs[i] != NULL)
 	{
 		if (!ft_strncmp(info->envs[i], rm_var, ft_strlen(rm_var))
@@ -42,23 +75,7 @@ int	unset_env_function(t_data *info, char *rm_var)
 	new_environ = (char **)malloc(sizeof(char *) * (i));
 	if (!new_environ)
 		return (0);
-	i = 0;
-	while (info->envs[i] != NULL)
-	{
-		if (i != removeable)
-		{
-			if (removeable)
-				new_environ[i] = info->envs[i];
-			else
-				new_environ[i - 1] = info->envs[i];
-		}
-		else
-			removeable = 0;
-		i++;
-	}
-	new_environ[i] = NULL;
-	free(info->envs);
-	info->envs = new_environ;
+	make_new_envirno(info, new_environ, removeable);
 	return (1);
 }
 

@@ -51,6 +51,16 @@ int	env_error_handler(t_data *info, char *new_var, char *type)
 	return (1);
 }
 
+void	copy_new_var(t_data *info, char **new_env, char *new_var, int i)
+{
+	new_env[i] = (char *)malloc(sizeof(char) * (ft_strlen(new_var) + 1));
+	ft_strlcpy(new_env[i], new_var, ft_strlen(new_var) + 1);
+	i++;
+	new_env[i] = NULL;
+	free(info->envs);
+	info->envs = new_env;
+}
+
 int	export_env_function(t_data *info, char *new_var)
 {
 	char		**new_env;
@@ -74,21 +84,16 @@ int	export_env_function(t_data *info, char *new_var)
 				new_env[i] = info->envs[i];
 				i++;
 			}
-			new_env[i] = (char *)malloc(sizeof(char) * (ft_strlen(new_var) + 1));
-			ft_strlcpy(new_env[i], new_var, ft_strlen(new_var) + 1);
-			i++;
-			new_env[i] = NULL;
-			free(info->envs);
-			info->envs = new_env;
+			copy_new_var(info, new_env, new_var, i);
 		}
 	}
 	return (0);
 }
 
-
 int	env_export(t_data *info, char *manual_add)
 {
-	int index_var;
+	int	index_var;
+
 	if (manual_add)
 	{
 		if (contain_flag(info, manual_add))
@@ -113,9 +118,3 @@ int	env_export(t_data *info, char *manual_add)
 	}
 	return (0);
 }
-
-
-
-
-
-

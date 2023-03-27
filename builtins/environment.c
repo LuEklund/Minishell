@@ -11,23 +11,22 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 
-char	**copy_env(char **env_to_copy)
+char	**copy_env(char **copy_env)
 {
 	char		**new_env;
 	int			i;
 
 	i = 0;
-	while (env_to_copy[i] != NULL)
+	while (copy_env[i] != NULL)
 		i++;
 	new_env = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!new_env)
 		return (NULL);
 	i = 0;
-	while (env_to_copy[i] != NULL)
+	while (copy_env[i] != NULL)
 	{
-		new_env[i] = (char *)malloc(sizeof(char) * ft_strlen(env_to_copy[i]) + 1);
-		ft_strlcpy(new_env[i], env_to_copy[i], ft_strlen(env_to_copy[i]) + 1);
-		// new_env[i] = env_to_copy[i];
+		new_env[i] = (char *)malloc(sizeof(char) * ft_strlen(copy_env[i]) + 1);
+		ft_strlcpy(new_env[i], copy_env[i], ft_strlen(copy_env[i]) + 1);
 		i++;
 	}
 	new_env[i] = NULL;
@@ -36,9 +35,9 @@ char	**copy_env(char **env_to_copy)
 
 int	display_env(t_data *info, int export_type)
 {
-	int	i;
-	int	i2;
-	char c;
+	int		i;
+	int		i2;
+	char	c;
 
 	i = 0;
 	i2 = 0;
@@ -52,7 +51,7 @@ int	display_env(t_data *info, int export_type)
 			while (info->envs[i][i2] != '\0' && info->envs[i][i2] != '=')
 				printf("%c", info->envs[i][i2++]);
 			if (info->envs[i][i2++])
-				printf("=%c%s%c",c ,info->envs[i]+i2, c);
+				printf("=%c%s%c", c, info->envs[i] + i2, c);
 			printf("\n");
 		}
 		else if (find_equal_sign(info->envs[i]))
