@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:21:18 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/24 11:21:35 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/27 17:38:33 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,25 @@ void	connect_with_hd_list(t_data *info, size_t i, int *i2)
 
 	*i2 += 1;
 	hd = info->hd_list;
+//	if (hd)
+	//	printf("1hd cmd is %d info cmd is %d pipe n is %zu i is %zu used is %d\n",
+	//	 hd->cmd_n, info->cmd_n, hd->pipe_n, i, hd->used);
 	while (hd && (hd->cmd_n != info->cmd_n || hd->pipe_n != i || hd->used))
+	{
+//		printf("2hd cmd is %d info cmd is %d pipe n is %zu i is %zu used is %d\n",
+//		 hd->cmd_n, info->cmd_n, hd->pipe_n, i, hd->used);
+//	printf(" node is of type %d, in pipe %zu spot %zu\n", hd->type, hd->pipe_n, hd->red_n);
 		hd = hd->next;
+	}
+//	printf(" 1node is of type %d, in pipe %zu spot %zu\n", hd->type, hd->pipe_n, hd->red_n);
 	if (!hd)
-		exit(write(2, "is fucked\n", 10));
+		exit(write(2, "is fuckeddd\n", 12));
+//	printf(" 2node is of type %d, in pipe %zu spot %zu\n", hd->type, hd->pipe_n, hd->red_n);
 	hd->used = 1;
 	new = copy_hd_node(hd, info->red_n);
 	current = info->redi_list;
 	if (!current)
-		current = new;
+		info->redi_list = new;
 	else
 	{
 		while (current->next)
@@ -95,10 +105,11 @@ void	start_quotes(t_data *info, int i, int *i2)
 //////
 //////
 
-void	print_list(t_whelp *current)
+void	print_lists(t_redi *current)
 {
 	int	i = 1;
 
+//	printf("%p\n", current);
 	////remove this
 	while (current)
 	{
@@ -111,8 +122,8 @@ void	print_list(t_whelp *current)
 			printf(":rd");
 		else
 			printf(":th");
-	//	printf(" node is of type %d, in pipe %zu spot %zu\n", current->type, current->pipe_n, current->red_n);
-		printf(" node has n %d h %d and validness of %d\n", current->n, current->h, current->valid);
+		printf(" node is of type %d, in pipe %zu spot %zu\n", current->type, current->pipe_n, current->red_n);
+	//	printf(" node has n %d h %d and validness of %d\n", current->n, current->h, current->valid);
 		current = current->next;
 		i++;
 	}
@@ -145,5 +156,6 @@ int	redirection_parser(t_data *info, int i, int i2)
 		i2 = 0;
 		i++;
 	}
+//	print_lists(info->redi_list);
 	return (open_files(info));
 }

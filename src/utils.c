@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 19:47:06 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/24 09:59:56 by nlonka           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -111,6 +100,21 @@ void	empty_args_list(t_data *info)
 		latter = current;
 		free(current->arg);
 		current = current->next;
+		free(latter);
+	}
+}
+
+void	empty_doc(t_redi *current)
+{
+	t_redi	*latter;
+
+	while (current)
+	{
+		latter = current;
+		current = current->next;
+		unlink(latter->hd_file);
+		free(latter->hd_file);
+		free(latter->file_name);
 		free(latter);
 	}
 }

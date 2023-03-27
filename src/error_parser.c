@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 13:34:32 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/22 12:52:03 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/03/27 17:38:35 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,27 @@ int	parenthesee(t_error *help, char *str)
 	return (0);	
 }
 
+int	redi_syntax(t_error *help, char *str)
+{
+	if (help->out_t + help->out_o + help->in_t + help->in_o == 0)
+		return (1);
+	if (help->i == 1 && ((str[help->i - 1] == '>' && str[help->i] == '>') || \
+			(str[help->i - 1] == '<' && str[help->i] == '<')))
+		return (0);
+	if (str[help->i - 1] == '>' && str[help->i] == '>' && str[help->i - 2] == '>')
+		return (1);
+	if (str[help->i - 1] == '<' && str[help->i] == '<' && str[help->i - 2] == '<')
+		return (1);
+	if (str[help->i] == '<' && str[help->i - 1] == '<')
+		return (0);
+	if (str[help->i] == '>' && str[help->i - 1] == '>')
+		return (0);
+	printf("hi from i %zu\n", help->i);
+	if (str[help->i - 1] == '|' || str[help->i - 1] == '&')
+		return (0);
+//	printf("hi from i %zu\n", help->i);
+	return (1);
+}
 int	error_parser(t_data *info)
 {
 	t_error	*help;
@@ -151,8 +172,7 @@ int	error_parser(t_data *info)
 		if (help->i && help->token && help->q + help->sq == 0)
 		{
 			get_tokenized(help, info->buf, 1);
-			if (help->token && !(info->buf[help->i - 1] == '>' && info->buf[help->i] == '>') \
-				&& !(info->buf[help->i - 1] == '<' && info->buf[help->i] == '<'))
+			if (help->token && redi_syntax(help, info->buf))
 				return (1);
 		}
 //		printf("parr is %d at %c%zu\n", help->par, info->buf[help->i], help->i);

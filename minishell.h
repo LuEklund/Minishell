@@ -122,6 +122,7 @@ typedef struct s_data
 	struct s_redi		*redi_list;
 	struct s_redi		*hd_list;
 	int					hd;
+	int					hd_n;
 	int					hd_error;
 	int					cmd_n;
 	int					q;
@@ -254,6 +255,7 @@ void	empty_redi_list(t_data *info);
 void	empty_wild_list(t_data *info);
 void	empty_whelp_list(t_data *info);
 void	empty_args_list(t_data *info);
+void	empty_doc(t_redi *current);
 
 //parse_split.c
 int		quote_check(char const *str, int i, int *q, int *sq);

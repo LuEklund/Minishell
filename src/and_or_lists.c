@@ -36,6 +36,8 @@ void	look_for_heredocs(t_cond *head, t_data *info)
 	look_for_heredocs(head->first_cond, info);
 	if (!head->type)
 	{
+	//	printf("here i am!!\n");
+	//	printf("%d\n", info->hd);
 		info->hd_error = find_hd(head, head->content, info);
 		info->hd += 1;
 		head->hd_n = info->hd;
@@ -96,6 +98,7 @@ int	go_through_list(t_data *info)
 //	print_tree(head, 1, 1, 1);	
 //	free(str);
 	info->hd = 0;
+	info->hd_n = 0;
 	info->hd_error = 0;
 	look_for_heredocs(head, info);
 	if (info->hd_error)

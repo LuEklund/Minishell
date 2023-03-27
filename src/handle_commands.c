@@ -77,7 +77,7 @@ int	handle_pipe(t_data *info, char *cmd_str)
 			info->i += 1;
 			continue ;
 		}
-//		print_ar(info->args); /////
+	//	print_ar(info->args); /////
 		if (info->exit)
 			break ;
 		info->kiddo[info->i] = fork();
@@ -105,7 +105,6 @@ int	work_pipe(t_data *info, char *cmd_chain)
 {
 	pid_t	kiddo;
 
-	printf("hiii\n");
 	/////check cd && unset && export && exit
 	if (check_if_child(info, cmd_chain))
 		return (info->return_val);
@@ -143,5 +142,6 @@ void	handle_buf(t_data *info)
 	info->cmd_n = 0;
 	if (info->trinary_tree)
 		traveler(info->trinary_tree, info);
+	empty_doc(info->hd_list);
 	///unlink heredoc files and empty list
 }

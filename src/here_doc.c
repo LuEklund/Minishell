@@ -24,8 +24,9 @@ t_redi	*copy_hd_node(t_redi *hd, int red_n)
 	new->i = hd->i;
 	new->cmd_n = hd->cmd_n;
 	new->fd = hd->fd;
-	new->hd_file = hd->hd_file; //might be unnecessary
-	new->file_name = hd->file_name;
+	new->file_name = ft_strdup(hd->file_name);
+	if (!new->file_name)
+		exit(write(2, "memory errawr🦖\n", 15));
 	return (new);
 }
 
@@ -52,6 +53,7 @@ void	get_hd_file(t_redi *current, t_data *info)
 				&& (buffy[len] == '\n' || buffy[len] == '\0'))
 			break ;
 		write(fd, buffy, ft_strlen(buffy));
+		write(fd, "\n", 1);
 		free(buffy);
 	}
 	close(fd);
@@ -64,8 +66,8 @@ int	here_doc(t_redi *current, t_data *info, pid_t kiddo)
 	char	*number;
 
 	find_file(current, info);
-	info->hd += 1;
-	number = ft_itoa(info->hd);
+	info->hd_n += 1;
+	number = ft_itoa(info->hd_n);
 	if (!number)
 		exit(write(2, "memory errawr🦖\n", 15));
 	current->hd_file = ft_strjoin(".dinoshell_heredoc373_tmp", number);
@@ -127,7 +129,7 @@ int	find_hd(t_cond *current, char *str, t_data *info)
 	qts[1] = 0;
 	i[0] = 0;
 	i[1] = 0;
-	pipes = parse_split(str, '|', info); 
+	pipes = parse_split(str, '|', info);
 	if (!pipes)
 		exit(write(2, "memory errawr🦖\n", 15));
 	while (pipes[i[0]])
