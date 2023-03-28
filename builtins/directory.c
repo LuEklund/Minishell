@@ -11,9 +11,9 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 
-int	display_curdir()
+int	display_curdir(void)
 {
-	char 	path[4095];
+	char	path[4095];
 
 	if (getcwd(path, sizeof(path)))
 		printf("%s\n\r", path);
@@ -22,9 +22,9 @@ int	display_curdir()
 	return (1);
 }
 
-char	*get_curdir()
+char	*get_curdir(void)
 {
-	char 	path[4095];
+	char	path[4095];
 	char	*return_ptr;
 
 	if (getcwd(path, sizeof(path)))
@@ -39,13 +39,49 @@ char	*get_curdir()
 		return (NULL);
 }
 
-int	change_dir(t_data *info)
+int	changde_dir_success(t_data *info, char *curr_dir)
 {
-	char	*curr_dir;
 	char	*old_pwd_var;
 	char	*new_pwd_var;
-	int		return_val;
-	struct stat statbuf;
+
+	old_pwd_var = ft_strjoin("OLDPWD=", curr_dir);
+	free(curr_dir);
+	env_export(info, old_pwd_var);
+	curr_dir = get_curdir();
+	if (!curr_dir)
+		return (1);
+	new_pwd_var = ft_strjoin("PWD=", curr_dir);
+	env_export(info, new_pwd_var);
+	free(curr_dir);
+	return (0);
+}
+
+void	changde_dir_error(t_data *info, char *curr_dir)
+{
+	free(curr_dir);
+	if (info->args[1][0] == '-')
+	{
+		ft_putstr_fd(info->dino, 2);
+		ft_putstr_fd("cd: ", 2);
+		ft_putchar_fd(info->args[1][0], 2);
+		ft_putchar_fd(info->args[1][1], 2);
+		ft_putstr_fd(": invalid option\n", 2);
+		ft_putstr_fd("cd: usage: cd [path]\n", 1);
+	}
+	else
+	{
+		ft_putstr_fd(info->dino, 2);
+		ft_putstr_fd(": cd: ", 2);
+		ft_putstr_fd(info->args[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+	}
+}
+
+int	change_dir(t_data *info)
+{
+	char		*curr_dir;
+	int			return_val;
+	struct stat	statbuf;
 
 	stat(info->args[1], &statbuf);
 	if (!(statbuf.st_mode & S_IFDIR))
@@ -61,38 +97,8 @@ int	change_dir(t_data *info)
 		return (0);
 	return_val = chdir(info->args[1]);
 	if (return_val == 0)
-	{
-		old_pwd_var = ft_strjoin("OLDPWD=", curr_dir);
-		free(curr_dir);
-		env_export(info, old_pwd_var);
-		curr_dir = get_curdir();
-		if (!curr_dir)
-			return (1);
-		new_pwd_var = ft_strjoin("PWD=", curr_dir);
-		env_export(info, new_pwd_var);
-		free(curr_dir);
-		return (0);
-	}
+		return (changde_dir_success(info, curr_dir));
 	else
-	{
-		free(curr_dir);
-		if (info->args[1][0] == '-')
-		{
-			ft_putstr_fd(info->dino, 2);
-			ft_putstr_fd("cd: ", 2);
-			ft_putchar_fd(info->args[1][0], 2);
-			ft_putchar_fd(info->args[1][1], 2);
-			ft_putstr_fd(": invalid option\n", 2);
-			ft_putstr_fd("cd: usage: cd [path]\n", 1);
-		}
-		else
-		{
-			ft_putstr_fd(info->dino, 2);
-			ft_putstr_fd(": cd: ", 2);
-			ft_putstr_fd(info->args[1], 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-		}
-	}
+		changde_dir_error(info, curr_dir);
 	return (1);
-
 }

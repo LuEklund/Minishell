@@ -21,7 +21,6 @@ void	work_built(t_data *info, char **args)
 	{
 		info->exit = 1;
 		info->return_val = built_exit(info);
-//		printf("ret here is %d\n", info->return_val);
 	}
 	else if (info->built == 5)
 		info->return_val = env_unset(info, NULL);
@@ -31,12 +30,11 @@ void	work_built(t_data *info, char **args)
 
 void	fake_it(t_data *info)
 {
-	/////probs not necessary
 	free_ar(info->args);
 	info->args = ft_split("n n", ' ');
 	if (!info->args)
 		return (ft_putendl_fd("apua", 2));
-	info->cmd_to_use = ft_strdup(" "); 
+	info->cmd_to_use = ft_strdup(" ");
 	if (!info->cmd_to_use)
 		return (ft_putendl_fd("apua", 2), free_ar(info->args));
 	info->built = 0;
@@ -65,7 +63,6 @@ void	is_built_in(t_data *info, char *arg)
 
 int	bob_the_builtin(t_data *info)
 {
-
 	info->check = 0;
 	if (info->built == 1 || info->built == 3 || info->built == 7)
 		;
@@ -79,7 +76,5 @@ int	bob_the_builtin(t_data *info)
 		info->built_exec = 1;
 	else if (info->built == 6 && info->i == 0 && !info->cmds[1])
 		info->built_exec = 1;
-//	else
-//		fake_it(info);
 	return (1);
 }
