@@ -129,7 +129,10 @@ int	find_hd(t_cond *current, char *str, t_data *info)
 	qts[1] = 0;
 	i[0] = 0;
 	i[1] = 0;
+//	printf("whole str here is '%s'\n", str);
 	pipes = parse_split(str, '|', info);
+//	printf("cmds array:\n");
+//	print_ar(pipes); /////
 	if (!pipes)
 		exit(write(2, "memory errawr🦖\n", 15));
 	while (pipes[i[0]])

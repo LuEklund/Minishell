@@ -62,8 +62,10 @@ void	syntax_error(t_data *info)
 
 int	handle_pipe(t_data *info, char *cmd_str)
 {
+//	printf("whole str here is '%s'\n", cmd_str);
 	info->cmds = parse_split(cmd_str, '|', info);
-	//	print_ar(info->cmds); /////
+//	printf("cmds array:\n");
+//	print_ar(info->cmds); /////
 //	printf("1cmd here is '%s'\n", cmd_str);
 	if (init_pipes(info) < 0)
 		exit (2);
@@ -72,12 +74,14 @@ int	handle_pipe(t_data *info, char *cmd_str)
 	find_the_paths(info);
 	while (info->cmds[info->i])
 	{
+	//	printf("hiii from i %zu\n", info->i);
 		if (arguing(info))
 		{
 			info->i += 1;
 			continue ;
 		}
-	//	print_ar(info->args); /////
+//		printf("args array:\n");
+//		print_ar(info->args); /////
 		if (info->exit)
 			break ;
 		info->kiddo[info->i] = fork();

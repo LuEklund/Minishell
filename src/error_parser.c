@@ -140,7 +140,7 @@ int	redi_syntax(t_error *help, char *str)
 		return (0);
 	if (str[help->i] == '>' && str[help->i - 1] == '>')
 		return (0);
-	printf("hi from i %zu\n", help->i);
+//	printf("hi from i %zu\n", help->i);
 	if (str[help->i - 1] == '|' || str[help->i - 1] == '&')
 		return (0);
 //	printf("hi from i %zu\n", help->i);

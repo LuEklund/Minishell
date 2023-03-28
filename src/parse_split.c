@@ -128,11 +128,11 @@ static int	string_amount(char const *str, t_split help, int ans, int i)
 			i = red_c(str, &help, i);
 		while (str[i] == help.c)
 		{
-			if (str[i + 1] != '\0' && str[i + 1] != help.c && str[i + 1] != '>' \
-				   	&& str[i + 1] != '<' && help.sq + help.q == 0)
+			if (str[i + 1] != '\0' && str[i + 1] != help.c && !(help.c == ' ' && \
+			(str[i + 1] == '>' || str[i + 1] == '<')) && help.sq + help.q == 0)
 			{
 			//	write(2, &str[i + 1], 1);
-			//	write(2, "\n", 1);
+		//		write(2, "\n", 1);
 				ans++;
 			}
 			i = quote_check(str, i, &help.q, &help.sq);
@@ -264,7 +264,8 @@ char	**parse_split(char const *str, char c, t_data *info)
 		h = string_amount(str, help, 1, help.sq + help.q);
 	else
 		h = string_amount(str, help, 1, 0);
-//	printf("h is %d\n", h);
+//	if (c == '|')
+//		printf("h is %d\n", h);
 	ans = (char **) malloc(sizeof(char *) * (h + 1));
 	if (ans == NULL)
 		return (NULL);

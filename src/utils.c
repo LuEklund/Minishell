@@ -38,9 +38,6 @@ void	free_ar(char **ar)
 
 void	get_outed(t_data info)
 {
-	
-	unlink(".dinoshell_heredoc373_tmp");
-	unlink(".dinoshell_env777_tmp");
 	tcsetattr(info.fd_in, TCSAFLUSH, &g_important.old_term);
 }
 
@@ -112,6 +109,7 @@ void	empty_doc(t_redi *current)
 	{
 		latter = current;
 		current = current->next;
+		close(latter->fd);
 		unlink(latter->hd_file);
 		free(latter->hd_file);
 		free(latter->file_name);
