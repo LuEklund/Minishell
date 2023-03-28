@@ -68,7 +68,7 @@ void	test_paths(t_data *info, char *str)
 	i = 0;
 	info->check = 0;
 	while (str[i] != ' ' && str[i])
-		i++;
+		i++; ///????
 	cmd = malloc(sizeof(char) * (i + 2));
 	if (!cmd)
 		exit(write(2, "memory error\n", 13));

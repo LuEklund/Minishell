@@ -63,6 +63,7 @@ void	syntax_error(t_data *info)
 int	handle_pipe(t_data *info, char *cmd_str)
 {
 //	printf("whole str here is '%s'\n", cmd_str);
+	info->wmark_list = NULL;
 	info->cmds = parse_split(cmd_str, '|', info);
 //	printf("cmds array:\n");
 //	print_ar(info->cmds); /////
@@ -101,6 +102,8 @@ int	handle_pipe(t_data *info, char *cmd_str)
 //	printf("3cmd here is '%s'\n", cmd_str);
 	free_ar(info->envs);
 	free(info->kiddo);
+	if (info->pipe)
+		free(info->pipe);
 	empty_redi_list(info);
 	return (info->return_val);
 }
@@ -144,7 +147,7 @@ void	handle_buf(t_data *info)
 	free(info->error);
 	go_through_list(info);
 	info->cmd_n = 0;
-	if (info->trinary_tree)
+	if (!info->hd_error)
 		traveler(info->trinary_tree, info);
 	empty_doc(info->hd_list);
 	empty_tree(info->trinary_tree);

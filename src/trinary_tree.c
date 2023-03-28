@@ -155,11 +155,20 @@ t_cond	*create_tokenode(t_error help, char *str, t_cond *back, t_cond *up)
 	if (back)
 	{
 		new->first_cond = NULL;
-		new->next = create_level(str + i + 2, new, up, 0);
+		new->next = create_level(ft_substr((char const *)str, i + 2, ft_strlen(str) - (i + 1)), new, up, 0);
 	}
 	else
 		new->first_cond = create_condition_node(str, new, 0);
 	return (new);
+}
+
+void	free_help(char *str)
+{
+	if (str)
+	{
+		free(str);
+		str = NULL;
+	}
 }
 
 t_cond	*create_level(char *str, t_cond *back, t_cond *up, int var)
@@ -178,16 +187,17 @@ t_cond	*create_level(char *str, t_cond *back, t_cond *up, int var)
 	str = par_ser(str, &help);
 //	printf("i is %zu\n", help.i);
 	if (check_for_logic(str, 1) && back)
-		return (NULL);
+		return (free_help(str), NULL);
 	else if (!str[help.i])
 		return (create_condition_node(str, up, 0));
 	else if (!back)
 	{
 		back = create_tokenode(help, str, NULL, up);
-		back->next = create_level(str + help.i + 2, back, up, 0);
+		back->next = create_level(ft_substr((char const *)str, help.i + 2, \
+		ft_strlen(str) - (help.i + 1)), back, up, 0);
 //		if (back->next)
 //			printf("str is %s and content is %s\n", str + help.i + 2, back->next->content);///
-		return (back);
+		return (free_help(str), back);
 	}
 	else
 		return (create_tokenode(help, str, back, up));

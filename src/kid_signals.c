@@ -26,20 +26,20 @@ void	kid_c(int signum)
 
 void	kid_signals(t_data *info)
 {
-	sigemptyset(&info->quit.sa_mask);
 	info->quit.sa_handler = kid_c;
+	sigemptyset(&info->quit.sa_mask);
 	sigaction(SIGINT, &info->quit, &info->old_act);
-	sigemptyset(&info->z_act.sa_mask);
 	info->z_act.sa_handler = slashing;
+	sigemptyset(&info->z_act.sa_mask);
 	sigaction(SIGQUIT, &info->z_act, &info->old_act);
 }
 
 void	parent_signals(t_data *info)
 {
 	info->z_act.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &info->z_act, &info->old_act);
-	sigaction(SIGTSTP, &info->z_act, &info->old_act);
-	sigaction(SIGINT, &info->z_act, &info->old_act);
+	sigaction(SIGQUIT, &info->z_act, NULL);
+	sigaction(SIGTSTP, &info->z_act, NULL);
+	sigaction(SIGINT, &info->z_act, NULL);
 	tcsetattr(info->fd_in, TCSAFLUSH, &info->old_term);
 	while ((wait(&info->return_val)) > 0)
 		;
