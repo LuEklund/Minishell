@@ -31,15 +31,6 @@
 // GLobal for now
 char	*g_env_dir;
 
-typedef struct s_exit
-{
-	int	safe_in;
-	int	safe_out;
-	struct termios		old_term;
-}	t_exit;
-
-t_exit	g_important;
-
 typedef struct s_cond
 {
 	int				type;
@@ -91,6 +82,7 @@ typedef struct s_redi
 typedef struct s_data
 {
 	struct termios		new_term;
+	struct termios		old_term;
 	struct sigaction	quit;
 	struct sigaction	old_act;
 	struct sigaction	z_act;
@@ -183,6 +175,7 @@ void	get_tokenized(t_error *help, char *str, int var);
 int		error_parser(t_data *info);
 
 //and_or_lists.c
+void	empty_tree(t_cond *head);
 void	traveler(t_cond *current, t_data *info);
 int		go_through_list(t_data *info);
 

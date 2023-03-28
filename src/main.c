@@ -64,8 +64,8 @@ void	init_values(t_data *info)
 	info->fd_out = 1;
 	info->return_val = 0;
 	info->exit = 0;
-	tcgetattr(info->fd_in, &g_important.old_term);
-	info->new_term = g_important.old_term;
+	tcgetattr(info->fd_in, &info->old_term);
+	info->new_term = info->old_term;
 	info->new_term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(info->fd_in, TCSAFLUSH, &info->new_term);
 }

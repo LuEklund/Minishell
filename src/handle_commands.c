@@ -147,5 +147,5 @@ void	handle_buf(t_data *info)
 	if (info->trinary_tree)
 		traveler(info->trinary_tree, info);
 	empty_doc(info->hd_list);
-	///unlink heredoc files and empty list
+	empty_tree(info->trinary_tree);
 }

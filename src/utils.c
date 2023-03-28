@@ -38,7 +38,7 @@ void	free_ar(char **ar)
 
 void	get_outed(t_data info)
 {
-	tcsetattr(info.fd_in, TCSAFLUSH, &g_important.old_term);
+	tcsetattr(info.fd_in, TCSAFLUSH, &info.old_term);
 }
 
 void	empty_redi_list(t_data *info)

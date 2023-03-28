@@ -40,7 +40,7 @@ void	parent_signals(t_data *info)
 	sigaction(SIGQUIT, &info->z_act, &info->old_act);
 	sigaction(SIGTSTP, &info->z_act, &info->old_act);
 	sigaction(SIGINT, &info->z_act, &info->old_act);
-	tcsetattr(info->fd_in, TCSAFLUSH, &g_important.old_term);
+	tcsetattr(info->fd_in, TCSAFLUSH, &info->old_term);
 	while ((wait(&info->return_val)) > 0)
 		;
 //	printf("ret is %d\n", info->return_val);
