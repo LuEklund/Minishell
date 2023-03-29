@@ -34,18 +34,20 @@ void	kid_signals(t_data *info)
 	sigaction(SIGQUIT, &info->z_act, &info->old_act);
 }
 
-void	parent_signals(t_data *info)
+void	parent_signals(t_data *info, int var)
 {
 	info->z_act.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &info->z_act, NULL);
 	sigaction(SIGTSTP, &info->z_act, NULL);
 	sigaction(SIGINT, &info->z_act, NULL);
-	tcsetattr(info->fd_in, TCSAFLUSH, &info->old_term);
+	if (var)
+		tcsetattr(info->fd_in, TCSAFLUSH, &info->old_term);
 	while ((wait(&info->return_val)) > 0)
 		;
 	if (info->return_val != 11 && info->return_val != 10)
 		info->return_val = WEXITSTATUS(info->return_val);
-	tcsetattr(info->fd_in, TCSAFLUSH, &info->new_term);
+	if (var)
+		tcsetattr(info->fd_in, TCSAFLUSH, &info->new_term);
 	if (info->return_val == 130)
 		printf("\n");
 	if (info->return_val == 131)

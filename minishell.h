@@ -187,7 +187,7 @@ t_cond	*create_level(char *str, t_cond *back, t_cond *up, int var);
 void	slashing(int signum);
 void	kid_c(int signum);
 void	kid_signals(t_data *info);
-void	parent_signals(t_data *info);
+void	parent_signals(t_data *info, int var);
 
 //redirection.c
 int		redirection_parser(t_data *info, int i, int i2);

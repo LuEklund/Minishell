@@ -110,7 +110,7 @@ int	work_pipe(t_data *info, char *cmd_chain)
 		exit(write(2, "child process error\n", 19));
 	if (kiddo)
 	{
-		parent_signals(info);
+		parent_signals(info, 1);
 		close_pipeline(info);
 		return (info->return_val);
 	}

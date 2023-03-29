@@ -76,7 +76,7 @@ int	here_doc(t_redi *current, t_data *info, pid_t kiddo)
 		exit(write(2, "memory errawr🦖\n", 15));
 	kiddo = fork();
 	if (kiddo)
-		parent_signals(info);
+		parent_signals(info, 0);
 	else
 	{
 		kid_signals(info);
