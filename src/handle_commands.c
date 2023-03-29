@@ -49,7 +49,7 @@ void	syntax_error(t_data *info)
 	info->return_val = 258;
 	ft_putstr_fd(info->dino, 2);
 	ft_putstr_fd("syntax error near unexpected token `", 2);
-	if (help->par < 0)
+	if (help->par < 0 && help->i)
 		help->i -= 1;
 	if (!info->buf[help->i])
 		ft_putstr_fd("newline", 2);

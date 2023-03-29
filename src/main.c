@@ -14,19 +14,19 @@
 
 void	the_handler(t_data info)
 {
-	int	i;
+	// int	i;
 
-	i = 1;
+	// i = 1;
 	write(1, "\x1b[A", 3);
 	write(1, "\x1b[11C", 5);
-	while (i != info.pos)
-	{
-		write(1, "\x1b[1C", 4);
-		i++;
-	}
+	// while (i != info.pos)
+	// {
+	// 	write(1, "\x1b[1C", 4);
+	// 	i++;
+	// }
 	write(1, "exit\n", 5);
 	get_outed(info);
-	exit(0);
+	exit(info.return_val);
 }
 
 void	i_c(int signum)
@@ -87,7 +87,10 @@ void	find_pos(t_data *info)
 
 	i = 0;
 	if (write(1, "\x1b[6n", 4) != 4)
-		return ; //error
+	{
+		info->pos = 1;
+		return ;
+	}
 	while (i < sizeof(buf) - 1)
 	{
 		if (read(0, &buf[i], 1) != 1)
@@ -120,7 +123,7 @@ int main(int ac, char **av, char **ev)
 	while (37)
 	{
 		set_signals(&info);
-		find_pos(&info);
+		//find_pos(&info);
 		info.buf = readline("\033[0;32mDinoshell>\033[0m ");
 		if (info.buf)
 		{
