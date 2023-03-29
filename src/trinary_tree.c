@@ -109,7 +109,7 @@ t_cond	*create_condition_node(char *str, t_cond *up, int var)
 	help.par = 0;
 	new = check_content(str, up, help);
 	if (new)
-		return (new);
+		return (free(str), new);
 	new = malloc(sizeof(t_cond));
 	if (!new)
 		exit(write(2, "memory errawr🦖\n", 15));
@@ -146,10 +146,10 @@ t_cond	*create_tokenode(t_error help, char *str, t_cond *back, t_cond *up)
 	{
 		new->first_cond = NULL;
 		new->next = create_level(ft_substr((char const *)str, i + 2, ft_strlen(str) - (i + 1)), new, up, 0);
-		free_help(str);
 	}
 	else
 		new->first_cond = create_condition_node(ft_strdup(str), new, 0);
+	free_help(str);
 	return (new);
 }
 
@@ -178,7 +178,7 @@ t_cond	*create_level(char *str, t_cond *back, t_cond *up, int var)
 		return (create_condition_node(str, up, 0));
 	else if (!back)
 	{
-		back = create_tokenode(help, str, NULL, up);
+		back = create_tokenode(help, ft_strdup(str), NULL, up);
 		back->next = create_level(ft_substr((char const *)str, help.i + 2, \
 		ft_strlen(str) - (help.i + 1)), back, up, 0);
 		return (free_help(str), back);
