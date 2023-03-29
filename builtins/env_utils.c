@@ -13,15 +13,11 @@
 
 int	upgrade_shell_lvl(t_data *info, char **env_to_copy)
 {
-	int		fd;
 	int		i;
 	int		shlvl_int;
 	char	*shlvl_char;
 	char	*sh_lvl_str;
 
-	fd = open(g_env_dir, O_CREAT);
-	if (fd < 0)
-		return (0);
 	i = 0;
 	while (env_to_copy[i])
 	{
@@ -36,7 +32,6 @@ int	upgrade_shell_lvl(t_data *info, char **env_to_copy)
 		}
 		i++;
 	}
-	close(fd);
 	return (1);
 }
 

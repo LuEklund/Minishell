@@ -271,7 +271,7 @@ int		env_error_handler(t_data *info, char *new_var, char *type);
 int		env_export(t_data *info, char *manual_add);
 
 //env_unset
-int		env_unset(t_data *info, char *rm_var);
+int		env_unset(t_data *info, char *manual_remove);
 
 //env_utils.c
 int		upgrade_shell_lvl(t_data *ifno, char **env_to_copy);

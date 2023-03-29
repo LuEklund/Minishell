@@ -47,11 +47,13 @@ int	changde_dir_success(t_data *info, char *curr_dir)
 	old_pwd_var = ft_strjoin("OLDPWD=", curr_dir);
 	free(curr_dir);
 	env_export(info, old_pwd_var);
+	free(old_pwd_var);
 	curr_dir = get_curdir();
 	if (!curr_dir)
 		return (1);
 	new_pwd_var = ft_strjoin("PWD=", curr_dir);
 	env_export(info, new_pwd_var);
+	free(new_pwd_var);
 	free(curr_dir);
 	return (0);
 }
