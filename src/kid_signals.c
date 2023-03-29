@@ -43,7 +43,6 @@ void	parent_signals(t_data *info)
 	tcsetattr(info->fd_in, TCSAFLUSH, &info->old_term);
 	while ((wait(&info->return_val)) > 0)
 		;
-//	printf("ret is %d\n", info->return_val);
 	if (info->return_val != 11 && info->return_val != 10)
 		info->return_val = WEXITSTATUS(info->return_val);
 	tcsetattr(info->fd_in, TCSAFLUSH, &info->new_term);

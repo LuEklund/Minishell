@@ -14,13 +14,16 @@
 
 void	the_handler(t_data info)
 {
+	int	i;
+
+	i = 1;
 	write(1, "\x1b[A", 3);
 	write(1, "\x1b[11C", 5);
-//	while (i != info.pos)
-//	{
-//		write(1, "\x1b[1C", 4);
-//		i++;
-//	}
+	while (i != info.pos)
+	{
+		write(1, "\x1b[1C", 4);
+		i++;
+	}
 	write(1, "exit\n", 5);
 	get_outed(info);
 	exit(0);
@@ -70,8 +73,8 @@ void	init_values(t_data *info)
 	info->history_buf = NULL;
 	info->exit = 0;
 	tcgetattr(info->fd_in, &info->old_term);
-	info->new_term = info->old_term;
-	info->new_term.c_lflag &= ~(ECHOCTL);
+	tcgetattr(info->fd_in, &info->new_term);
+	info->new_term.c_lflag &= ~(ECHOCTL | ICANON);
 	tcsetattr(info->fd_in, TCSAFLUSH, &info->new_term);
 }
 
@@ -94,7 +97,6 @@ void	find_pos(t_data *info)
 		i++;
 	}
 	buf[i] = '\0';
-//	printf("'%s'\n", &buf[1]);
 	i2 = 1;
 	i = 1;
 	while (buf[i2] && buf[i2] != 'R')
@@ -102,9 +104,7 @@ void	find_pos(t_data *info)
 	while (buf[i] && buf[i] != ';')
 		i++;
 	ft_strlcpy(help, buf + i + 1, i2 - i + 1);
-//	printf("'%s'\n", help);
 	info->pos = ft_atoi(help);
-//	ft_putnbr_fd(info->pos, 2);
 }
 
 int main(int ac, char **av, char **ev)
@@ -120,7 +120,7 @@ int main(int ac, char **av, char **ev)
 	while (37)
 	{
 		set_signals(&info);
-	//		find_pos(&info);
+		find_pos(&info);
 		info.buf = readline("\033[0;32mDinoshell>\033[0m ");
 		if (info.buf)
 		{

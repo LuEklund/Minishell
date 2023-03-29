@@ -35,7 +35,6 @@ int	check_if_child(t_data *info, char *str)
 	info->built == 5 || info->built == 6))
 		return (free_ar(no_space), 0);
 	work_built(info, no_space);
-	free(str);
 	free_ar(no_space);
 	return (1);
 }
@@ -92,6 +91,7 @@ int	handle_pipe(t_data *info, char *cmd_str)
 	while ((waitpid(info->kiddo[info->i], &info->return_val, 0)) > 0)
 		info->i += 1;
 	free_ar(info->envs);
+	free_ar(info->cmds);
 	free(info->kiddo);
 	if (info->pipe)
 		free(info->pipe);
