@@ -116,8 +116,7 @@ t_cond	*create_condition_node(char *str, t_cond *up, int var)
 	new->type = 0;
 	new->ret = -1;
 	new->content = content_creator(str, help, var);
-	if (!up)
-		free_help(str);
+	free_help(str);
 	new->up = up;
 	new->hd_n = 0;
 	new->first_cond = NULL;
@@ -141,15 +140,16 @@ t_cond	*create_tokenode(t_error help, char *str, t_cond *back, t_cond *up)
 		new->type = 2;
 	new->ret = -1;
 	new->up = up;
-	new->sec_cond = create_condition_node(str + i + 2, new, -1);
+	new->sec_cond = create_condition_node(ft_substr((char const *)str, i + 2, ft_strlen(str) - (i + 1)), new, -1);
 	new->back = back;
 	if (back)
 	{
 		new->first_cond = NULL;
 		new->next = create_level(ft_substr((char const *)str, i + 2, ft_strlen(str) - (i + 1)), new, up, 0);
+		free_help(str);
 	}
 	else
-		new->first_cond = create_condition_node(str, new, 0);
+		new->first_cond = create_condition_node(ft_strdup(str), new, 0);
 	return (new);
 }
 

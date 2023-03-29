@@ -41,6 +41,8 @@ void	empty_tree(t_cond *head)
 //		printf("content:\n'%s'\n", head->content);
 //	if (!head->type && head->content && head->content[0])
 //		free(head->content);
+	if (!head->type)
+		free_help(head->content);
 	free(head);
 }
 

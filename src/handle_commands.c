@@ -35,6 +35,8 @@ int	check_if_child(t_data *info, char *str)
 	info->built == 5 || info->built == 6))
 		return (free_ar(no_space), 0);
 	work_built(info, no_space);
+	free(str);
+	free_ar(no_space);
 	return (1);
 }
 
@@ -110,7 +112,6 @@ int	work_pipe(t_data *info, char *cmd_chain)
 	{
 		parent_signals(info);
 		close_pipeline(info);
-		free(cmd_chain);
 		return (info->return_val);
 	}
 	kid_signals(info);
