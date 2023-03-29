@@ -20,18 +20,15 @@ int	check_for_logic(char *str, int var)
 	help.sq = 0;
 	help.par = 0;
 	help.i = 0;
-//	printf("working on str '%s':\n", str);
 	while (str[help.i])
 	{
 		get_tokenized(&help, str, 0);
-//		printf("and val is %d, or val is %d and par val is %d\n", help.and, help.or, help.par);
 		if (!var && (help.and || help.or || help.par))
 			return (0);
 		if (var && !help.par && (help.or || help.and))
 			return (0);
 		help.i = quote_check((char const *)str, help.i, &help.q, &help.sq);
 	}
-//	printf("returning 1\n");
 	return (1);
 }
 
@@ -45,21 +42,15 @@ char	*par_ser(char *str, t_error *help)
 		help->i = quote_check((char const *)str, help->i, &help->q, &help->sq);
 		get_tokenized(help, str, 0);
 	}
-//	printf("i is %zu in par_ser\n", help->i);
 	if (str[help->i] || !help->rm_par || check_for_logic(str, 0))
-	{
-//		printf("returning '%s' from here\n", str);
 		return (str);
-	}
 	help->q = 0;
 	help->sq = 0;
 	help->par = 0;
 	help->i = 0;
 	reset_token_val(help);
-//	printf("we're cutting up\n %s\n now\n", str);
 	ans = ft_substr((char const *)str, 1, ft_strlen(str) - 2);
-//	printf("cut result\n %s\n now\n", ans);
-//	free(str);
+	free_help(str);
 	if (!ans)
 		exit(write(2, "memory errawr🦖\n", 15));
 	return (par_ser(ans, help));
@@ -99,13 +90,11 @@ char	*content_creator(char *str, t_error help, int var)
 	help.i -= 1;
 	while (1)
 	{
-//		printf("copying '%c' at %zu\n", str[help.i], help.i);
 		ans[help.i] = str[help.i];
 		if (!help.i)
 			break ;
 		help.i -= 1;
 	}
-//	printf("condition for something is:\n%s\n", ans);
 	return (ans);
 }
 
@@ -127,6 +116,8 @@ t_cond	*create_condition_node(char *str, t_cond *up, int var)
 	new->type = 0;
 	new->ret = -1;
 	new->content = content_creator(str, help, var);
+	if (!up)
+		free_help(str);
 	new->up = up;
 	new->hd_n = 0;
 	new->first_cond = NULL;
@@ -180,12 +171,7 @@ t_cond	*create_level(char *str, t_cond *back, t_cond *up, int var)
 	help.sq = 0;
 	help.par = 0;
 	help.rm_par = var;
-//	if (up)
-//		printf("going into par_ser for up %d\n", up->type);
-//	if (back)
-//		printf("going into par_ser for back %d\n", back->type);
 	str = par_ser(str, &help);
-//	printf("i is %zu\n", help.i);
 	if (check_for_logic(str, 1) && back)
 		return (free_help(str), NULL);
 	else if (!str[help.i])
@@ -195,8 +181,6 @@ t_cond	*create_level(char *str, t_cond *back, t_cond *up, int var)
 		back = create_tokenode(help, str, NULL, up);
 		back->next = create_level(ft_substr((char const *)str, help.i + 2, \
 		ft_strlen(str) - (help.i + 1)), back, up, 0);
-//		if (back->next)
-//			printf("str is %s and content is %s\n", str + help.i + 2, back->next->content);///
 		return (free_help(str), back);
 	}
 	else

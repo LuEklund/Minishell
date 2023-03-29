@@ -112,7 +112,6 @@ int	go_through_list(t_data *info)
 		head = NULL;
 	else
 		head = create_level(str, NULL, NULL, 1);
-	free_help(str);
 //	print_tree(head, 1, 1, 1);	
 	info->hd = 0;
 	info->hd_n = 0;

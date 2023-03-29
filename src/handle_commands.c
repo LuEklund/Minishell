@@ -44,11 +44,12 @@ void	syntax_error(t_data *info)
 
 	help = info->error;
 	if (!info->buf)
-		return ;
+		return (free(help));
 	info->return_val = 258;
-//	printf("at index %zu\n:", help->i);
 	ft_putstr_fd(info->dino, 2);
 	ft_putstr_fd("syntax error near unexpected token `", 2);
+	if (help->par < 0)
+		help->i -= 1;
 	if (!info->buf[help->i])
 		ft_putstr_fd("newline", 2);
 	else
@@ -62,27 +63,18 @@ void	syntax_error(t_data *info)
 
 int	handle_pipe(t_data *info, char *cmd_str)
 {
-//	printf("whole str here is '%s'\n", cmd_str);
 	info->wmark_list = NULL;
 	info->cmds = parse_split(cmd_str, '|', info);
-//	printf("cmds array:\n");
-//	print_ar(info->cmds); /////
-//	printf("1cmd here is '%s'\n", cmd_str);
 	if (init_pipes(info) < 0)
 		exit (2);
-//	info->envs = retrieve_env();
-//	printf("2cmd here is '%s'\n", cmd_str);
 	find_the_paths(info);
 	while (info->cmds[info->i])
 	{
-	//	printf("hiii from i %zu\n", info->i);
 		if (arguing(info))
 		{
 			info->i += 1;
 			continue ;
 		}
-//		printf("args array:\n");
-//		print_ar(info->args); /////
 		if (info->exit)
 			break ;
 		info->kiddo[info->i] = fork();
@@ -93,13 +85,10 @@ int	handle_pipe(t_data *info, char *cmd_str)
 		free_commands(info);
 		info->i += 1;
 	}
-//	printf("2.5cmd here is '%s'\n", cmd_str);
 	close_pipeline(info);
 	info->i = 0;
 	while ((waitpid(info->kiddo[info->i], &info->return_val, 0)) > 0)
 		info->i += 1;
-//	printf("exit is %d\n", info->return_val);
-//	printf("3cmd here is '%s'\n", cmd_str);
 	free_ar(info->envs);
 	free(info->kiddo);
 	if (info->pipe)
@@ -112,7 +101,6 @@ int	work_pipe(t_data *info, char *cmd_chain)
 {
 	pid_t	kiddo;
 
-	/////check cd && unset && export && exit
 	if (check_if_child(info, cmd_chain))
 		return (info->return_val);
 	kiddo = fork();
@@ -121,7 +109,7 @@ int	work_pipe(t_data *info, char *cmd_chain)
 	if (kiddo)
 	{
 		parent_signals(info);
-		close_pipeline(info); //////does it work????
+		close_pipeline(info);
 		free(cmd_chain);
 		return (info->return_val);
 	}
@@ -143,7 +131,6 @@ void	handle_buf(t_data *info)
 		exit(write(2, "memory error\n", 13));
 	if (error_parser(info))
 		return (syntax_error(info));
-//	printf("buf is '%s'\n", info->buf);
 	free(info->error);
 	go_through_list(info);
 	info->cmd_n = 0;
