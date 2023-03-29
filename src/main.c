@@ -39,22 +39,26 @@ void	history_handler(char *str)
 {
 	if (ft_strncmp(str, "", 1))
 		add_history(str);
+	free(str);
 }
 
 void	set_signals(t_data *info)
 {
 	info->hd = 0;
 	info->hd_list = NULL;
-	info->pipe_amount = 0;
-	sigemptyset(&info->quit.sa_mask);
-	info->quit.sa_handler = i_c;
+	info->wmark_list = NULL;
+	info->args_list = NULL;
 	info->buf = NULL;
-	sigaction(SIGINT, &info->quit, &info->old_act);
-	sigemptyset(&info->z_act.sa_mask);
+	info->pipe_amount = 0;
+	info->quit.sa_handler = i_c;
+	sigemptyset(&info->quit.sa_mask);
+	info->quit.sa_flags = 0;
 	info->z_act.sa_handler = SIG_IGN;
+	sigemptyset(&info->z_act.sa_mask);
+	info->z_act.sa_flags = 0;
+	sigaction(SIGINT, &info->quit, &info->old_act);
 	sigaction(SIGQUIT, &info->z_act, &info->old_act);
 	sigaction(SIGTSTP, &info->z_act, &info->old_act);
-	sigemptyset(&info->z_act.sa_mask);
 }
 
 void	init_values(t_data *info)
@@ -63,6 +67,7 @@ void	init_values(t_data *info)
 	info->fd_in = 0;
 	info->fd_out = 1;
 	info->return_val = 0;
+	info->history_buf = NULL;
 	info->exit = 0;
 	tcgetattr(info->fd_in, &info->old_term);
 	info->new_term = info->old_term;
@@ -107,7 +112,7 @@ int main(int ac, char **av, char **ev)
 	t_data	info;
 
 	if (ac != 1 || !av[2])
-		return (printf("bro no need for any arguments\n"));
+		return (ft_putstr_fd("no arguments accepted\n", 2), 127);
 	info.envs = copy_env(ev);
 	// make_env_file_first_time(&info, ev);
 	upgrade_shell_lvl(&info, info.envs);
@@ -120,15 +125,13 @@ int main(int ac, char **av, char **ev)
 		if (info.buf)
 		{
 			handle_buf(&info);
+			history_handler(info.history_buf);
 			if (info.exit)
 				break ;
-			history_handler(info.history_buf);
 		}
 		else
 			the_handler(info);
 	}
-	if (info.history_buf)
-		free(info.history_buf);
 	ft_putstr_fd("\033[0;95mexit\033[0m 🦕\n", 2);
 	get_outed(info);
 	return (info.return_val);

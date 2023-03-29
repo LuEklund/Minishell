@@ -29,11 +29,19 @@ int	init_pipes(t_data *info)
 	while (info->cmds[info->cmd_amount])
 		info->cmd_amount += 1;
 	info->pipe_amount = (info->cmd_amount - 1) * 2;
-	info->kiddo = malloc(sizeof(pid_t) * info->cmd_amount);
-	info->pipe = malloc(sizeof(int) * info->pipe_amount);
-	if (!info->pipe)
-		exit(write(2, "memory error\n", 13));
-	while (i < info->cmd_amount)
+	if (sizeof(pid_t) * info->cmd_amount)
+		info->kiddo = malloc(sizeof(pid_t) * info->cmd_amount);
+//	printf("address of kid %p\n", info->kiddo);
+	info->pipe = NULL;
+	if (info->pipe_amount)
+	{
+		info->pipe = malloc(sizeof(int) * info->pipe_amount);
+		if (!info->pipe)
+			exit(write(2, "memory errawr🦖\n", 15));
+	}
+	else
+		return (1);
+	while (i < info->cmd_amount && info->cmd_amount > 1)
 	{
 		if (pipe(info->pipe + 2 * i) < 0)
 			return (-1);

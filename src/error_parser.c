@@ -113,14 +113,18 @@ void	get_tokenized(t_error *help, char *str, int var)
 
 int	parenthesee(t_error *help, char *str)
 {
+	if (help->par < 0)
+		return (1);
 	if (!help->i)
 		return (0);
 	if (str[help->i] != '(' && str[help->i] != ')')
 		return (0);
-	if (help->par < 0)
+	if (str[help->i] == ')' && str[help->i - 1] == '(')
 		return (1);
-	if (help->amper + help->pipe + help->or + help->and == 0 && \
+	if (help->amper + help->or + help->and == 0 && \
 		str[help->i] == '(' && str[help->i - 1] != '(')
+		return (1);
+	if (help->pipe)
 		return (1);
 	return (0);	
 }
@@ -140,10 +144,8 @@ int	redi_syntax(t_error *help, char *str)
 		return (0);
 	if (str[help->i] == '>' && str[help->i - 1] == '>')
 		return (0);
-//	printf("hi from i %zu\n", help->i);
 	if (str[help->i - 1] == '|' || str[help->i - 1] == '&')
 		return (0);
-//	printf("hi from i %zu\n", help->i);
 	return (1);
 }
 int	error_parser(t_data *info)
@@ -175,7 +177,6 @@ int	error_parser(t_data *info)
 			if (help->token && redi_syntax(help, info->buf))
 				return (1);
 		}
-//		printf("parr is %d at %c%zu\n", help->par, info->buf[help->i], help->i);
 		get_tokenized(help, info->buf, 0);
 		if (help->and || help->or)
 			help->i += 1;
@@ -183,6 +184,5 @@ int	error_parser(t_data *info)
 		if (parenthesee(help, info->buf))
 			return (1);
 	}
-//	printf("token is %d parr is %d\n", help->token, help->par);
 	return (help->token + help->par);
 }

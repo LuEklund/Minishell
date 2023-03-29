@@ -38,6 +38,7 @@ void	free_ar(char **ar)
 
 void	get_outed(t_data info)
 {
+	free_ar(info.envs);
 	tcsetattr(info.fd_in, TCSAFLUSH, &info.old_term);
 }
 

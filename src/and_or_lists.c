@@ -112,16 +112,11 @@ int	go_through_list(t_data *info)
 		head = NULL;
 	else
 		head = create_level(str, NULL, NULL, 1);
-	free(str);
 //	print_tree(head, 1, 1, 1);	
-//	free(str);
 	info->hd = 0;
 	info->hd_n = 0;
 	info->hd_error = 0;
 	look_for_heredocs(head, info);
-	if (info->hd_error)
-		info->trinary_tree = NULL;
-	else
-		info->trinary_tree = head;
+	info->trinary_tree = head;
 	return (1);
 }

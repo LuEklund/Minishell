@@ -180,6 +180,7 @@ void	traveler(t_cond *current, t_data *info);
 int		go_through_list(t_data *info);
 
 //trinary_tree.c
+void	free_help(char *str);
 t_cond	*create_level(char *str, t_cond *back, t_cond *up, int var);
 
 //kid_signals.c

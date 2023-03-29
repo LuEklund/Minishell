@@ -67,7 +67,7 @@ void	test_paths(t_data *info, char *str)
 
 	i = 0;
 	info->check = 0;
-	while (str[i] != ' ' && str[i])
+	while (str[i])
 		i++;
 	cmd = malloc(sizeof(char) * (i + 2));
 	if (!cmd)
