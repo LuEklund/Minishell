@@ -151,4 +151,5 @@ void	handle_buf(t_data *info)
 		traveler(info->trinary_tree, info);
 	empty_doc(info->hd_list);
 	empty_tree(info->trinary_tree);
+	free(info->buf);
 }

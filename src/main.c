@@ -39,6 +39,7 @@ void	history_handler(char *str)
 {
 	if (ft_strncmp(str, "", 1))
 		add_history(str);
+	free(str);
 }
 
 void	set_signals(t_data *info)
@@ -111,7 +112,7 @@ int main(int ac, char **av, char **ev)
 	t_data	info;
 
 	if (ac != 1 || !av[2])
-		return (printf("bro no need for any arguments\n"));
+		return (ft_putstr_fd("no arguments accepted\n", 2), 127);
 	info.envs = copy_env(ev);
 	// make_env_file_first_time(&info, ev);
 	upgrade_shell_lvl(&info, info.envs);
@@ -124,15 +125,13 @@ int main(int ac, char **av, char **ev)
 		if (info.buf)
 		{
 			handle_buf(&info);
+			history_handler(info.history_buf);
 			if (info.exit)
 				break ;
-			history_handler(info.history_buf);
 		}
 		else
 			the_handler(info);
 	}
-	if (info.history_buf)
-		free(info.history_buf);
 	ft_putstr_fd("\033[0;95mexit\033[0m 🦕\n", 2);
 	get_outed(info);
 	return (info.return_val);
