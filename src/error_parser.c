@@ -18,11 +18,11 @@ int	print_check(char const *str, int i, int *cmd, int *qts)
 
 	hi = i;
 	hi = quote_check(str, hi, &qts[0], &qts[1]) - 1;
-	if (!(*cmd) && str[i] > 32 && str[i] < 127 && str[i] != '|' && str[i] != '>' \
-			&& str[i] != '<' && str[i] != '&' && str[i] != '(' && str[i] != ')')
+	if (!(*cmd) && str[i] > 32 && str[i] < 127 && str[i] != '|' && str[i] != \
+	'>' && str[i] != '<' && str[i] != '&' && str[i] != '(' && str[i] != ')')
 		*cmd = 1;
 	else if (*cmd && qts[0] + qts[1])
-	   return (hi + 1);	
+		return (hi + 1);
 	else if (*cmd)
 	{
 		while (str[i] == ' ' || (str[i] > 8 && str[i] < 14))
@@ -69,120 +69,122 @@ char	*white_space_cleanse(char *str, char *ans, int *qts, int cmd)
 	return (ans);
 }
 
-void	reset_token_val(t_error *help)
+void	reset_token_val(t_error *he)
 {
-	help->or = 0;
-	help->pipe = 0;
-	help->and = 0;
-	help->amper = 0;
-	help->out_o = 0;
-	help->in_o = 0;
-	help->out_t = 0;
-	help->in_t = 0;
+	he->or = 0;
+	he->pipe = 0;
+	he->and = 0;
+	he->amper = 0;
+	he->out_o = 0;
+	he->in_o = 0;
+	he->out_t = 0;
+	he->in_t = 0;
 }
 
-void	get_tokenized(t_error *help, char *str, int var)
+void	get_tokenized(t_error *he, char *str, int var)
 {
-	reset_token_val(help);
-	help->token = 1;
-	if (help->sq + help->q != 0)
-		help->token = 0;
-	else if (str && str[help->i] == '|' && str[help->i + 1] == '|')
-		help->or = 1;
-	else if (str && str[help->i] == '|')
-		help->pipe = 1;
-	else if (str && str[help->i] == '&' && str[help->i + 1] == '&')
-		help->and = 1;
-	else if (str && str[help->i] == '&')
-		help->amper = 1;
-	else if (str && str[help->i] == '>' && str[help->i + 1] == '>')
-		help->out_t = 1;
-	else if (str && str[help->i] == '>')
-		help->out_o = 1;
-	else if (str && str[help->i] == '<' && str[help->i + 1] == '<')
-		help->in_t = 1;
-	else if (str && str[help->i] == '<')
-		help->in_o = 1;
+	reset_token_val(he);
+	he->token = 1;
+	if (he->sq + he->q != 0)
+		he->token = 0;
+	else if (str && str[he->i] == '|' && str[he->i + 1] == '|')
+		he->or = 1;
+	else if (str && str[he->i] == '|')
+		he->pipe = 1;
+	else if (str && str[he->i] == '&' && str[he->i + 1] == '&')
+		he->and = 1;
+	else if (str && str[he->i] == '&')
+		he->amper = 1;
+	else if (str && str[he->i] == '>' && str[he->i + 1] == '>')
+		he->out_t = 1;
+	else if (str && str[he->i] == '>')
+		he->out_o = 1;
+	else if (str && str[he->i] == '<' && str[he->i + 1] == '<')
+		he->in_t = 1;
+	else if (str && str[he->i] == '<')
+		he->in_o = 1;
 	else
-		help->token = 0;
-	if (str && str[help->i] == '(' && !var)
-		help->par += 1;
-	else if (str && str[help->i] == ')')
-		help->par -= 1;
+		he->token = 0;
+	if (str && str[he->i] == '(' && !var)
+		he->par += 1;
+	else if (str && str[he->i] == ')')
+		he->par -= 1;
 }
 
-int	parenthesee(t_error *help, char *str)
+int	parenthesee(t_error *he, char *str)
 {
-	if (help->par < 0)
+	if (he->par < 0)
 		return (1);
-	if (!help->i)
+	if (!he->i)
 		return (0);
-	if (str[help->i] != '(' && str[help->i] != ')')
+	if (str[he->i] != '(' && str[he->i] != ')')
 		return (0);
-	if (str[help->i] == ')' && str[help->i - 1] == '(')
+	if (str[he->i] == ')' && str[he->i - 1] == '(')
 		return (1);
-	if (help->amper + help->or + help->and == 0 && \
-		str[help->i] == '(' && str[help->i - 1] != '(')
+	if (he->amper + he->or + he->and == 0 && \
+		str[he->i] == '(' && str[he->i - 1] != '(')
 		return (1);
-	if (help->pipe)
+	if (he->pipe)
 		return (1);
-	return (0);	
+	return (0);
 }
 
-int	redi_syntax(t_error *help, char *str)
+int	redi_syntax(t_error *he, char *str)
 {
-	if (help->out_t + help->out_o + help->in_t + help->in_o == 0)
+	if (he->out_t + he->out_o + he->in_t + he->in_o == 0)
 		return (1);
-	if (help->i == 1 && ((str[help->i - 1] == '>' && str[help->i] == '>') || \
-			(str[help->i - 1] == '<' && str[help->i] == '<')))
+	if (he->i == 1 && ((str[he->i - 1] == '>' && str[he->i] == '>') || \
+			(str[he->i - 1] == '<' && str[he->i] == '<')))
 		return (0);
-	if (str[help->i - 1] == '>' && str[help->i] == '>' && str[help->i - 2] == '>')
+	if (str[he->i - 1] == '>' && str[he->i] == '>' && str[he->i - 2] == '>')
 		return (1);
-	if (str[help->i - 1] == '<' && str[help->i] == '<' && str[help->i - 2] == '<')
+	if (str[he->i - 1] == '<' && str[he->i] == '<' && str[he->i - 2] == '<')
 		return (1);
-	if (str[help->i] == '<' && str[help->i - 1] == '<')
+	if (str[he->i] == '<' && str[he->i - 1] == '<')
 		return (0);
-	if (str[help->i] == '>' && str[help->i - 1] == '>')
+	if (str[he->i] == '>' && str[he->i - 1] == '>')
 		return (0);
-	if (str[help->i - 1] == '|' || str[help->i - 1] == '&')
+	if (str[he->i - 1] == '|' || str[he->i - 1] == '&')
 		return (0);
 	return (1);
 }
+
 int	error_parser(t_data *info)
 {
-	t_error	*help;
+	t_error	*he;
 	int		qts[2];
 
-	help = malloc(sizeof(t_error));
+	he = malloc(sizeof(t_error));
 	qts[0] = 0;
 	qts[1] = 0;
-	help->i = 0;
-	help->q = 0;
-	help->sq = 0;
-	help->par = 0;
-	info->error = help;
+	he->i = 0;
+	he->q = 0;
+	he->sq = 0;
+	he->par = 0;
+	info->error = he;
 	info->buf = white_space_cleanse(info->buf, NULL, qts, 0);
 	if (!info->buf)
 		return (1);
-//	printf("buf is '%s'\n", info->buf);
-	get_tokenized(help, info->buf, 1);
-	if (help->pipe + help->or + help->amper + help->and != 0 || help->par < 0)
+	get_tokenized(he, info->buf, 1);
+	if (he->pipe + he->or + he->amper + he->and != 0 || he->par < 0)
 		return (1);
-	while (info->buf[help->i])
+	while (info->buf[he->i])
 	{
-		help->i = quote_check((char const *)info->buf, help->i, &help->q, &help->sq) - 1;
-		if (help->i && help->token && help->q + help->sq == 0)
+		he->i = quote_check((char const *)info->buf, \
+		he->i, &he->q, &he->sq) - 1;
+		if (he->i && he->token && he->q + he->sq == 0)
 		{
-			get_tokenized(help, info->buf, 1);
-			if (help->token && redi_syntax(help, info->buf))
+			get_tokenized(he, info->buf, 1);
+			if (he->token && redi_syntax(he, info->buf))
 				return (1);
 		}
-		get_tokenized(help, info->buf, 0);
-		if (help->and || help->or)
-			help->i += 1;
-		help->i = quote_check((char const *)info->buf, help->i, &help->q, &help->sq);
-		if (parenthesee(help, info->buf))
+		get_tokenized(he, info->buf, 0);
+		if (he->and || he->or)
+			he->i += 1;
+		he->i = quote_check((char const *)info->buf, \
+		he->i, &he->q, &he->sq);
+		if (parenthesee(he, info->buf))
 			return (1);
 	}
-	return (help->token + help->par);
+	return (he->token + he->par);
 }

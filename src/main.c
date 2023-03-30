@@ -78,14 +78,11 @@ void	init_values(t_data *info)
 	tcsetattr(info->fd_in, TCSAFLUSH, &info->new_term);
 }
 
-void	find_pos(t_data *info)
+void	find_pos(t_data *info, size_t i, size_t i2)
 {
 	char			buf[32];
-	unsigned int	i;
-	unsigned int	i2;
 	char			help[10];
 
-	i = 0;
 	if (write(1, "\x1b[6n", 4) != 4)
 	{
 		info->pos = 1;
@@ -100,7 +97,6 @@ void	find_pos(t_data *info)
 		i++;
 	}
 	buf[i] = '\0';
-	i2 = 1;
 	i = 1;
 	while (buf[i2] && buf[i2] != 'R')
 		i2++;
@@ -110,20 +106,19 @@ void	find_pos(t_data *info)
 	info->pos = ft_atoi(help);
 }
 
-int main(int ac, char **av, char **ev)
+int	main(int ac, char **av, char **ev)
 {
 	t_data	info;
 
 	if (ac != 1 || !av[2])
 		return (ft_putstr_fd("no arguments accepted\n", 2), 127);
 	info.envs = copy_env(ev);
-	// make_env_file_first_time(&info, ev);
 	upgrade_shell_lvl(&info, info.envs);
 	init_values(&info);
 	while (37)
 	{
 		set_signals(&info);
-		//find_pos(&info);
+		//find_pos(&info, 0, 1);
 		info.buf = readline("\033[0;32mDinoshell>\033[0m ");
 		if (info.buf)
 		{

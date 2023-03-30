@@ -29,7 +29,7 @@
 # include <sys/stat.h>
 
 // GLobal for now
-char	*g_env_dir;
+char	*g_env_dir;/////we don't need it now rite?
 
 typedef struct s_cond
 {
@@ -153,7 +153,7 @@ typedef struct s_error
 	int		pipe;
 	int		or;
 	int		amper;
-	int 	and;
+	int		and;
 	int		par;
 	int		in_o;
 	int		out_o;
@@ -161,100 +161,113 @@ typedef struct s_error
 	int		out_t;
 }	t_error;
 
-void rl_replace_line (const char *text, int clear_undo);
+void		rl_replace_line(const char *text, int clear_undo);
 
 
 /////
-void	print_ar(char **ar);
-void	print_list(t_whelp *current);
+void		print_ar(char **ar);
+void		print_list(t_whelp *current);
 ////
 
 //error_parser.c
-void	reset_token_val(t_error *help);
-void	get_tokenized(t_error *help, char *str, int var);
-int		error_parser(t_data *info);
+void		reset_token_val(t_error *help);
+void		get_tokenized(t_error *help, char *str, int var);
+int			error_parser(t_data *info);
 
 //and_or_lists.c
-void	empty_tree(t_cond *head);
-void	traveler(t_cond *current, t_data *info);
-int		go_through_list(t_data *info);
+void		empty_tree(t_cond *head);
+void		traveler(t_cond *current, t_data *info);
+int			go_through_list(t_data *info);
 
 //trinary_tree.c
-void	free_help(char *str);
-t_cond	*create_level(char *str, t_cond *back, t_cond *up, int var);
+t_cond		*create_level(char *str, t_cond *back, t_cond *up, int var);
+
+//trinary_utils.c
+void		free_help(char *str);
+int			check_for_logic(char *str, int var);
+char		*par_ser(char *str, t_error *help);
+t_cond		*check_content(char *str, t_cond *up, t_error help);
+
 
 //kid_signals.c
-void	slashing(int signum);
-void	kid_c(int signum);
-void	kid_signals(t_data *info);
-void	parent_signals(t_data *info, int var);
+void		slashing(int signum);
+void		kid_c(int signum);
+void		kid_signals(t_data *info);
+void		parent_signals(t_data *info, int var);
 
 //redirection.c
-int		redirection_parser(t_data *info, int i, int i2);
+int			redirection_parser(t_data *info, int i, int i2);
 
 //wild_cards.c
-void	wild_card_check(t_data *info);
+void		wild_card_check(t_data *info, int i, int i2);
 
 //wild_utils.c
-void	add_to_list(char *str, t_args *current, int i);
-void	remove_from_list(t_data *info, char *str, t_args *current);
-t_args	*new_arg(char *str, int i);
-t_args	*copy_ar_to_list(char **ar);
-char	**copy_list_to_ar(t_args *current);
+void		add_to_list(char *str, t_args *current, int i);
+void		remove_from_list(t_data *info, char *str, t_args *current);
+t_args		*new_arg(char *str, int i);
+t_args		*copy_ar_to_list(char **ar);
+char		**copy_list_to_ar(t_args *current);
 
 //ft_ls.c
-char	**ft_ls(void);
+char		**ft_ls(void);
 
 //open_files.c
-int		find_file(t_redi *current, t_data *info);
-int		open_files(t_data *info);
+int			find_file(t_redi *current, t_data *info);
+int			open_files(t_data *info);
 
 //here_doc.c
-t_redi	*copy_hd_node(t_redi *hd, int red_n);
-void	get_hd_file(t_redi *current, t_data *info);
-int		find_hd(t_cond *current, char *str, t_data *info);
+t_redi		*copy_hd_node(t_redi *hd, int red_n);
+int			find_hd(char *str, t_data *info, int i, int i2);
 
 //expand_envs.c
-int		expand_envs(const char *str, t_data *info, t_split *help, char **ans);
-
-//redir_input_parser.c
-int		redir_input_parser(const char *str, t_split *help, int var);
+int			expand_envs(const char *s, t_data *in, t_split *he, char **a);
 
 //handle_commands.c
-int		handle_pipe(t_data *info, char *cmd_str);
-int		work_pipe(t_data *info, char *cmd_chain);
-void	handle_buf(t_data *info);
+int			handle_pipe(t_data *info, char *cmd_str);
+int			work_pipe(t_data *info, char *cmd_chain);
+void		handle_buf(t_data *info);
 
 //finding_execs.c
-void	test_access(t_data *info, char *str);
-void	find_the_paths(t_data *info);
-void	test_paths(t_data *info, char *str);
-void	find_execs(t_data *info);
-int		arguing(t_data *info);
+void		test_access(t_data *info, char *str);
+void		find_the_paths(t_data *info);
+void		test_paths(t_data *info, char *str);
+void		find_execs(t_data *info);
+int			arguing(t_data *info);
 
 //piping.c
-int		get_duped(int read, int write);
-void	the_kindergarden(t_data *info);
+int			get_duped(int read, int write);
+void		the_kindergarden(t_data *info);
 
 //pipe_utils.c
-int		init_pipes(t_data *info);
-t_redi	*find_node(t_data *info, int type);
-void	close_pipeline(t_data *info);
-void	free_commands(t_data *info);
+int			init_pipes(t_data *info);
+t_redi		*find_node(t_data *info, int type);
+void		close_pipeline(t_data *info);
+void		free_commands(t_data *info);
 
 //utils.c
-void	free_ar(char **ar);
-void	get_outed(t_data info);
-void	empty_redi_list(t_data *info);
-void	empty_wild_list(t_data *info);
-void	empty_whelp_list(t_data *info);
-void	empty_args_list(t_data *info);
-void	empty_doc(t_redi *current);
+void		free_ar(char **ar);
+void		get_outed(t_data info);
+int			redir_input_parser(const char *str, t_split *help, int var);
+
+//free_lists.c
+void		empty_redi_list(t_data *info);
+void		empty_wild_list(t_data *info);
+void		empty_whelp_list(t_data *info);
+void		empty_args_list(t_data *info);
+void		empty_doc(t_redi *current);
 
 //parse_split.c
-int		quote_check(char const *str, int i, int *q, int *sq);
-void	init_help(t_data *info, char c, char const *str);
-char	**parse_split(char const *str, char c, t_data *info);
+char		**parse_split(char const *str, char c, t_data *info);
+
+//split_utils.c
+int			red_c(char const *str, t_split *help, int i);
+void		wild_marker(char const *str, t_split help, t_data *info);
+void		init_help(t_data *info, t_split *help, char c, char const *str);
+
+//lex_checks.c
+int			quote_check(char const *str, int i, int *q, int *sq);
+int			quote_see(char const *str, t_split help);
+int			expand_check(char const *str, t_split *help);
 
 //Builtins
 
@@ -263,33 +276,32 @@ long long	built_exit(t_data *info);
 int			execute_built(t_data *info);
 
 //directory.c
-int		display_curdir();
-char	*get_curdir();
-int		change_dir(t_data *info);
+int			display_curdir(void);
+char		*get_curdir(void);
+int			change_dir(t_data *info);
 
 //env_export
-int		env_error_handler(t_data *info, char *new_var, char *type);
-int		env_export(t_data *info, char *manual_add);
+int			env_error_handler(t_data *info, char *new_var, char *type);
+int			env_export(t_data *info, char *manual_add);
 
 //env_unset
-int		env_unset(t_data *info, char *manual_remove);
+int			env_unset(t_data *info, char *manual_remove);
 
 //env_utils.c
-int		upgrade_shell_lvl(t_data *ifno, char **env_to_copy);
-int		find_equal_sign(char *str);
-int		change_env_variable(t_data *info, char *var);
+int			upgrade_shell_lvl(t_data *ifno, char **env_to_copy);
+int			find_equal_sign(char *str);
+int			change_env_variable(t_data *info, char *var);
 
 //environment.c
-char	**copy_env(char **env_to_copy);
-int		display_env(t_data *info, int export_type);
+char		**copy_env(char **env_to_copy);
+int			display_env(t_data *info, int export_type);
 
 //exit_val_calc.c
-long long 		exit_atoi(t_data *info, int *sign);
+long long	exit_atoi(t_data *info, int *sign);
 
 //handle_built.c
-void	work_built(t_data *info, char **args);
-void	is_built_in(t_data *info, char *arg);
-int		bob_the_builtin(t_data *info);
-
+void		work_built(t_data *info, char **args);
+void		is_built_in(t_data *info, char *arg);
+int			bob_the_builtin(t_data *info);
 
 #endif

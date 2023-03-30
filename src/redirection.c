@@ -59,20 +59,10 @@ void	connect_with_hd_list(t_data *info, size_t i, int *i2)
 
 	*i2 += 1;
 	hd = info->hd_list;
-//	if (hd)
-	//	printf("1hd cmd is %d info cmd is %d pipe n is %zu i is %zu used is %d\n",
-	//	 hd->cmd_n, info->cmd_n, hd->pipe_n, i, hd->used);
 	while (hd && (hd->cmd_n != info->cmd_n || hd->pipe_n != i || hd->used))
-	{
-//		printf("2hd cmd is %d info cmd is %d pipe n is %zu i is %zu used is %d\n",
-//		 hd->cmd_n, info->cmd_n, hd->pipe_n, i, hd->used);
-//	printf(" node is of type %d, in pipe %zu spot %zu\n", hd->type, hd->pipe_n, hd->red_n);
 		hd = hd->next;
-	}
-//	printf(" 1node is of type %d, in pipe %zu spot %zu\n", hd->type, hd->pipe_n, hd->red_n);
 	if (!hd)
-		exit(write(2, "is fuckeddd\n", 12));
-//	printf(" 2node is of type %d, in pipe %zu spot %zu\n", hd->type, hd->pipe_n, hd->red_n);
+		exit(write(2, "heredoc error: fatal\n", 21));
 	hd->used = 1;
 	new = copy_hd_node(hd, info->red_n);
 	current = info->redi_list;
@@ -102,36 +92,6 @@ void	start_quotes(t_data *info, int i, int *i2)
 	*i2 += 1;
 }
 
-//////
-//////
-
-void	print_lists(t_redi *current)
-{
-	int	i = 1;
-
-//	printf("%p\n", current);
-	////remove this
-	while (current)
-	{
-		printf("%d", i);
-		if (i % 10 == 1 && i % 100 != 11)
-			printf(":st");
-		else if (i % 10 == 2 && i % 100 != 12)
-			printf(":nd");
-		else if (i % 10 == 3 && i % 100 != 13)
-			printf(":rd");
-		else
-			printf(":th");
-		printf(" node is of type %d, in pipe %zu spot %zu\n", current->type, current->pipe_n, current->red_n);
-	//	printf(" node has n %d h %d and validness of %d\n", current->n, current->h, current->valid);
-		current = current->next;
-		i++;
-	}
-
-}
-
-//////
-//////
 int	redirection_parser(t_data *info, int i, int i2)
 {
 	while (info->cmds[i])
@@ -150,12 +110,12 @@ int	redirection_parser(t_data *info, int i, int i2)
 				new_redi_node(info, -2, i, &i2);
 			else if (info->cmds[i][i2] == '>')
 				new_redi_node(info, -1, i, &i2);
-			i2 = quote_check((char const *)info->cmds[i], i2, &info->q, &info->sq);
+			i2 = quote_check((char const *)info->cmds[i], \
+			i2, &info->q, &info->sq);
 		}
 		info->all_red_n += info->red_n;
 		i2 = 0;
 		i++;
 	}
-//	print_lists(info->redi_list);
 	return (open_files(info));
 }

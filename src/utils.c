@@ -1,27 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/29 17:25:39 by nlonka            #+#    #+#             */
+/*   Updated: 2023/03/29 17:25:43 by nlonka           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
-
-//			   //
-// REMOVE THIS //
-//			   //
-
-void	print_ar(char **ar)
-{
-	int	i;
-
-	i = 0;
-	while (ar[i])
-	{
-		printf("'%s'\n", ar[i]);
-		i++;
-	}
-	///IIIIIIIIIIIIIII DELEEETE MEEEEEE
-}
-
-//			   //
-// REMOVE THIS //
-//			   //
-
 
 void	free_ar(char **ar)
 {
@@ -42,78 +31,21 @@ void	get_outed(t_data info)
 	tcsetattr(info.fd_in, TCSAFLUSH, &info.old_term);
 }
 
-void	empty_redi_list(t_data *info)
+int	redir_input_parser(const char *str, t_split *he, int var)
 {
-	t_redi	*latter;
-	t_redi	*current;
+	int	len;
 
-	current = info->redi_list;
-	while (current)
+	len = he->expand_type - 2;
+	while (str[he->i3 + len] && str[he->i3 + len] != ' ' \
+			&& he->sq + he->q == 0)
+		len++;
+	if (he->sq + he->q != 0)
+		return (0);
+	if (var)
 	{
-		close(current->fd);
-		if (current->file_name)
-			free(current->file_name);
-		latter = current;
-		current = current->next;
-		free(latter);
+		while (str[he->i3 + len] == he->c)
+			len++;
 	}
-}
-
-void	empty_wild_list(t_data *info)
-{
-	t_wild	*latter;
-	t_wild	*current;
-
-	current = info->wild_list;
-	while (current)
-	{
-		latter = current;
-		current = current->next;
-		free(latter);
-	}
-}
-
-void	empty_whelp_list(t_data *info)
-{
-	t_whelp	*latter;
-	t_whelp	*current;
-
-	current = info->wmark_list;
-	while (current)
-	{
-		latter = current;
-		current = current->next;
-		free(latter);
-	}
-}
-
-void	empty_args_list(t_data *info)
-{
-	t_args	*latter;
-	t_args	*current;
-
-	current = info->args_list;
-	while (current)
-	{
-		latter = current;
-		free(current->arg);
-		current = current->next;
-		free(latter);
-	}
-}
-
-void	empty_doc(t_redi *current)
-{
-	t_redi	*latter;
-
-	while (current)
-	{
-		latter = current;
-		current = current->next;
-		close(latter->fd);
-		unlink(latter->hd_file);
-		free(latter->hd_file);
-		free(latter->file_name);
-		free(latter);
-	}
+	he->i3 += len;
+	return (1);
 }

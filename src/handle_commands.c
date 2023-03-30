@@ -33,8 +33,9 @@ int	check_if_child(t_data *info, char *str)
 	is_built_in(info, no_space[0]);
 	if (!(info->built == 2 || info->built == 4 || \
 	info->built == 5 || info->built == 6))
-		return (free_ar(no_space), 0);
+		return (free_ar(no_space), empty_whelp_list(info), 0);
 	work_built(info, no_space);
+	empty_whelp_list(info);
 	free_ar(no_space);
 	return (1);
 }
@@ -54,49 +55,12 @@ void	syntax_error(t_data *info)
 	if (!info->buf[help->i])
 		ft_putstr_fd("newline", 2);
 	else
-		write(2, &info->buf[help->i], 1);	
+		write(2, &info->buf[help->i], 1);
 	if (help->and || help->or || help->out_t || help->in_t)
 		write(2, &info->buf[help->i + 1], 1);
 	ft_putendl_fd("'", 2);
 	free(info->buf);
 	free(help);
-}
-
-int	handle_pipe(t_data *info, char *cmd_str)
-{
-	info->wmark_list = NULL;
-	info->cmds = parse_split(cmd_str, '|', info);
-	if (init_pipes(info) < 0)
-		exit (2);
-	find_the_paths(info);
-	while (info->cmds[info->i])
-	{
-		if (arguing(info))
-		{
-			info->i += 1;
-			continue ;
-		}
-		if (info->exit)
-			break ;
-		info->kiddo[info->i] = fork();
-		if (info->kiddo[info->i] < 0)
-			exit(write(2, "forking errawr🦖\n", 16));	
-		if (info->kiddo[info->i] == 0)
-			the_kindergarden(info);
-		free_commands(info);
-		info->i += 1;
-	}
-	close_pipeline(info);
-	info->i = 0;
-	while ((waitpid(info->kiddo[info->i], &info->return_val, 0)) > 0)
-		info->i += 1;
-	free_ar(info->envs);
-	free_ar(info->cmds);
-	free(info->kiddo);
-	if (info->pipe)
-		free(info->pipe);
-	empty_redi_list(info);
-	return (info->return_val);
 }
 
 int	work_pipe(t_data *info, char *cmd_chain)

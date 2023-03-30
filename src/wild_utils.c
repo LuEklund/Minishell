@@ -15,7 +15,7 @@
 void	add_to_list(char *str, t_args *current, int i)
 {
 	t_args	*tmp;
-	
+
 	while (current->next && current->i != i)
 		current = current->next;
 	if (!current->next)
@@ -47,7 +47,8 @@ void	remove_from_list(t_data *info, char *str, t_args *current)
 		info->args_list = tmp;
 		return ;
 	}
-	while (current->next && ft_strncmp(str, current->next->arg, ft_strlen(current->arg) + 1))
+	while (current->next && \
+	ft_strncmp(str, current->next->arg, ft_strlen(current->arg) + 1))
 		current = current->next;
 	if (!current->next)
 		return ;
@@ -97,7 +98,7 @@ char	**copy_list_to_ar(t_args *current)
 {
 	char	**ans;
 	t_args	*safe;
-	size_t		i;
+	size_t	i;
 
 	safe = current;
 	i = 0;

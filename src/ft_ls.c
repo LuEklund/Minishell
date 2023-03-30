@@ -40,10 +40,9 @@ void	allocate_array(char **ans, int len, int i)
 	closedir(dh);
 }
 
-void	copy_files(char **ans, int i, int i2)
+void	copy_files(char **ans, int i, int i2, DIR *dh)
 {
 	struct dirent	*dir;
-	DIR				*dh;
 
 	allocate_array(ans, 0, 0);
 	dh = opendir(".");
@@ -95,6 +94,6 @@ char	**ft_ls(void)
 		exit(write(2, "memory error\n", 13));
 	ans[n] = 0;
 	closedir(dh);
-	copy_files(ans, 0, 0);
+	copy_files(ans, 0, 0, NULL);
 	return (ans);
 }

@@ -12,23 +12,6 @@
 
 #include "../minishell.h"
 
-void	print_node(t_cond *node, int b, int sub_b, int level)
-{
-	printf("level [%d] branch[%d][%d] node type %d\n", level, b, sub_b, node->type);
-	if (!node->type)
-		printf("content:\n%s\n", node->content);
-}
-
-void	print_tree(t_cond *head, int b, int sub_b, int level)
-{
-	if (!head)
-		return ;
-	print_tree(head->first_cond, b, sub_b, level + 1);
-	print_node(head, b, sub_b, level);
-	print_tree(head->sec_cond, b, sub_b + 1, level);//
-	print_tree(head->next, b + 1, sub_b, level);
-}
-
 void	empty_tree(t_cond *head)
 {
 	if (!head)
@@ -36,11 +19,6 @@ void	empty_tree(t_cond *head)
 	empty_tree(head->first_cond);
 	empty_tree(head->sec_cond);
 	empty_tree(head->next);
-//	printf("node is of type %d\n", head->type);
-//	if (!head->type)
-//		printf("content:\n'%s'\n", head->content);
-//	if (!head->type && head->content && head->content[0])
-//		free(head->content);
 	if (!head->type)
 		free_help(head->content);
 	free(head);
@@ -53,9 +31,7 @@ void	look_for_heredocs(t_cond *head, t_data *info)
 	look_for_heredocs(head->first_cond, info);
 	if (!head->type)
 	{
-	//	printf("here i am!!\n");
-	//	printf("%d\n", info->hd);
-		info->hd_error = find_hd(head, head->content, info);
+		info->hd_error = find_hd(head->content, info, 0, 0);
 		info->hd += 1;
 		head->hd_n = info->hd;
 	}
@@ -65,10 +41,8 @@ void	look_for_heredocs(t_cond *head, t_data *info)
 
 void	exec_node(t_cond *current, t_data *info)
 {
-//	printf("executing\n");
 	current->ret = work_pipe(info, current->content);
 	info->cmd_n += 1;
-//	printf("executed\n");
 	info->return_val = current->ret;
 	while (current->up)
 	{
@@ -84,9 +58,6 @@ void	traveler(t_cond *current, t_data *info)
 	traveler(current->first_cond, info);
 	if (!current->type)
 		exec_node(current, info);
-//	printf("current type is %d and ret is %d\n", current->type, current->ret);
-//	if (!current->type)
-//		printf("current command is\n%s\nand up is %p\n", current->content, current->up);
 	if ((current->ret && current->type == 1) || (!current->ret && \
 		current->type == 2))
 		traveler(current->sec_cond, info);
@@ -107,14 +78,12 @@ int	go_through_list(t_data *info)
 	str = ft_strdup(info->buf);
 	if (!str)
 		exit(write(2, "memory errawr🦖\n", 15));
-//	printf("str is '%s'\n", str);
 	while (str[i] && (str[i] == '(' || str[i] == ')'))
 		i++;
 	if (!str[i])
 		head = NULL;
 	else
 		head = create_level(str, NULL, NULL, 1);
-//	print_tree(head, 1, 1, 1);	
 	info->hd = 0;
 	info->hd_n = 0;
 	info->hd_error = 0;

@@ -53,16 +53,6 @@ void	the_piper(t_data *info)
 	info->check = get_duped(info->fd_in, info->fd_out);
 }
 
-//	if (info->pipe_amount == 0)
-//		info->check = get_duped(info->fd_in, info->fd_out);
-//	else if (info->i == 0)
-//		info->check = get_duped(info->fd_in, info->pipe[1]);
-///	else if (info->i == info->cmd_amount - 1)
-//		info->check = get_duped(info->pipe[(info->i * 2) - 2], info->fd_out);
-//	else
-//		info->check = get_duped(info->pipe[(info->i * 2) - 2], \
-//				info->pipe[(info->i * 2) + 1]);
-
 void	the_kindergarden(t_data *info)
 {
 	the_piper(info);
@@ -80,4 +70,46 @@ void	the_kindergarden(t_data *info)
 		info->check = 1;
 	}
 	exit(1);
+}
+
+void	go_through_pipeline(t_data *info)
+{
+	while (info->cmds[info->i])
+	{
+		if (arguing(info))
+		{
+			info->i += 1;
+			continue ;
+		}
+		if (info->exit)
+			break ;
+		info->kiddo[info->i] = fork();
+		if (info->kiddo[info->i] < 0)
+			exit(write(2, "forking errawr🦖\n", 16));
+		if (info->kiddo[info->i] == 0)
+			the_kindergarden(info);
+		free_commands(info);
+		info->i += 1;
+	}
+}
+
+int	handle_pipe(t_data *info, char *cmd_str)
+{
+	info->wmark_list = NULL;
+	info->cmds = parse_split(cmd_str, '|', info);
+	if (init_pipes(info) < 0)
+		exit (2);
+	find_the_paths(info);
+	go_through_pipeline(info);
+	close_pipeline(info);
+	info->i = 0;
+	while ((waitpid(info->kiddo[info->i], &info->return_val, 0)) > 0)
+		info->i += 1;
+	free_ar(info->envs);
+	free_ar(info->cmds);
+	free(info->kiddo);
+	if (info->pipe)
+		free(info->pipe);
+	empty_redi_list(info);
+	return (info->return_val);
 }

@@ -25,9 +25,9 @@ _SRCS :=  main.c \
 			piping.c \
 			finding_execs.c \
 			parse_split.c \
+			lex_checks.c \
 			handle_built.c \
 			expand_envs.c \
-			redir_input_parser.c \
 			wild_cards.c \
 			wild_utils.c \
 			ft_ls.c \
@@ -35,6 +35,9 @@ _SRCS :=  main.c \
 			error_parser.c \
 			and_or_lists.c \
 			trinary_tree.c \
+			trinary_utils.c \
+			free_lists.c \
+			split_utils.c \
 			pipe_utils.c \
 			utils.c
 

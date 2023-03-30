@@ -14,20 +14,23 @@
 
 int	find_file(t_redi *current, t_data *info)
 {
-	int i;
+	int	i;
 	int	len;
 	int	i2;
 
 	i2 = 0;
 	i = current->i + 1;
-	while (info->cmds[current->pipe_n][i] && info->cmds[current->pipe_n][i] == ' ')
+	while (info->cmds[current->pipe_n][i] && \
+	info->cmds[current->pipe_n][i] == ' ')
 		i++;
 	len = i;
-	while (info->cmds[current->pipe_n][len] && info->cmds[current->pipe_n][len] != ' ')
+	while (info->cmds[current->pipe_n][len] && \
+	info->cmds[current->pipe_n][len] != ' ')
 		len++;
 	len -= i;
 	current->file_name = malloc(sizeof(char) * (len + 1));
-	while (info->cmds[current->pipe_n][i] && info->cmds[current->pipe_n][i] != ' ')
+	while (info->cmds[current->pipe_n][i] \
+	&& info->cmds[current->pipe_n][i] != ' ')
 	{
 		current->file_name[i2] = info->cmds[current->pipe_n][i];
 		i++;
@@ -42,12 +45,15 @@ int	open_infile(t_redi *current, t_data *info)
 	if (!info->cmds[current->pipe_n][current->i + 1])
 		return (1);
 	find_file(current, info);
-	if (!access(current->file_name, F_OK) && access(current->file_name, R_OK) < 0)
-		return (ft_putstr_fd(info->dino, 2), ft_putstr_fd(current->file_name, 2) \
+	if (!access(current->file_name, F_OK) && \
+	access(current->file_name, R_OK) < 0)
+		return (ft_putstr_fd(info->dino, 2), \
+		ft_putstr_fd(current->file_name, 2) \
 			, ft_putendl_fd(": Permission denied", 2), 0);
 	current->fd = open(current->file_name, O_RDONLY);
 	if (current->fd < 0)
-		return (ft_putstr_fd(info->dino, 2), ft_putstr_fd(current->file_name, 2) \
+		return (ft_putstr_fd(info->dino, 2), \
+		ft_putstr_fd(current->file_name, 2) \
 			, ft_putendl_fd(": No such file or directory", 2), 0);
 	return (0);
 }
@@ -59,13 +65,17 @@ int	open_outfile(t_redi *current, t_data *info)
 	if (current->type == -2 && !info->cmds[current->pipe_n][current->i + 2])
 		return (1);
 	find_file(current, info);
-	if (!access(current->file_name, F_OK) && access(current->file_name, W_OK) < 0)
-		return (ft_putstr_fd(info->dino, 2), ft_putstr_fd(current->file_name, 2) \
+	if (!access(current->file_name, F_OK) && \
+	access(current->file_name, W_OK) < 0)
+		return (ft_putstr_fd(info->dino, 2), \
+		ft_putstr_fd(current->file_name, 2) \
 			, ft_putendl_fd(": Permission denied", 2), 0);
 	if (current->type == -1)
-		current->fd = open(current->file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		current->fd = open(current->file_name, \
+		O_RDWR | O_CREAT | O_TRUNC, 0644);
 	else
-		current->fd = open(current->file_name, O_RDWR | O_CREAT | O_APPEND, 0644);
+		current->fd = open(current->file_name, \
+		O_RDWR | O_CREAT | O_APPEND, 0644);
 	return (0);
 }
 

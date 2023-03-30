@@ -63,6 +63,7 @@ void	is_built_in(t_data *info, char *arg)
 
 int	bob_the_builtin(t_data *info)
 {
+	///might not be in use
 	info->check = 0;
 	if (info->built == 1 || info->built == 3 || info->built == 7)
 		;

@@ -12,26 +12,32 @@
 
 #include "../minishell.h"
 
-int	init_pipes(t_data *info)
+int	init_first(t_data *info)
 {
-	size_t	i;
-
 	info->redi_list = NULL;
 	info->all_red_n = 0;
 	if (redirection_parser(info, 0, 0))
 	{
 		info->return_val = 1;
-		return (-1);
+		return (1);
 	}
-	i = 0;
 	info->i = 0;
 	info->cmd_amount = 0;
 	while (info->cmds[info->cmd_amount])
 		info->cmd_amount += 1;
+	return (0);
+}
+
+int	init_pipes(t_data *info)
+{
+	size_t	i;
+
+	i = 0;
+	if (init_first(info))
+		return (-1);
 	info->pipe_amount = (info->cmd_amount - 1) * 2;
 	if (sizeof(pid_t) * info->cmd_amount)
 		info->kiddo = malloc(sizeof(pid_t) * info->cmd_amount);
-//	printf("address of kid %p\n", info->kiddo);
 	info->pipe = NULL;
 	if (info->pipe_amount)
 	{
@@ -82,6 +88,6 @@ void	close_pipeline(t_data *info)
 
 void	free_commands(t_data *info)
 {
-	free_ar(info->args);	
+	free_ar(info->args);
 	free(info->cmd_to_use);
 }

@@ -14,7 +14,6 @@
 
 int	does_it_match(char *file, char *wild, int i, int i2)
 {
-	int	check = 0;
 	while (wild[i2])
 	{
 		while (wild[i2] && wild[i2] == '*')
@@ -38,12 +37,7 @@ int	does_it_match(char *file, char *wild, int i, int i2)
 			return (1);
 		if (wild[i2] != '*' && wild[i2] != file[i])
 			i2 = 0;
-		check++;
-		if (check > 500)
-			exit(1);
 	}
-	if (!file[i])
-		return (1);
 	return (0);
 }
 
@@ -114,16 +108,11 @@ void	new_wild(t_data *info, int i)
 	}
 }
 
-void	wild_card_check(t_data *info)
+void	wild_card_check(t_data *info, int i, int i2)
 {
-	int		i;
-	int		i2;
 	t_whelp	*current;
 
-	i = 1;
-	i2 = 0;
 	current = info->wmark_list;
-//	print_list(current);
 	info->wild_list = NULL;
 	info->args_list = copy_ar_to_list(info->args);
 	while (info->args[i])

@@ -56,7 +56,7 @@ void	find_the_paths(t_data *info)
 		i2++;
 	info->paths = ft_split(info->envs[i] + i2, ':');
 	if (!info->paths || !info->paths[0])
-		exit(write(2, "memory error\n", 13));		
+		exit(write(2, "memory error\n", 13));
 }
 
 void	test_paths(t_data *info, char *str)
@@ -98,10 +98,12 @@ void	find_execs(t_data *info)
 		if (info->paths)
 			ft_putstr_fd(": command not found\n", 2);
 		else
-			ft_putstr_fd(": No such file or directory\n", 2);	
+			ft_putstr_fd(": No such file or directory\n", 2);
 		free_ar(info->args);
 		info->return_val = 127;
 	}
+	if (info->paths)
+		free_ar(info->paths);
 }
 
 int	arguing(t_data *info)
@@ -110,7 +112,7 @@ int	arguing(t_data *info)
 	info->exit = 0;
 	info->cmd_to_use = NULL;
 	info->args = parse_split(info->cmds[info->i], ' ', info);
-	wild_card_check(info);
+	wild_card_check(info, 1, 0);
 	is_built_in(info, info->args[0]);
 	if (info->built)
 		return (0);

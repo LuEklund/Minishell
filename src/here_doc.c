@@ -30,20 +30,18 @@ t_redi	*copy_hd_node(t_redi *hd, int red_n)
 	return (new);
 }
 
-void	get_hd_file(t_redi *current, t_data *info)
+void	get_hd_file(t_redi *current, int len, int fd)
 {
-	int		fd;
-	int		len;
 	char	*buffy;
 
-	(void)info;
 	len = ft_strlen(current->file_name);
 	fd = open(current->hd_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)
 		exit(write(2, "temporary file error\n", 21));
 	while (1)
 	{
-		buffy = readline("\033[0;36mhere\033[0m\033[0;32mdino\033[0m\033[0;36mc>\033[0m ");
+		buffy = \
+		readline("\033[0;36mhere\033[0m\033[0;32mdino\033[0m\033[0;36mc>\033[0m ");
 		if (!buffy)
 		{
 			close(fd);
@@ -80,7 +78,7 @@ int	here_doc(t_redi *current, t_data *info, pid_t kiddo)
 	else
 	{
 		kid_signals(info);
-		get_hd_file(current, info);
+		get_hd_file(current, 37, 37);
 	}
 	if (info->return_val)
 		return (1);
@@ -90,7 +88,7 @@ int	here_doc(t_redi *current, t_data *info, pid_t kiddo)
 	return (0);
 }
 
-int	deal_doc(t_data *info, size_t *i, char **pipes)
+int	deal_doc(t_data *info, size_t i, size_t i2, char **pipes)
 {
 	t_redi	*new;
 	t_redi	*current;
@@ -99,8 +97,8 @@ int	deal_doc(t_data *info, size_t *i, char **pipes)
 	if (!new)
 		exit(write(2, "memory errawr🦖\n", 15));
 	new->type = 2;
-	new->pipe_n = i[0];
-	new->i = i[1] + 1; ///or not + 1
+	new->pipe_n = i;
+	new->i = i2 + 1;
 	new->cmd_n = info->hd;
 	new->used = 0;
 	info->cmds = pipes;
@@ -118,37 +116,30 @@ int	deal_doc(t_data *info, size_t *i, char **pipes)
 	return (0);
 }
 
-int	find_hd(t_cond *current, char *str, t_data *info)
+int	find_hd(char *str, t_data *info, int i, int i2)
 {
 	char	**pipes;
 	int		qts[2];
-	size_t	i[2];
 
-	(void)current; /////
 	qts[0] = 0;
 	qts[1] = 0;
-	i[0] = 0;
-	i[1] = 0;
-//	printf("whole str here is '%s'\n", str);
 	pipes = parse_split(str, '|', info);
-//	printf("cmds array:\n");
-//	print_ar(pipes); /////
 	if (!pipes)
 		exit(write(2, "memory errawr🦖\n", 15));
-	while (pipes[i[0]])
+	while (pipes[i])
 	{
-		while (pipes[i[0]][i[1]])
+		while (pipes[i][i2])
 		{
-			if (pipes[i[0]][i[1]] == '<' && pipes[i[0]][i[1] + 1] == '<' \
+			if (pipes[i][i2] == '<' && pipes[i][i2 + 1] == '<' \
 					&& qts[0] + qts[1] == 0)
 			{
-				if (deal_doc(info, i, pipes))
+				if (deal_doc(info, i, i2, pipes))
 					return (free_ar(pipes), 1);
 			}
-			i[1] = quote_check(pipes[i[0]], i[1], &qts[0], &qts[1]);
+			i2 = quote_check(pipes[i], i2, &qts[0], &qts[1]);
 		}
-		i[1] = 0;
-		i[0] += 1;
+		i2 = 0;
+		i += 1;
 	}
 	return (free_ar(pipes), 0);
 }
