@@ -159,20 +159,19 @@ typedef struct s_error
 	int		out_o;
 	int		in_t;
 	int		out_t;
+	int		special;
 }	t_error;
 
 void		rl_replace_line(const char *text, int clear_undo);
 
-
-/////
-void		print_ar(char **ar);
-void		print_list(t_whelp *current);
-////
-
 //error_parser.c
+int			error_parser(t_data *info);
+
+//error_utils.c
 void		reset_token_val(t_error *help);
 void		get_tokenized(t_error *help, char *str, int var);
-int			error_parser(t_data *info);
+int			parenthesee(t_error *he, char *str);
+int			redi_syntax(t_error *he, char *str);
 
 //and_or_lists.c
 void		empty_tree(t_cond *head);
@@ -187,7 +186,6 @@ void		free_help(char *str);
 int			check_for_logic(char *str, int var);
 char		*par_ser(char *str, t_error *help);
 t_cond		*check_content(char *str, t_cond *up, t_error help);
-
 
 //kid_signals.c
 void		slashing(int signum);
@@ -302,6 +300,5 @@ long long	exit_atoi(t_data *info, int *sign);
 //handle_built.c
 void		work_built(t_data *info, char **args);
 void		is_built_in(t_data *info, char *arg);
-int			bob_the_builtin(t_data *info);
 
 #endif
