@@ -28,9 +28,6 @@
 # include <dirent.h>
 # include <sys/stat.h>
 
-// GLobal for now
-char	*g_env_dir;/////we don't need it now rite?
-
 typedef struct s_cond
 {
 	int				type;
@@ -275,6 +272,11 @@ int			expand_check(char const *str, t_split *help);
 long long	built_exit(t_data *info);
 int			execute_built(t_data *info);
 
+//dir_utils.c
+int			changde_dir_success(t_data *info, char *curr_dir);
+void		changde_dir_error(t_data *info, char *curr_dir);
+int			apply_change(t_data *info, char *path);
+
 //directory.c
 int			display_curdir(void);
 char		*get_curdir(void);
@@ -289,7 +291,7 @@ int			env_unset(t_data *info, char *manual_remove);
 
 //env_utils.c
 int			upgrade_shell_lvl(t_data *ifno, char **env_to_copy);
-int			find_equal_sign(char *str);
+int			find_sign(char *str, char c);
 int			change_env_variable(t_data *info, char *var);
 
 //environment.c

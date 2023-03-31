@@ -31,13 +31,13 @@ int	env_error_handler(t_data *info, char *new_var, char *type)
 	int	i;
 
 	i = 0;
-	if (new_var[i] == '=')
+	if (new_var[i] == '=' || new_var[i] == '+')
 		i = -1;
 	while ((i == -1) || (new_var[i] && new_var[i] != '='))
 	{
 		if (i == -1 || !((new_var[i] >= 65 && new_var[i] <= 90)
-				|| (new_var[i] >= 97 && new_var[i] <= 122)
-				|| new_var[i] == '_'))
+				|| (new_var[i] >= 97 && new_var[i] <= 122) || new_var[i] == '_'
+				|| (new_var[i] == '+' && new_var[i + 1] == '=')))
 		{
 			ft_putstr_fd(info->dino, 2);
 			ft_putstr_fd(type, 2);
@@ -53,8 +53,23 @@ int	env_error_handler(t_data *info, char *new_var, char *type)
 
 void	copy_new_var(t_data *info, char **new_env, char *new_var, int i)
 {
-	new_env[i] = (char *)malloc(sizeof(char) * (ft_strlen(new_var) + 1));
-	ft_strlcpy(new_env[i], new_var, ft_strlen(new_var) + 1);
+	int	checkp;
+	int	len;
+
+	len = ft_strlen(new_var);
+	if (find_sign(new_var, '+') - find_sign(new_var, '=') == -1
+		&& new_var[find_sign(new_var, '+')] == '+')
+	{
+		checkp = find_sign(new_var, '+');
+		new_env[i] = (char *)calloc(sizeof(char), len);
+		ft_strlcpy(new_env[i], new_var, checkp + 1);
+		ft_strlcpy(new_env[i] + checkp, new_var + checkp + 1, len - checkp);
+	}
+	else
+	{
+		new_env[i] = (char *)malloc(sizeof(char) * (len + 1));
+		ft_strlcpy(new_env[i], new_var, len + 1);
+	}
 	i++;
 	new_env[i] = NULL;
 	free(info->envs);
@@ -63,8 +78,8 @@ void	copy_new_var(t_data *info, char **new_env, char *new_var, int i)
 
 int	export_env_function(t_data *info, char *new_var)
 {
-	char		**new_env;
-	int			i;
+	char	**new_env;
+	int		i;
 
 	if (!env_error_handler(info, new_var, "export"))
 		return (1);
@@ -114,7 +129,7 @@ int	env_export(t_data *info, char *manual_add)
 		{
 			export_env_function(info, info->args[index_var]);
 			index_var++;
-		}	
+		}
 	}
 	return (0);
 }

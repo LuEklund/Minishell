@@ -15,7 +15,7 @@ static int	unset_error_checks(t_data *info, char *rm_var)
 {
 	if (!env_error_handler(info, rm_var, "unset"))
 		return (1);
-	if (find_equal_sign(rm_var))
+	if (find_sign(rm_var, '='))
 	{
 		ft_putstr_fd(info->dino, 2);
 		ft_putstr_fd("unset: `", 2);
@@ -31,8 +31,9 @@ void	make_new_envirno(t_data *info, char **new_environ, int removeable)
 	int	i;
 
 	i = 0;
-	while (info->envs[i] != NULL)
+	while (info->envs && info->envs[i] != NULL)
 	{
+		new_environ[i] = NULL;
 		if (i != removeable)
 		{
 			if (removeable)
@@ -47,34 +48,33 @@ void	make_new_envirno(t_data *info, char **new_environ, int removeable)
 		}
 		i++;
 	}
-	new_environ[i] = NULL;
 	free(info->envs);
 	info->envs = new_environ;
 }
 
-int	unset_env_function(t_data *info, char *rm_var)
+int	unset_env_function(t_data *info, char *rm_var, int i, int removeable)
 {
-	char		**new_environ;
-	int			i;
-	int			removeable;
+	char	**new_environ;
+	int		len;
 
-	i = 0;
-	removeable = 0;
 	if (unset_error_checks(info, rm_var))
 		return (1);
-	while (info->envs[i] != NULL)
+	len = find_sign(rm_var, '=');
+	if (!len)
+		len = ft_strlen(rm_var);
+	while (info->envs && info->envs[i] != NULL)
 	{
-		if (!ft_strncmp(info->envs[i], rm_var, ft_strlen(rm_var))
-			|| (find_equal_sign(rm_var)
-				&& !ft_strncmp(info->envs[i], rm_var, find_equal_sign(rm_var))))
+		if (!ft_strncmp(info->envs[i], rm_var, len)
+			&& (info->envs[i][len] == '=' || info->envs[i][len] == '\0'))
 			removeable = i;
 		i++;
 	}
 	if (!removeable)
 		return (0);
-	new_environ = (char **)malloc(sizeof(char *) * (i));
+	new_environ = (char **)malloc(sizeof(char *) * i);
 	if (!new_environ)
 		return (0);
+	new_environ[i - 1] = NULL;
 	make_new_envirno(info, new_environ, removeable);
 	return (1);
 }
@@ -102,7 +102,7 @@ int	env_unset(t_data *info, char *manual_remove)
 	{
 		if (contain_flag(info, manual_remove))
 			return (1);
-		unset_env_function(info, manual_remove);
+		unset_env_function(info, manual_remove, 0, 0);
 	}
 	else
 	{
@@ -113,9 +113,9 @@ int	env_unset(t_data *info, char *manual_remove)
 			return (1);
 		while (info->args[index_args])
 		{
-			unset_env_function(info, info->args[index_args]);
+			unset_env_function(info, info->args[index_args], 0, 0);
 			index_args++;
 		}
 	}
-	return (1);
+	return (0);
 }

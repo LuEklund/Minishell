@@ -41,23 +41,33 @@ long long	built_exit(t_data *info)
 	return (return_val * sign);
 }
 
+int	n_skipper(t_data *info, int *i, int new_line)
+{
+	int	index;
+
+	index = 0;
+	while (info->args[*i] && info->args[*i][0] == '-'
+		&& info->args[*i][1] == 'n')
+	{
+		index = 2;
+		while (info->args[*i][index] == 'n')
+			index++;
+		if (info->args[*i][index])
+			return (new_line);
+		new_line = 0;
+		(*i)++;
+	}
+	return (new_line);
+}
+
 int	echo(t_data *info)
 {
-	int		i;
-	int		new_line;
+	int	i;
+	int	new_line;
 
 	i = 1;
 	new_line = 2;
-	if (info->args[i] && info->args[i][0] == '-' && info->args[i][1] == 'n')
-	{
-		while (info->args[i][new_line] == 'n')
-			new_line++;
-		if (!info->args[i][new_line])
-		{
-			new_line = 0;
-			i++;
-		}
-	}
+	new_line = n_skipper(info, &i, new_line);
 	while (info->args[i])
 	{
 		printf("%s", info->args[i]);

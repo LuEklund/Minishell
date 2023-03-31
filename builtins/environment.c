@@ -56,7 +56,7 @@ int	display_env(t_data *info, int export_type)
 				printf("=%c%s%c", c, info->envs[i] + i2, c);
 			printf("\n");
 		}
-		else if (find_equal_sign(info->envs[i]))
+		else if (info->envs && find_sign(info->envs[i], '='))
 			printf("%s\n\r", info->envs[i]);
 		i++;
 	}

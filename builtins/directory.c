@@ -39,68 +39,52 @@ char	*get_curdir(void)
 		return (NULL);
 }
 
-int	changde_dir_success(t_data *info, char *curr_dir)
+int	go_home(t_data *info)
 {
-	char	*old_pwd_var;
-	char	*new_pwd_var;
+	int		i;
+	char	*home;
 
-	old_pwd_var = ft_strjoin("OLDPWD=", curr_dir);
-	free(curr_dir);
-	env_export(info, old_pwd_var);
-	free(old_pwd_var);
-	curr_dir = get_curdir();
-	if (!curr_dir)
+	i = 0;
+	while (info->envs[i] && ft_strncmp(info->envs[i], "HOME=", 5))
+		i++;
+	if (!info->envs[i])
+	{
+		ft_putstr_fd(info->dino, 2);
+		ft_putstr_fd("cd: HOME not set\n", 2);
 		return (1);
-	new_pwd_var = ft_strjoin("PWD=", curr_dir);
-	env_export(info, new_pwd_var);
-	free(new_pwd_var);
-	free(curr_dir);
-	return (0);
+	}
+	home = info->envs[i] + 5;
+	return (apply_change(info, home));
 }
 
-void	changde_dir_error(t_data *info, char *curr_dir)
+int	go_prev(t_data *info)
 {
-	free(curr_dir);
-	if (info->args[1][0] == '-')
+	int		i;
+	char	*prev;
+
+	i = 0;
+	while (info->envs[i] && ft_strncmp(info->envs[i], "OLDPWD=", 7))
+		i++;
+	if (!info->envs[i])
 	{
 		ft_putstr_fd(info->dino, 2);
-		ft_putstr_fd("cd: ", 2);
-		ft_putchar_fd(info->args[1][0], 2);
-		ft_putchar_fd(info->args[1][1], 2);
-		ft_putstr_fd(": invalid option\n", 2);
-		ft_putstr_fd("cd: usage: cd [path]\n", 1);
+		ft_putstr_fd("cd: OLDPWD not set\n", 2);
+		return (1);
 	}
-	else
-	{
-		ft_putstr_fd(info->dino, 2);
-		ft_putstr_fd(": cd: ", 2);
-		ft_putstr_fd(info->args[1], 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-	}
+	prev = info->envs[i] + 7;
+	return (apply_change(info, prev));
 }
 
 int	change_dir(t_data *info)
 {
-	char		*curr_dir;
-	int			return_val;
-	struct stat	statbuf;
-
-	stat(info->args[1], &statbuf);
-	if (!(statbuf.st_mode & S_IFDIR))
+	if (!info->args[1])
+		return (go_home(info));
+	if (info->args[1][0] == '-' && !info->args[1][1])
 	{
-		ft_putstr_fd(info->dino, 2);
-		ft_putstr_fd("cd: ", 2);
-		ft_putstr_fd(info->args[1], 2);
-		ft_putstr_fd(": Not a directory\n", 2);
-		return (1);
-	}
-	curr_dir = get_curdir();
-	if (!curr_dir)
+		if (go_prev(info))
+			return (1);
+		display_curdir();
 		return (0);
-	return_val = chdir(info->args[1]);
-	if (return_val == 0)
-		return (changde_dir_success(info, curr_dir));
-	else
-		changde_dir_error(info, curr_dir);
-	return (1);
+	}
+	return (apply_change(info, info->args[1]));
 }

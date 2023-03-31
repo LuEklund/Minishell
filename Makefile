@@ -42,6 +42,7 @@ _SRCS :=  main.c \
 			utils.c
 
 _BUILTIN :=  built.c \
+				dir_utils.c \
 				directory.c \
 				environment.c \
 				env_utils.c \
