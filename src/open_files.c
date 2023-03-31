@@ -47,9 +47,12 @@ int	open_infile(t_redi *current, t_data *info)
 	find_file(current, info);
 	if (!access(current->file_name, F_OK) && \
 	access(current->file_name, R_OK) < 0)
+	{
+		current->fd = open(current->file_name, O_RDONLY);
 		return (ft_putstr_fd(info->dino, 2), \
 		ft_putstr_fd(current->file_name, 2) \
 			, ft_putendl_fd(": Permission denied", 2), 0);
+	}
 	current->fd = open(current->file_name, O_RDONLY);
 	if (current->fd < 0)
 		return (ft_putstr_fd(info->dino, 2), \
@@ -67,9 +70,11 @@ int	open_outfile(t_redi *current, t_data *info)
 	find_file(current, info);
 	if (!access(current->file_name, F_OK) && \
 	access(current->file_name, W_OK) < 0)
-		return (ft_putstr_fd(info->dino, 2), \
-		ft_putstr_fd(current->file_name, 2) \
-			, ft_putendl_fd(": Permission denied", 2), 0);
+	{
+		ft_putstr_fd(info->dino, 2);
+		ft_putstr_fd(current->file_name, 2);
+		ft_putendl_fd(": Permission denied", 2);
+	}
 	if (current->type == -1)
 		current->fd = open(current->file_name, \
 		O_RDWR | O_CREAT | O_TRUNC, 0644);

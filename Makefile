@@ -18,11 +18,14 @@ OBJS_DIR = obj/
 
 #Sources by folder
 _SRCS :=  main.c \
+			aextras.c \
+			signal_handlers.c \
 			handle_commands.c \
 			redirection.c \
 			open_files.c \
 			here_doc.c \
 			piping.c \
+			pipe_utils.c \
 			finding_execs.c \
 			parse_split.c \
 			lex_checks.c \
@@ -33,12 +36,12 @@ _SRCS :=  main.c \
 			ft_ls.c \
 			kid_signals.c \
 			error_parser.c \
+			error_utils.c \
 			and_or_lists.c \
 			trinary_tree.c \
 			trinary_utils.c \
 			free_lists.c \
 			split_utils.c \
-			pipe_utils.c \
 			utils.c
 
 _BUILTIN :=  built.c \

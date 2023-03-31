@@ -12,13 +12,26 @@
 
 #include "../minishell.h"
 
-void	free_help(char *str)
+void	reset_help(t_error *he)
 {
-	if (str)
-	{
-		free(str);
-		str = NULL;
-	}
+	he->or = 0;
+	he->pipe = 0;
+	he->and = 0;
+}
+
+void	get_tokenized_even_more(t_error *he, char *str)
+{
+	reset_help(he);
+	if (str && str[he->i] == '|' && str[he->i + 1] == '|')
+		he->or = 1;
+	else if (str && str[he->i] == '|')
+		he->pipe = 1;
+	else if (str && str[he->i] == '&' && str[he->i + 1] == '&')
+		he->and = 1;
+	else if (str && str[he->i] == '(')
+		he->par += 1;
+	else if (str && str[he->i] == ')')
+		he->par -= 1;
 }
 
 int	check_for_logic(char *str, int var)
@@ -31,7 +44,7 @@ int	check_for_logic(char *str, int var)
 	help.i = 0;
 	while (str[help.i])
 	{
-		get_tokenized(&help, str, 0);
+		get_tokenized_even_more(&help, str);
 		if (!var && (help.and || help.or || help.par))
 			return (0);
 		if (var && !help.par && (help.or || help.and))
@@ -45,11 +58,11 @@ char	*par_ser(char *str, t_error *help)
 {
 	char	*ans;
 
-	get_tokenized(help, str, 0);
+	get_tokenized_even_more(help, str);
 	while (str[help->i] && !(!help->par && (help->and || help->or)))
 	{
 		help->i = quote_check((char const *)str, help->i, &help->q, &help->sq);
-		get_tokenized(help, str, 0);
+		get_tokenized_even_more(help, str);
 	}
 	if (str[help->i] || !help->rm_par || check_for_logic(str, 0))
 		return (str);
@@ -57,7 +70,7 @@ char	*par_ser(char *str, t_error *help)
 	help->sq = 0;
 	help->par = 0;
 	help->i = 0;
-	reset_token_val(help);
+	reset_help(help);
 	ans = ft_substr((char const *)str, 1, ft_strlen(str) - 2);
 	free_help(str);
 	if (!ans)
@@ -67,7 +80,7 @@ char	*par_ser(char *str, t_error *help)
 
 t_cond	*check_content(char *str, t_cond *up, t_error help)
 {
-	get_tokenized(&help, str, 0);
+	get_tokenized_even_more(&help, str);
 	if (1)
 	{
 		if (!help.par)
@@ -75,7 +88,7 @@ t_cond	*check_content(char *str, t_cond *up, t_error help)
 		while (str[help.i] && help.par)
 		{
 			help.i = quote_check((char const *)str, help.i, &help.q, &help.sq);
-			get_tokenized(&help, str, 0);
+			get_tokenized_even_more(&help, str);
 		}
 		return (create_level(ft_substr((char const *)str, 0, help.i + 1), \
 		NULL, up, 1));

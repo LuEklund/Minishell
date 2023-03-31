@@ -86,7 +86,6 @@ typedef struct s_data
 	struct sigaction	seg_act;
 	struct sigaction	terminate;
 	char				dino[19];
-	int					pos;
 	char				**envs;
 	char				**paths;
 	char				*buf;
@@ -143,7 +142,9 @@ typedef struct s_split
 typedef struct s_error
 {
 	size_t	i;
+	int		plus_yes;
 	int		rm_par;
+	int		space;
 	int		token;
 	int		q;
 	int		sq;
@@ -156,20 +157,23 @@ typedef struct s_error
 	int		out_o;
 	int		in_t;
 	int		out_t;
+	int		special;
 }	t_error;
 
 void		rl_replace_line(const char *text, int clear_undo);
 
-
-/////
-void		print_ar(char **ar);
-void		print_list(t_whelp *current);
-////
+//signal_handlers.c
+void		the_handler(t_data info);
+void		i_c(int signum);
 
 //error_parser.c
-void		reset_token_val(t_error *help);
-void		get_tokenized(t_error *help, char *str, int var);
 int			error_parser(t_data *info);
+
+//error_utils.c
+void		reset_token_val(t_error *help, char *str, int var);
+void		get_tokenized(t_error *help, char *str, int var);
+int			parenthesee(t_error *he, char *str);
+int			redi_syntax(t_error *he, char *str);
 
 //and_or_lists.c
 void		empty_tree(t_cond *head);
@@ -180,11 +184,9 @@ int			go_through_list(t_data *info);
 t_cond		*create_level(char *str, t_cond *back, t_cond *up, int var);
 
 //trinary_utils.c
-void		free_help(char *str);
 int			check_for_logic(char *str, int var);
 char		*par_ser(char *str, t_error *help);
 t_cond		*check_content(char *str, t_cond *up, t_error help);
-
 
 //kid_signals.c
 void		slashing(int signum);
@@ -242,6 +244,7 @@ void		close_pipeline(t_data *info);
 void		free_commands(t_data *info);
 
 //utils.c
+void		free_help(char *str);
 void		free_ar(char **ar);
 void		get_outed(t_data info);
 int			redir_input_parser(const char *str, t_split *help, int var);
@@ -304,6 +307,5 @@ long long	exit_atoi(t_data *info, int *sign);
 //handle_built.c
 void		work_built(t_data *info, char **args);
 void		is_built_in(t_data *info, char *arg);
-int			bob_the_builtin(t_data *info);
 
 #endif

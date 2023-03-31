@@ -12,32 +12,6 @@
 
 #include "../minishell.h"
 
-void	the_handler(t_data info)
-{
-	// int	i;
-
-	// i = 1;
-	write(1, "\x1b[A", 3);
-	write(1, "\x1b[11C", 5);
-	// while (i != info.pos)
-	// {
-	// 	write(1, "\x1b[1C", 4);
-	// 	i++;
-	// }
-	write(1, "exit\n", 5);
-	get_outed(info);
-	exit(info.return_val);
-}
-
-void	i_c(int signum)
-{
-	ioctl(0, TIOCSTI, "\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	(void)signum;
-	return ;
-}
-
 void	history_handler(char *str)
 {
 	if (ft_strncmp(str, "", 1))
@@ -74,36 +48,8 @@ void	init_values(t_data *info)
 	info->exit = 0;
 	tcgetattr(info->fd_in, &info->old_term);
 	tcgetattr(info->fd_in, &info->new_term);
-	info->new_term.c_lflag &= ~(ECHOCTL | ICANON);
+	info->new_term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(info->fd_in, TCSAFLUSH, &info->new_term);
-}
-
-void	find_pos(t_data *info, size_t i, size_t i2)
-{
-	char			buf[32];
-	char			help[10];
-
-	if (write(1, "\x1b[6n", 4) != 4)
-	{
-		info->pos = 1;
-		return ;
-	}
-	while (i < sizeof(buf) - 1)
-	{
-		if (read(0, &buf[i], 1) != 1)
-			break ;
-		if (buf[i] == 'R')
-			break ;
-		i++;
-	}
-	buf[i] = '\0';
-	i = 1;
-	while (buf[i2] && buf[i2] != 'R')
-		i2++;
-	while (buf[i] && buf[i] != ';')
-		i++;
-	ft_strlcpy(help, buf + i + 1, i2 - i + 1);
-	info->pos = ft_atoi(help);
 }
 
 int	main(int ac, char **av, char **ev)
@@ -118,7 +64,6 @@ int	main(int ac, char **av, char **ev)
 	while (37)
 	{
 		set_signals(&info);
-		//find_pos(&info, 0, 1);
 		info.buf = readline("\033[0;32mDinoshell>\033[0m ");
 		if (info.buf)
 		{

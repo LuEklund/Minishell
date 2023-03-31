@@ -126,10 +126,7 @@ char	**parse_split(char const *str, char c, t_data *info)
 	if (str == NULL)
 		return (NULL);
 	init_help(info, &he, c, str);
-	if (c == ' ')
-		h = string_amount(str, he, 1, he.sq + he.q);
-	else
-		h = string_amount(str, he, 1, 0);
+	h = string_amount(str, he, 1, he.sq + he.q);
 	ans = (char **) malloc(sizeof(char *) * (h + 1));
 	if (ans == NULL)
 		return (NULL);

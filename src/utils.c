@@ -12,11 +12,22 @@
 
 #include "../minishell.h"
 
+void	free_help(char *str)
+{
+	if (str)
+	{
+		free(str);
+		str = NULL;
+	}
+}
+
 void	free_ar(char **ar)
 {
 	int	i;
 
 	i = 0;
+	if (!ar)
+		return ;
 	while (ar[i])
 	{
 		free(ar[i]);

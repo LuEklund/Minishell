@@ -14,6 +14,8 @@
 
 int	quote_check(char const *str, int i, int *q, int *sq)
 {
+	if (!str)
+		;
 	if (*q == 1 && str[i] == '\"')
 		*q = 0;
 	else if (*sq == 1 && str[i] == '\'')

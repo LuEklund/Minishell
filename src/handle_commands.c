@@ -40,6 +40,15 @@ int	check_if_child(t_data *info, char *str)
 	return (1);
 }
 
+void	print_spesh_error(t_error *help, t_data *info)
+{
+	while (info->buf[help->i] && info->buf[help->i] != ' ')
+	{
+		write(2, &info->buf[help->i], 1);
+		help->i += 1;
+	}
+}
+
 void	syntax_error(t_data *info)
 {
 	t_error	*help;
@@ -54,6 +63,8 @@ void	syntax_error(t_data *info)
 		help->i -= 1;
 	if (!info->buf[help->i])
 		ft_putstr_fd("newline", 2);
+	else if (help->special)
+		print_spesh_error(help, info);
 	else
 		write(2, &info->buf[help->i], 1);
 	if (help->and || help->or || help->out_t || help->in_t)
