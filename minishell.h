@@ -28,9 +28,6 @@
 # include <dirent.h>
 # include <sys/stat.h>
 
-// GLobal for now
-char	*g_env_dir;/////we don't need it now rite?
-
 typedef struct s_cond
 {
 	int				type;
@@ -89,7 +86,6 @@ typedef struct s_data
 	struct sigaction	seg_act;
 	struct sigaction	terminate;
 	char				dino[19];
-	int					pos;
 	char				**envs;
 	char				**paths;
 	char				*buf;
@@ -146,7 +142,9 @@ typedef struct s_split
 typedef struct s_error
 {
 	size_t	i;
+	int		plus_yes;
 	int		rm_par;
+	int		space;
 	int		token;
 	int		q;
 	int		sq;
@@ -164,11 +162,15 @@ typedef struct s_error
 
 void		rl_replace_line(const char *text, int clear_undo);
 
+//signal_handlers.c
+void		the_handler(t_data info);
+void		i_c(int signum);
+
 //error_parser.c
 int			error_parser(t_data *info);
 
 //error_utils.c
-void		reset_token_val(t_error *help);
+void		reset_token_val(t_error *help, char *str, int var);
 void		get_tokenized(t_error *help, char *str, int var);
 int			parenthesee(t_error *he, char *str);
 int			redi_syntax(t_error *he, char *str);
@@ -182,7 +184,6 @@ int			go_through_list(t_data *info);
 t_cond		*create_level(char *str, t_cond *back, t_cond *up, int var);
 
 //trinary_utils.c
-void		free_help(char *str);
 int			check_for_logic(char *str, int var);
 char		*par_ser(char *str, t_error *help);
 t_cond		*check_content(char *str, t_cond *up, t_error help);
@@ -243,6 +244,7 @@ void		close_pipeline(t_data *info);
 void		free_commands(t_data *info);
 
 //utils.c
+void		free_help(char *str);
 void		free_ar(char **ar);
 void		get_outed(t_data info);
 int			redir_input_parser(const char *str, t_split *help, int var);

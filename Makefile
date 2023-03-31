@@ -18,6 +18,8 @@ OBJS_DIR = obj/
 
 #Sources by folder
 _SRCS :=  main.c \
+			aextras.c \
+			signal_handlers.c \
 			handle_commands.c \
 			redirection.c \
 			open_files.c \

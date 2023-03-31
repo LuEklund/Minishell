@@ -108,6 +108,7 @@ int	handle_pipe(t_data *info, char *cmd_str)
 	free_ar(info->envs);
 	free_ar(info->cmds);
 	free(info->kiddo);
+	free_ar(info->paths);
 	if (info->pipe)
 		free(info->pipe);
 	empty_redi_list(info);

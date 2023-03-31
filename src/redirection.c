@@ -94,7 +94,7 @@ void	start_quotes(t_data *info, int i, int *i2)
 
 int	redirection_parser(t_data *info, int i, int i2)
 {
-	while (info->cmds[i])
+	while (info->cmds && info->cmds[i])
 	{
 		start_quotes(info, i, &i2);
 		info->red_n = 0;

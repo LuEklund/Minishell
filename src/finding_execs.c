@@ -66,6 +66,8 @@ void	test_paths(t_data *info, char *str)
 	char	*cmd;
 
 	i = 0;
+	if (!str)
+		return ;
 	info->check = 0;
 	while (str[i])
 		i++;
@@ -87,6 +89,7 @@ void	test_paths(t_data *info, char *str)
 
 void	find_execs(t_data *info)
 {
+	info->cmd_to_use = NULL;
 	if (!access(info->args[0], X_OK))
 		info->cmd_to_use = ft_strdup(info->args[0]);
 	else
@@ -102,8 +105,6 @@ void	find_execs(t_data *info)
 		free_ar(info->args);
 		info->return_val = 127;
 	}
-	if (info->paths)
-		free_ar(info->paths);
 }
 
 int	arguing(t_data *info)
