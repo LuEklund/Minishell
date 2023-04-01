@@ -72,7 +72,7 @@ char	*par_ser(char *str, t_error *help)
 	help->i = 0;
 	reset_help(help);
 	ans = ft_substr((char const *)str, 1, ft_strlen(str) - 2);
-	free_help(str);
+	free(str);
 	if (!ans)
 		exit(write(2, "memory errawr🦖\n", 15));
 	return (par_ser(ans, help));

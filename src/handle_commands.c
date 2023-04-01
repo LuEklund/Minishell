@@ -106,10 +106,11 @@ void	handle_buf(t_data *info)
 	i = 0;
 	info->history_buf = ft_strdup(info->buf);
 	if (!info->history_buf)
-		exit(write(2, "memory error\n", 13));
+		exit(write(2, "memory errawr🦖\n", 15));
 	if (error_parser(info))
 		return (syntax_error(info));
 	free(info->error);
+	info->hd_list = NULL;
 	go_through_list(info);
 	info->cmd_n = 0;
 	if (!info->hd_error)

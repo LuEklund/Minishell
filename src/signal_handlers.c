@@ -29,3 +29,15 @@ void	i_c(int signum)
 	(void)signum;
 	return ;
 }
+
+void	slashing(int signum)
+{
+	(void)signum;
+	exit(131);
+}
+
+void	kid_c(int signum)
+{
+	(void)signum;
+	exit(130);
+}

@@ -165,6 +165,8 @@ void		rl_replace_line(const char *text, int clear_undo);
 //signal_handlers.c
 void		the_handler(t_data info);
 void		i_c(int signum);
+void		slashing(int signum);
+void		kid_c(int signum);
 
 //error_parser.c
 int			error_parser(t_data *info);
@@ -193,8 +195,6 @@ char		*par_ser(char *str, t_error *help);
 t_cond		*check_content(char *str, t_cond *up, t_error help);
 
 //kid_signals.c
-void		slashing(int signum);
-void		kid_c(int signum);
 void		kid_signals(t_data *info);
 void		parent_signals(t_data *info, int var);
 
@@ -249,7 +249,6 @@ void		free_commands(t_data *info);
 
 //utils.c
 char		*second_white_space_cleanse(char *src, char *ans, size_t i);
-void		free_help(char *str);
 void		free_ar(char **ar);
 void		get_outed(t_data info);
 int			redir_input_parser(const char *str, t_split *help, int var);

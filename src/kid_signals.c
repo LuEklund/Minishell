@@ -35,18 +35,6 @@ void	process_return(t_data *info)
 	}
 }
 
-void	slashing(int signum)
-{
-	(void)signum;
-	exit(131);
-}
-
-void	kid_c(int signum)
-{
-	(void)signum;
-	exit(130);
-}
-
 void	kid_signals(t_data *info)
 {
 	info->quit.sa_handler = kid_c;

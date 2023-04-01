@@ -20,7 +20,7 @@ void	empty_tree(t_cond *head)
 	empty_tree(head->sec_cond);
 	empty_tree(head->next);
 	if (!head->type)
-		free_help(head->content);
+		free(head->content);
 	free(head);
 }
 

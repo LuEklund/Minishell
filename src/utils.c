@@ -51,15 +51,6 @@ char	*second_white_space_cleanse(char *src, char *ans, size_t i)
 	return (second_white_space_cleanse(src, ans, 0));
 }
 
-void	free_help(char *str)
-{
-	if (str)
-	{
-		free(str);
-		str = NULL;
-	}
-}
-
 void	free_ar(char **ar)
 {
 	int	i;

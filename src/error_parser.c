@@ -78,6 +78,8 @@ char	*white_space_cleanse(char *str, char *ans, int *qts, int cmd)
 
 int	init_error(t_error *he, int *qts, t_data *info)
 {
+	qts[0] = 0;
+	qts[1] = 0;
 	he->space = 0;
 	he->i = 0;
 	he->q = 0;
@@ -100,8 +102,6 @@ int	error_parser(t_data *info)
 	int		qts[2];
 
 	he = malloc(sizeof(t_error));
-	qts[0] = 0;
-	qts[1] = 0;
 	if (init_error(he, qts, info))
 		return (1);
 	while (info->buf[he->i])
@@ -109,7 +109,8 @@ int	error_parser(t_data *info)
 		if (he->i && he->token && he->q + he->sq == 0)
 		{
 			get_tokenized(he, info->buf, 3);
-			if (he->token && redi_syntax(he, info->buf) && info->buf[he->i] != ' ')
+			if (he->token && redi_syntax(he, info->buf) && \
+			info->buf[he->i] != ' ')
 				return (1);
 		}
 		get_tokenized(he, info->buf, 1);
