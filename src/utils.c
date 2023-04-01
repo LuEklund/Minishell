@@ -12,8 +12,6 @@
 
 #include "../minishell.h"
 
-void	print_tokens(t_error *he);   
-
 void	find_or_and(t_error *he, char *str)
 {
 	reset_help(he);
@@ -35,8 +33,6 @@ char	*second_white_space_cleanse(char *src, char *ans, size_t i)
 	reset_help(&he);
 	while (src && src[he.i])
 	{
-	//	printf("at %c%zu\n", src[he.i], he.i);
-	//	print_tokens(&he);
 		if (!(src[he.i] == ' ' && (he.and || he.or)) || he.q || he.sq)
 		{
 			if (ans)

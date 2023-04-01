@@ -172,6 +172,8 @@ int			error_parser(t_data *info);
 //error_utils.c
 void		reset_token_val(t_error *help, char *str, int var);
 void		get_tokenized(t_error *help, char *str, int var);
+
+//error_checks.c
 int			parenthesee(t_error *he, char *str);
 int			redi_syntax(t_error *he, char *str);
 

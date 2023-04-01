@@ -54,8 +54,6 @@ int	check_for_logic(char *str, int var)
 	return (1);
 }
 
-void	print_tokens(t_error *he);   //fddfdfdf
-
 char	*par_ser(char *str, t_error *help)
 {
 	char	*ans;
@@ -73,9 +71,7 @@ char	*par_ser(char *str, t_error *help)
 	help->par = 0;
 	help->i = 0;
 	reset_help(help);
-//	printf("before parsing:\n%s\n", str);
 	ans = ft_substr((char const *)str, 1, ft_strlen(str) - 2);
-//	printf("after parsing:\n%s\n", ans);
 	free_help(str);
 	if (!ans)
 		exit(write(2, "memory errawr🦖\n", 15));
