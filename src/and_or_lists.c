@@ -68,6 +68,8 @@ void	traveler(t_cond *current, t_data *info)
 	}
 }
 
+void	print_tree(t_cond *head, int b, int sub_b, int level);
+
 int	go_through_list(t_data *info)
 {
 	t_cond	*head;
@@ -87,6 +89,7 @@ int	go_through_list(t_data *info)
 	info->hd = 0;
 	info->hd_n = 0;
 	info->hd_error = 0;
+	print_tree(head, 0, 0, 0);
 	look_for_heredocs(head, info);
 	info->trinary_tree = head;
 	return (1);

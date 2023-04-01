@@ -54,6 +54,8 @@ int	check_for_logic(char *str, int var)
 	return (1);
 }
 
+void	print_tokens(t_error *he);   //fddfdfdf
+
 char	*par_ser(char *str, t_error *help)
 {
 	char	*ans;
@@ -61,6 +63,9 @@ char	*par_ser(char *str, t_error *help)
 	get_tokenized_even_more(help, str);
 	while (str[help->i] && !(!help->par && (help->and || help->or)))
 	{
+		printf("at %c%zu\n", str[help->i], help->i);
+		printf("rm par is %d\n", help->rm_par);
+		print_tokens(help);
 		help->i = quote_check((char const *)str, help->i, &help->q, &help->sq);
 		get_tokenized_even_more(help, str);
 	}
@@ -71,7 +76,9 @@ char	*par_ser(char *str, t_error *help)
 	help->par = 0;
 	help->i = 0;
 	reset_help(help);
+	printf("before parsing:\n%s\n", str);
 	ans = ft_substr((char const *)str, 1, ft_strlen(str) - 2);
+	printf("after parsing:\n%s\n", ans);
 	free_help(str);
 	if (!ans)
 		exit(write(2, "memory errawr🦖\n", 15));
