@@ -78,7 +78,7 @@ int	go_through_list(t_data *info)
 
 	i = 0;
 	str = second_white_space_cleanse(info->buf, NULL, 0);
-	printf("str is %s\n", str);
+//	printf("str is %s\n", str);
 	if (!str)
 		exit(write(2, "memory errawr🦖\n", 15));
 	while (str[i] && (str[i] == '(' || str[i] == ')'))
@@ -90,7 +90,7 @@ int	go_through_list(t_data *info)
 	info->hd = 0;
 	info->hd_n = 0;
 	info->hd_error = 0;
-	print_tree(head, 0, 0, 0);
+//	print_tree(head, 0, 0, 0);
 	look_for_heredocs(head, info);
 	info->trinary_tree = head;
 	return (1);
