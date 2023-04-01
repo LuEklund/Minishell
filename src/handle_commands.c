@@ -65,6 +65,8 @@ void	syntax_error(t_data *info)
 		ft_putstr_fd("newline", 2);
 	else if (help->special)
 		print_spesh_error(help, info);
+	else if (help->amper)
+		write(2, "&", 1);
 	else
 		write(2, &info->buf[help->i], 1);
 	if (help->and || help->or || help->out_t || help->in_t)

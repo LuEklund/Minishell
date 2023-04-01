@@ -63,9 +63,6 @@ char	*par_ser(char *str, t_error *help)
 	get_tokenized_even_more(help, str);
 	while (str[help->i] && !(!help->par && (help->and || help->or)))
 	{
-		printf("at %c%zu\n", str[help->i], help->i);
-		printf("rm par is %d\n", help->rm_par);
-		print_tokens(help);
 		help->i = quote_check((char const *)str, help->i, &help->q, &help->sq);
 		get_tokenized_even_more(help, str);
 	}

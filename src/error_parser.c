@@ -42,7 +42,7 @@ char	*the_anser(char *str, int i2)
 	if (!ans)
 	{
 		free(str);
-		exit (write(2, "memory errawr🦖\n", 15));
+		exit(write(2, "memory errawr🦖\n", 15));
 	}
 	ans[i2] = '\0';
 	return (ans);
@@ -102,26 +102,26 @@ void	print_tokens(t_error *he)
 		printf("q\n");
 	if (he->sq)
 		printf("sq\n");
-//	if (he->plus_yes)
-//		printf("plus_yes\n");
-//	if (he->token)
-//		printf("token\n");
+	if (he->plus_yes)
+		printf("plus_yes\n");
+	if (he->token)
+		printf("token\n");
 	if (he->or)
 		printf("or\n");
-//	if (he->pipe)
-//		printf("pipe\n");
+	if (he->pipe)
+		printf("pipe\n");
 	if (he->and)
 		printf("and\n");
-//	if (he->amper)
-//		printf("amper\n");
-//	if (he->out_o)
-//		printf("out o\n");
-//	if (he->in_o)
-///		printf("in o\n");
-//	if (he->out_t)
-//		printf("out t\n");
-//	if (he->in_t)
-//		printf("in t\n");
+	if (he->amper)
+		printf("amper\n");
+	if (he->out_o)
+		printf("out o\n");
+	if (he->in_o)
+		printf("in o\n");
+	if (he->out_t)
+		printf("out t\n");
+	if (he->in_t)
+		printf("in t\n");
 	if (he->par != 0)
 		printf("par is %d\n", he->par);
 }
@@ -155,7 +155,7 @@ int	error_parser(t_data *info)
 		he->i = quote_check((char const *)info->buf, \
 		he->i, &he->q, &he->sq);
 	//	printf("2 at %c%zu\n", info->buf[he->i], he->i);
-		if (parenthesee(he, info->buf))
+		if (parenthesee(he, info->buf) || he->amper)
 			return (1);
 	}
 	//	printf("3 at %c%zu\n", info->buf[he->i], he->i);

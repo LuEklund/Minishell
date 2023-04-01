@@ -184,6 +184,8 @@ int			go_through_list(t_data *info);
 t_cond		*create_level(char *str, t_cond *back, t_cond *up, int var);
 
 //trinary_utils.c
+void		reset_help(t_error *he);
+void		get_tokenized_even_more(t_error *he, char *str);
 int			check_for_logic(char *str, int var);
 char		*par_ser(char *str, t_error *help);
 t_cond		*check_content(char *str, t_cond *up, t_error help);
@@ -244,6 +246,7 @@ void		close_pipeline(t_data *info);
 void		free_commands(t_data *info);
 
 //utils.c
+char		*second_white_space_cleanse(char *src, char *ans, size_t i);
 void		free_help(char *str);
 void		free_ar(char **ar);
 void		get_outed(t_data info);
