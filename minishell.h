@@ -98,8 +98,8 @@ typedef struct s_data
 	size_t				i;
 	int					fd_in;
 	int					fd_out;
-	size_t				pipe_amount;
-	size_t				cmd_amount;
+	int					pipe_amount;
+	int					cmd_amount;
 	int					*pipe;
 	pid_t				*kiddo;
 	int					built;

@@ -25,8 +25,9 @@ int	check_if_child(t_data *info, char *str, int y)
 		return (free_ar(info->cmds), 0);
 	no_space = parse_split(info->cmds[0], ' ', info);
 	free_ar(info->cmds);
-	is_built_in(info, no_space[0]);
-	if (!(info->built == 2 || info->built == 4 || \
+	if (no_space)
+		is_built_in(info, no_space[0]);
+	if (!no_space || !(info->built == 2 || info->built == 4 || \
 	info->built == 5 || info->built == 6))
 		return (free_ar(no_space), empty_whelp_list(info), 0);
 	info->cmds = parse_split(str, '|', info);

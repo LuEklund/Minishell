@@ -43,7 +43,7 @@ void	the_piper(t_data *info)
 		info->fd_in = in_node->fd;
 	if (!out_node)
 	{
-		if (info->i == info->cmd_amount - 1)
+		if (info->i == (size_t)info->cmd_amount - 1)
 			info->fd_out = dup(info->fd_out);
 		else
 			info->fd_out = info->pipe[(info->i * 2) + 1];
@@ -100,7 +100,7 @@ int	handle_pipe(t_data *info, char *cmd_str)
 	info->wmark_list = NULL;
 	info->cmds = parse_split(cmd_str, '|', info);
 	if (init_pipes(info) < 0)
-		exit (2);
+		exit (1);
 	find_the_paths(info);
 	go_through_pipeline(info);
 	close_pipeline(info);

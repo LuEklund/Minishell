@@ -14,6 +14,7 @@
 
 int	init_first(t_data *info)
 {
+	info->pipe = NULL;
 	info->redi_list = NULL;
 	info->all_red_n = 0;
 	if (redirection_parser(info, 0, 0))
@@ -30,20 +31,21 @@ int	init_first(t_data *info)
 
 int	init_pipes(t_data *info)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	if (init_first(info))
 		return (-1);
 	info->pipe_amount = (info->cmd_amount - 1) * 2;
-	if (sizeof(pid_t) * info->cmd_amount)
+	if (sizeof(pid_t) * info->cmd_amount > 0)
 		info->kiddo = malloc(sizeof(pid_t) * info->cmd_amount);
-	info->pipe = NULL;
-	if (info->pipe_amount)
+	if (info->pipe_amount < 0)
+		return (-1);
+	if (info->pipe_amount > 0)
 	{
 		info->pipe = malloc(sizeof(int) * info->pipe_amount);
 		if (!info->pipe)
-			exit(write(2, "memory errawr🦖\n", 15));
+			exit(write(2, "memory errawr🦖\n", 16));
 	}
 	else
 		return (1);
@@ -76,7 +78,7 @@ t_redi	*find_node(t_data *info, int type)
 
 void	close_pipeline(t_data *info)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (i != info->pipe_amount)
