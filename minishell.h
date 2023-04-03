@@ -236,7 +236,6 @@ void		handle_buf(t_data *info);
 
 //finding_execs.c
 void		test_access(t_data *info, char *str);
-void		find_the_paths(t_data *info);
 void		test_paths(t_data *info, char *str);
 void		find_execs(t_data *info);
 int			arguing(t_data *info);
@@ -313,6 +312,7 @@ int			display_env(t_data *info, int export_type);
 long long	exit_atoi(t_data *info, int *sign);
 
 //handle_built.c
+void		find_the_paths(t_data *info);
 void		work_built(t_data *info, char **args, int in, int out);
 void		is_built_in(t_data *info, char *arg);
 
