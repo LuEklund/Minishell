@@ -165,6 +165,8 @@ void		rl_replace_line(const char *text, int clear_undo);
 //signal_handlers.c
 void		the_handler(t_data info);
 void		i_c(int signum);
+void		slashing(int signum);
+void		kid_c(int signum);
 
 //error_parser.c
 int			error_parser(t_data *info);
@@ -172,6 +174,8 @@ int			error_parser(t_data *info);
 //error_utils.c
 void		reset_token_val(t_error *help, char *str, int var);
 void		get_tokenized(t_error *help, char *str, int var);
+
+//error_checks.c
 int			parenthesee(t_error *he, char *str);
 int			redi_syntax(t_error *he, char *str);
 
@@ -184,13 +188,13 @@ int			go_through_list(t_data *info);
 t_cond		*create_level(char *str, t_cond *back, t_cond *up, int var);
 
 //trinary_utils.c
+void		reset_help(t_error *he);
+void		get_tokenized_even_more(t_error *he, char *str);
 int			check_for_logic(char *str, int var);
 char		*par_ser(char *str, t_error *help);
 t_cond		*check_content(char *str, t_cond *up, t_error help);
 
 //kid_signals.c
-void		slashing(int signum);
-void		kid_c(int signum);
 void		kid_signals(t_data *info);
 void		parent_signals(t_data *info, int var);
 
@@ -244,7 +248,7 @@ void		close_pipeline(t_data *info);
 void		free_commands(t_data *info);
 
 //utils.c
-void		free_help(char *str);
+char		*second_white_space_cleanse(char *src, char *ans, size_t i);
 void		free_ar(char **ar);
 void		get_outed(t_data info);
 int			redir_input_parser(const char *str, t_split *help, int var);

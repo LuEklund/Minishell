@@ -80,30 +80,31 @@ int	here_doc(t_redi *current, t_data *info, pid_t kiddo)
 		kid_signals(info);
 		get_hd_file(current, 37, 37);
 	}
-	if (info->return_val)
-		return (1);
 	current->fd = open(current->hd_file, O_RDONLY);
 	if (current->fd < 0)
 		exit(write(2, "temporary file error\n", 21));
-	return (0);
+	if (info->return_val)
+		info->return_val = 1;
+	return (info->return_val);
 }
 
 int	deal_doc(t_data *info, size_t i, size_t i2, char **pipes)
 {
 	t_redi	*new;
 	t_redi	*current;
+	int		check;
 
 	new = malloc(sizeof(t_redi));
 	if (!new)
 		exit(write(2, "memory errawr🦖\n", 15));
 	new->type = 2;
+	new->next = NULL;
 	new->pipe_n = i;
 	new->i = i2 + 1;
 	new->cmd_n = info->hd;
 	new->used = 0;
 	info->cmds = pipes;
-	if (here_doc(new, info, 0))
-		return (free(new), 1);
+	check = here_doc(new, info, 0);
 	if (!info->hd_list)
 		info->hd_list = new;
 	else
@@ -113,7 +114,7 @@ int	deal_doc(t_data *info, size_t i, size_t i2, char **pipes)
 			current = current->next;
 		current->next = new;
 	}
-	return (0);
+	return (check);
 }
 
 int	find_hd(char *str, t_data *info, int i, int i2)

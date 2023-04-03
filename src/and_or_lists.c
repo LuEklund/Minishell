@@ -20,7 +20,7 @@ void	empty_tree(t_cond *head)
 	empty_tree(head->sec_cond);
 	empty_tree(head->next);
 	if (!head->type)
-		free_help(head->content);
+		free(head->content);
 	free(head);
 }
 
@@ -75,7 +75,7 @@ int	go_through_list(t_data *info)
 	size_t	i;
 
 	i = 0;
-	str = ft_strdup(info->buf);
+	str = second_white_space_cleanse(info->buf, NULL, 0);
 	if (!str)
 		exit(write(2, "memory errawr🦖\n", 15));
 	while (str[i] && (str[i] == '(' || str[i] == ')'))

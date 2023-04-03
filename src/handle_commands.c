@@ -65,6 +65,8 @@ void	syntax_error(t_data *info)
 		ft_putstr_fd("newline", 2);
 	else if (help->special)
 		print_spesh_error(help, info);
+	else if (help->amper)
+		write(2, "&", 1);
 	else
 		write(2, &info->buf[help->i], 1);
 	if (help->and || help->or || help->out_t || help->in_t)
@@ -104,10 +106,11 @@ void	handle_buf(t_data *info)
 	i = 0;
 	info->history_buf = ft_strdup(info->buf);
 	if (!info->history_buf)
-		exit(write(2, "memory error\n", 13));
+		exit(write(2, "memory errawr🦖\n", 15));
 	if (error_parser(info))
 		return (syntax_error(info));
 	free(info->error);
+	info->hd_list = NULL;
 	go_through_list(info);
 	info->cmd_n = 0;
 	if (!info->hd_error)

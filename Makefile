@@ -37,6 +37,7 @@ _SRCS :=  main.c \
 			kid_signals.c \
 			error_parser.c \
 			error_utils.c \
+			error_checks.c \
 			and_or_lists.c \
 			trinary_tree.c \
 			trinary_utils.c \

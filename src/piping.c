@@ -69,7 +69,7 @@ void	the_kindergarden(t_data *info)
 		execve(info->cmd_to_use, info->args, info->envs);
 		info->check = 1;
 	}
-	exit(1);
+	exit(0);
 }
 
 void	go_through_pipeline(t_data *info)

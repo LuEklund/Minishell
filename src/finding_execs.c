@@ -89,6 +89,8 @@ void	test_paths(t_data *info, char *str)
 
 void	find_execs(t_data *info)
 {
+	pid_t	kiddo;
+
 	info->cmd_to_use = NULL;
 	if (!access(info->args[0], X_OK))
 		info->cmd_to_use = ft_strdup(info->args[0]);
@@ -104,6 +106,9 @@ void	find_execs(t_data *info)
 			ft_putstr_fd(": No such file or directory\n", 2);
 		free_ar(info->args);
 		info->return_val = 127;
+		kiddo = fork();
+		if (!kiddo)
+			exit(127);
 	}
 }
 

@@ -53,7 +53,7 @@ t_cond	*create_condition_node(char *str, t_cond *up)
 	new->type = 0;
 	new->ret = -1;
 	new->content = content_creator(str, help);
-	free_help(str);
+	free(str);
 	new->up = up;
 	new->hd_n = 0;
 	new->first_cond = NULL;
@@ -87,7 +87,7 @@ t_cond	*create_tokenode(t_error help, char *str, t_cond *back, t_cond *up)
 	}
 	else
 		new->first_cond = create_condition_node(ft_strdup(str), new);
-	free_help(str);
+	free(str);
 	return (new);
 }
 
@@ -102,7 +102,7 @@ t_cond	*create_level(char *str, t_cond *back, t_cond *up, int var)
 	help.rm_par = var;
 	str = par_ser(str, &help);
 	if (check_for_logic(str, 1) && back)
-		return (free_help(str), NULL);
+		return (free(str), NULL);
 	else if (!str[help.i])
 		return (create_condition_node(str, up));
 	else if (!back)
@@ -110,7 +110,7 @@ t_cond	*create_level(char *str, t_cond *back, t_cond *up, int var)
 		back = create_tokenode(help, ft_strdup(str), NULL, up);
 		back->next = create_level(ft_substr((char const *)str, help.i + 2, \
 		ft_strlen(str) - (help.i + 1)), back, up, 0);
-		return (free_help(str), back);
+		return (free(str), back);
 	}
 	else
 		return (create_tokenode(help, str, back, up));
