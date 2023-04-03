@@ -137,6 +137,7 @@ typedef struct s_split
 	int		sq;
 	char	c;
 	int		expand_type;
+	int		qt_total;
 	int		check;
 }	t_split;
 
