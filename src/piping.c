@@ -60,6 +60,8 @@ void	the_kindergarden(t_data *info)
 	close(info->fd_out);
 	if (!info->check && info->pipe_amount != 0)
 		close_pipeline(info);
+	if (info->fd_in == -1 || info->fd_out == -1)
+		exit(1);
 	if (!info->check && info->built)
 		exit(execute_built(info));
 	if (!ft_strncmp(info->cmd_to_use, " ", 2))

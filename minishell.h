@@ -304,7 +304,7 @@ int			display_env(t_data *info, int export_type);
 long long	exit_atoi(t_data *info, int *sign);
 
 //handle_built.c
-void		work_built(t_data *info, char **args);
+void		work_built(t_data *info, char **args, int in, int out);
 void		is_built_in(t_data *info, char *arg);
 
 #endif
