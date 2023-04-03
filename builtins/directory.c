@@ -11,14 +11,23 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 
-int	display_curdir(void)
+int	display_curdir(t_data *info)
 {
 	char	path[4095];
+	int		i;
 
-	if (getcwd(path, sizeof(path)))
-		printf("%s\n\r", path);
+	i = 0;
+	while (info->envs[i] && ft_strncmp(info->envs[i], "PWD=", 4))
+		i++;
+	if (!info->envs[i])
+	{
+		if (getcwd(path, sizeof(path)))
+			printf("%s\n", path);
+		else
+			return (0);
+	}
 	else
-		return (0);
+		printf("%s\n", info->envs[i]+4);
 	return (1);
 }
 
@@ -53,7 +62,10 @@ int	go_home(t_data *info)
 		ft_putstr_fd("cd: HOME not set\n", 2);
 		return (1);
 	}
-	home = info->envs[i] + 5;
+	if (info->envs[i][5])
+		home = info->envs[i] + 5;
+	else
+		return (1);
 	return (apply_change(info, home));
 }
 
@@ -83,7 +95,7 @@ int	change_dir(t_data *info)
 	{
 		if (go_prev(info))
 			return (1);
-		display_curdir();
+		display_curdir(info);
 		return (0);
 	}
 	return (apply_change(info, info->args[1]));

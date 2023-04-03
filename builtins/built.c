@@ -87,7 +87,7 @@ int	execute_built(t_data *info)
 	else if (info->built == 2)
 		return (change_dir(info));
 	else if (info->built == 3)
-		return (display_curdir());
+		return (display_curdir(info));
 	else if (info->built == 4)
 		return (built_exit(info));
 	else if (info->built == 5)

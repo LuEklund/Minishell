@@ -285,7 +285,7 @@ void		changde_dir_error(t_data *info, char *curr_dir);
 int			apply_change(t_data *info, char *path);
 
 //directory.c
-int			display_curdir(void);
+int			display_curdir(t_data *info);
 char		*get_curdir(void);
 int			change_dir(t_data *info);
 

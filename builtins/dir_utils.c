@@ -33,7 +33,7 @@ int	changde_dir_success(t_data *info, char *curr_dir)
 void	changde_dir_error(t_data *info, char *curr_dir)
 {
 	free(curr_dir);
-	if (info->args[1][0] == '-')
+	if (info->args[1] && info->args[1][0] == '-')
 	{
 		ft_putstr_fd(info->dino, 2);
 		ft_putstr_fd("cd: ", 2);
@@ -45,7 +45,7 @@ void	changde_dir_error(t_data *info, char *curr_dir)
 	else
 	{
 		ft_putstr_fd(info->dino, 2);
-		ft_putstr_fd(": cd: ", 2);
+		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(info->args[1], 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 	}

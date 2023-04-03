@@ -41,7 +41,7 @@ int	env_error_handler(t_data *info, char *new_var, char *type)
 		{
 			ft_putstr_fd(info->dino, 2);
 			ft_putstr_fd(type, 2);
-			ft_putstr_fd(" '", 2);
+			ft_putstr_fd(" `", 2);
 			ft_putstr_fd(new_var, 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			return (0);
