@@ -61,7 +61,7 @@ void	copy_new_var(t_data *info, char **new_env, char *new_var, int i)
 		&& new_var[find_sign(new_var, '+')] == '+')
 	{
 		checkp = find_sign(new_var, '+');
-		new_env[i] = (char *)calloc(sizeof(char), len);
+		new_env[i] = (char *)ft_calloc(sizeof(char), len);
 		ft_strlcpy(new_env[i], new_var, checkp + 1);
 		ft_strlcpy(new_env[i] + checkp, new_var + checkp + 1, len - checkp);
 	}
