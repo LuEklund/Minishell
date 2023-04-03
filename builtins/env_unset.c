@@ -97,25 +97,28 @@ static int	contain_flag(t_data *info, char *var)
 int	env_unset(t_data *info, char *manual_remove)
 {
 	int	index_args;
+	int	ret;
 
+	ret = 0;
 	if (manual_remove)
 	{
 		if (contain_flag(info, manual_remove))
 			return (1);
-		unset_env_function(info, manual_remove, 0, 0);
+		if (unset_env_function(info, manual_remove, 0, 0))
+			ret = 1;
 	}
 	else
 	{
 		index_args = 1;
-		if (!info->args[index_args])
-			return (1);
-		if (contain_flag(info, info->args[index_args]))
+		if (!info->args[index_args]
+			|| contain_flag(info, info->args[index_args]))
 			return (1);
 		while (info->args[index_args])
 		{
-			unset_env_function(info, info->args[index_args], 0, 0);
+			if (unset_env_function(info, info->args[index_args], 0, 0))
+				ret = 1;
 			index_args++;
 		}
 	}
-	return (0);
+	return (ret);
 }

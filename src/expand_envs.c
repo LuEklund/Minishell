@@ -119,7 +119,7 @@ int	expand_envs(const char *s1, t_data *info, t_split *he, char **ans)
 		return (return_value(info, he, s1, ans));
 	while (s1[i + 1 + he->i3] && s1[i + 1 + he->i3] != '\"' \
 	&& s1[i + 1 + he->i3] != '\'' && s1[i + 1 + he->i3] \
-	!= ' ' && s1[i + 1 + he->i3] != '|' && s1[i + 1 + he->i3] != '/')
+	!= ' ' && s1[i + 1 + he->i3] != '|' && s1[i + 1 + he->i3] != '/' && s1[i + 1 + he->i3] != '=')
 		i++;
 	if (i == 0 || s1[i + 1 + he->i3] == '|')
 		return (0);
@@ -128,7 +128,7 @@ int	expand_envs(const char *s1, t_data *info, t_split *he, char **ans)
 		exit(write(2, "memory errawr🦖\n", 15));
 	i = 0;
 	while (s1[i + 1 + he->i3] && s1[i + 1 + he->i3] != '\"' && s1[i + 1 + \
-	he->i3] != '\'' && s1[i + 1 + he->i3] != ' ' && s1[i + 1 + he->i3] != '/')
+	he->i3] != '\'' && s1[i + 1 + he->i3] != ' ' && s1[i + 1 + he->i3] != '/' && s1[i + 1 + he->i3] != '=')
 	{
 		s2[i] = s1[i + 1 + he->i3];
 		i++;

@@ -287,6 +287,7 @@ int			execute_built(t_data *info);
 int			changde_dir_success(t_data *info, char *curr_dir);
 void		changde_dir_error(t_data *info, char *curr_dir);
 int			apply_change(t_data *info, char *path);
+char		*get_envvar(t_data *info, char *var_equal);
 
 //directory.c
 int			display_curdir(t_data *info);

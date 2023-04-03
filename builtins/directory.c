@@ -27,7 +27,7 @@ int	display_curdir(t_data *info)
 			return (0);
 	}
 	else
-		printf("%s\n", info->envs[i]+4);
+		printf("%s\n", info->envs[i] + 4);
 	return (1);
 }
 

@@ -29,15 +29,19 @@ static int	contain_flag(t_data *info, char *var)
 int	env_error_handler(t_data *info, char *new_var, char *type)
 {
 	int	i;
+	int	check;
 
+	check = 1;
 	i = 0;
-	if (new_var[i] == '=' || new_var[i] == '+')
-		i = -1;
-	while ((i == -1) || (new_var[i] && new_var[i] != '='))
+	if (new_var[i] == '=' || !new_var[i] || new_var[i] == '+'
+		|| (new_var[i] >= '0' && new_var[i] <= '9'))
+		check = -1;
+	while ((check == -1) || (new_var[i] && new_var[i] != '='))
 	{
-		if (i == -1 || !((new_var[i] >= 65 && new_var[i] <= 90)
+		if (check == -1 || !((new_var[i] >= 65 && new_var[i] <= 90)
 				|| (new_var[i] >= 97 && new_var[i] <= 122) || new_var[i] == '_'
-				|| (new_var[i] == '+' && new_var[i + 1] == '=')))
+				|| (new_var[i] == '+' && new_var[i + 1] == '=')
+				|| (new_var[i] >= '0' && new_var[i] <= '9')))
 		{
 			ft_putstr_fd(info->dino, 2);
 			ft_putstr_fd(type, 2);
@@ -108,28 +112,28 @@ int	export_env_function(t_data *info, char *new_var)
 int	env_export(t_data *info, char *manual_add)
 {
 	int	index_var;
+	int	ret;
 
+	ret = 0;
 	if (manual_add)
 	{
 		if (contain_flag(info, manual_add))
 			return (1);
-		export_env_function(info, manual_add);
+		if (export_env_function(info, manual_add))
+			ret = 1;
 	}
 	else
 	{
-		index_var = 1;
-		if (!info->args[index_var])
-		{
-			display_env(info, 1);
-			return (0);
-		}
+		index_var = 0;
+		if (!info->args[index_var + 1])
+			return (display_env(info, 1));
 		if (contain_flag(info, info->args[index_var]))
 			return (1);
-		while (info->args[index_var])
+		while (info->args[++index_var])
 		{
-			export_env_function(info, info->args[index_var]);
-			index_var++;
+			if (export_env_function(info, info->args[index_var]))
+				ret = 1;
 		}
 	}
-	return (0);
+	return (ret);
 }

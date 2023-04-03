@@ -60,5 +60,5 @@ int	display_env(t_data *info, int export_type)
 			printf("%s\n", info->envs[i]);
 		i++;
 	}
-	return (1);
+	return (0);
 }
