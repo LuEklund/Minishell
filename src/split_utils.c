@@ -59,8 +59,36 @@ void	wild_marker(char const *str, t_split help, t_data *info)
 	new->n = current->n + 1;
 }
 
+int	quotes_count(char const *str)
+{
+	size_t	i;
+	int		ans;
+
+	i = 0;
+	ans = 0;
+	while (str[i])
+	{
+		if (str[i] == '>' || str[i] == '<')
+		{
+			while (str[i] && (str[i] == '<' || \
+			str[i] == '>' || str[i] == ' '))
+				i++;
+			while (str[i] && str[i] != ' ')
+				i++;
+			if (!str[i])
+				break ;
+		}
+		else
+			i++;
+		if (str[i] == '\'' || str[i] == '\"')
+			ans++;
+	}
+	return (ans);
+}
+
 void	init_help(t_data *info, t_split *help, char c, char const *str)
 {
+	help->qt_total = 0;
 	help->sq = 0;
 	help->q = 0;
 	if (str && str[0] == '\'')
@@ -68,6 +96,8 @@ void	init_help(t_data *info, t_split *help, char c, char const *str)
 	if (str && str[0] == '\"')
 		help->q = 1;
 	help->i = 0;
+	if (c == ' ')
+		help->qt_total = quotes_count(str);
 	help->i2 = 0;
 	help->i3 = 0;
 	help->l = 0;

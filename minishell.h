@@ -98,8 +98,8 @@ typedef struct s_data
 	size_t				i;
 	int					fd_in;
 	int					fd_out;
-	size_t				pipe_amount;
-	size_t				cmd_amount;
+	int					pipe_amount;
+	int					cmd_amount;
 	int					*pipe;
 	pid_t				*kiddo;
 	int					built;
@@ -115,6 +115,9 @@ typedef struct s_data
 	int					cmd_n;
 	int					q;
 	int					sq;
+	int					qt[2];
+	int					qt_total;
+	int					empty;
 	struct s_cond		*trinary_tree;
 	struct s_whelp		*wmark_list;
 	struct s_wild		*wild_list;
@@ -136,6 +139,7 @@ typedef struct s_split
 	int		sq;
 	char	c;
 	int		expand_type;
+	int		qt_total;
 	int		check;
 }	t_split;
 

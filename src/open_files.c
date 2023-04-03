@@ -12,6 +12,32 @@
 
 #include "../minishell.h"
 
+int	file_size(t_redi *current, t_data *info, int *i)
+{
+	int	len;
+	int	i2;
+
+	len = 0;
+	info->qt[0] = 0;
+	info->qt[1] = 0;
+	while (info->cmds[current->pipe_n][*i] && \
+	info->cmds[current->pipe_n][*i] == ' ')
+		*i += 1;
+	i2 = *i;
+	while (info->cmds[current->pipe_n][i2] && \
+	info->cmds[current->pipe_n][i2] != ' ')
+	{
+		if (!(info->cmds[current->pipe_n][i2] == '\'' && !info->qt[0]) \
+		&& !(info->cmds[current->pipe_n][i2] == '\"' && !info->qt[1]))
+			len++;
+		i2 = quote_check((char const *)info->cmds[current->pipe_n], \
+		i2, &info->qt[0], &info->qt[1]);
+	}
+	info->qt[0] = 0;
+	info->qt[1] = 0;
+	return (len);
+}
+
 int	find_file(t_redi *current, t_data *info)
 {
 	int	i;
@@ -20,21 +46,19 @@ int	find_file(t_redi *current, t_data *info)
 
 	i2 = 0;
 	i = current->i + 1;
-	while (info->cmds[current->pipe_n][i] && \
-	info->cmds[current->pipe_n][i] == ' ')
-		i++;
-	len = i;
-	while (info->cmds[current->pipe_n][len] && \
-	info->cmds[current->pipe_n][len] != ' ')
-		len++;
-	len -= i;
+	len = file_size(current, info, &i);
 	current->file_name = malloc(sizeof(char) * (len + 1));
 	while (info->cmds[current->pipe_n][i] \
 	&& info->cmds[current->pipe_n][i] != ' ')
 	{
-		current->file_name[i2] = info->cmds[current->pipe_n][i];
-		i++;
-		i2++;
+		if (!(info->cmds[current->pipe_n][i] == '\'' && !info->qt[0]) \
+		&& !(info->cmds[current->pipe_n][i] == '\"' && !info->qt[1]))
+		{
+			current->file_name[i2] = info->cmds[current->pipe_n][i];
+			i2++;
+		}
+		i = quote_check((char const *)info->cmds[current->pipe_n], \
+		i, &info->qt[0], &info->qt[1]);
 	}
 	current->file_name[i2] = '\0';
 	return (0);
