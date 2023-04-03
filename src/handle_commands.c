@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-int	check_if_child(t_data *info, char *str, int x, int y)
+int	check_if_child(t_data *info, char *str, int y)
 {
 	char	**no_space;
 
@@ -80,7 +80,7 @@ int	work_pipe(t_data *info, char *cmd_chain)
 
 	info->redi_list = NULL;
 	info->all_red_n = 0;
-	if (check_if_child(info, cmd_chain, 0, 0))
+	if (check_if_child(info, cmd_chain, 0))
 		return (info->return_val);
 	kiddo = fork();
 	if (kiddo < 0)
