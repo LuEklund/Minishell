@@ -115,6 +115,7 @@ typedef struct s_data
 	int					cmd_n;
 	int					q;
 	int					sq;
+	int					qt_total;
 	struct s_cond		*trinary_tree;
 	struct s_whelp		*wmark_list;
 	struct s_wild		*wild_list;

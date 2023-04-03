@@ -16,7 +16,7 @@ int	display_curdir(void)
 	char	path[4095];
 
 	if (getcwd(path, sizeof(path)))
-		printf("%s\n\r", path);
+		printf("%s\n", path);
 	else
 		return (0);
 	return (1);
