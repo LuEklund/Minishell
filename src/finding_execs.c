@@ -34,31 +34,6 @@ void	test_access(t_data *info, char *str)
 		info->cmd_to_use = NULL;
 }
 
-void	find_the_paths(t_data *info)
-{
-	int	i;
-	int	i2;
-
-	i = 0;
-	i2 = 0;
-	while (info->envs[i])
-	{
-		if (!(ft_strncmp(info->envs[i], "PATH=", 5)))
-			break ;
-		i++;
-	}
-	if (!info->envs[i])
-	{
-		info->paths = NULL;
-		return ;
-	}
-	while (info->envs[i][i2] != '/')
-		i2++;
-	info->paths = ft_split(info->envs[i] + i2, ':');
-	if (!info->paths || !info->paths[0])
-		exit(write(2, "memory error\n", 13));
-}
-
 void	test_paths(t_data *info, char *str)
 {
 	size_t	i;
@@ -87,12 +62,31 @@ void	test_paths(t_data *info, char *str)
 	free(cmd);
 }
 
+void	print_access_error(t_data *info)
+{
+	struct stat	statbuf;
+
+	info->return_val = 127;
+	stat(info->args[0], &statbuf);
+	if (info->paths && (access(info->args[0], F_OK) || \
+	!(statbuf.st_mode & S_IFDIR)))
+		return (ft_putendl_fd(": command not found", 2));
+	if (access(info->args[0], F_OK))
+		return (ft_putendl_fd(": No such file or directory", 2));
+	info->return_val = 126;
+	if (!(statbuf.st_mode & S_IFDIR))
+		return (ft_putendl_fd(": Permission denied", 2));
+	ft_putendl_fd(": is a directory", 2);
+}
+
 void	find_execs(t_data *info)
 {
-	pid_t	kiddo;
+	pid_t		kiddo;
+	struct stat	statbuf;
 
+	stat(info->args[0], &statbuf);
 	info->cmd_to_use = NULL;
-	if (!access(info->args[0], X_OK))
+	if (!access(info->args[0], X_OK) && !(statbuf.st_mode & S_IFDIR))
 		info->cmd_to_use = ft_strdup(info->args[0]);
 	else if (info->args[0] && info->args[0][0])
 		test_paths(info, info->args[0]);
@@ -100,15 +94,12 @@ void	find_execs(t_data *info)
 	{
 		ft_putstr_fd(info->dino, 2);
 		ft_putstr_fd(info->args[0], 2);
-		if (info->paths)
-			ft_putstr_fd(": command not found\n", 2);
-		else
-			ft_putstr_fd(": No such file or directory\n", 2);
+		print_access_error(info);
 		free_ar(info->args);
-		info->return_val = 127;
 		kiddo = fork();
 		if (!kiddo)
-			exit(127);
+			exit(info->return_val);
+		waitpid(kiddo, &info->return_val, 0);
 	}
 }
 

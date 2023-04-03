@@ -6,7 +6,7 @@
 /*   By: nlonka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 16:25:20 by nlonka            #+#    #+#             */
-/*   Updated: 2023/03/16 15:49:09 by nlonka           ###   ########.fr       */
+/*   Updated: 2023/04/03 20:27:41 by nlonka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,22 +117,21 @@ int	expand_envs(const char *s1, t_data *info, t_split *he, char **ans)
 	i = 0;
 	if (he->expand_type)
 		return (return_value(info, he, s1, ans));
-	while (s1[i + 1 + he->i3] && s1[i + 1 + he->i3] != '\"' \
-	&& s1[i + 1 + he->i3] != '\'' && s1[i + 1 + he->i3] \
-	!= ' ' && s1[i + 1 + he->i3] != '|' && s1[i + 1 + he->i3] != '/' && s1[i + 1 + he->i3] != '=')
+	while (s1[i + 1 + he->i3] && s1[i + 1 + he->i3] != '\"' && s1[i + 1 \
+	+ he->i3] != '\'' && s1[i + 1 + he->i3] != ' ' && s1[i + 1 + he->i3] \
+	!= '|' && s1[i + 1 + he->i3] != '/' && s1[i + 1 + he->i3] != '=' \
+	&& s1[i + 1 + he->i3] != '$')
 		i++;
 	if (i == 0 || s1[i + 1 + he->i3] == '|')
 		return (0);
 	s2 = malloc(sizeof(char) * (i + 2));
 	if (!s2)
 		exit(write(2, "memory errawr🦖\n", 15));
-	i = 0;
-	while (s1[i + 1 + he->i3] && s1[i + 1 + he->i3] != '\"' && s1[i + 1 + \
-	he->i3] != '\'' && s1[i + 1 + he->i3] != ' ' && s1[i + 1 + he->i3] != '/' && s1[i + 1 + he->i3] != '=')
-	{
+	i = -1;
+	while (s1[++i + 1 + he->i3] && s1[i + 1 + he->i3] != '\"' && s1[i + 1 + \
+	he->i3] != '\'' && s1[i + 1 + he->i3] != ' ' && s1[i + 1 + he->i3] \
+	!= '/' && s1[i + 1 + he->i3] != '=' && s1[i + 1 + he->i3] != '$')
 		s2[i] = s1[i + 1 + he->i3];
-		i++;
-	}
 	ft_strlcpy(s2 + i, "=", 2);
 	he->i3 += i + 1;
 	return (find_the_right_env(s2, he, info, ans));

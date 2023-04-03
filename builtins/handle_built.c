@@ -12,6 +12,31 @@
 
 #include "../minishell.h"
 
+void	find_the_paths(t_data *info)
+{
+	int	i;
+	int	i2;
+
+	i = 0;
+	i2 = 0;
+	while (info->envs[i])
+	{
+		if (!(ft_strncmp(info->envs[i], "PATH=", 5)))
+			break ;
+		i++;
+	}
+	if (!info->envs[i])
+	{
+		info->paths = NULL;
+		return ;
+	}
+	while (info->envs[i][i2] != '/')
+		i2++;
+	info->paths = ft_split(info->envs[i] + i2, ':');
+	if (!info->paths || !info->paths[0])
+		exit(write(2, "memory errawr🦖\n", 15));
+}
+
 int	childless_piper(t_data *info, int safe_in, int safe_out)
 {
 	t_redi	*in_node;
