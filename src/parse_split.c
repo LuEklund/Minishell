@@ -123,9 +123,9 @@ char	**parse_split(char const *str, char c, t_data *info)
 	char	**ans;
 	t_split	he;
 
+	init_help(info, &he, c, str);
 	if (str == NULL)
 		return (NULL);
-	init_help(info, &he, c, str);
 	h = string_amount(str, he, 1, he.sq + he.q);
 	ans = (char **) malloc(sizeof(char *) * (h + 1));
 	if (ans == NULL)

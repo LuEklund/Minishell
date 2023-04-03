@@ -85,3 +85,29 @@ void	print_tokens(t_error *he)
 	if (he->par != 0)
 		printf("par is %d\n", he->par);
 }
+
+int	quoter_counter(char const *str)
+{
+	size_t	i;
+	int		ans;
+
+	i = 0;
+	ans = 0;
+	while (str[i])
+	{
+		if (str[i] == '>' || str[i] == '<')
+		{
+			while (str[i] && (str[i] == '<' || \
+			str[i] == '>' || str[i] == ' '))
+				i++;
+			while (str[i] && str[i] == ' ')
+				i++;
+			if (!str[i])
+				break ;
+		}
+		if (str[i] == '\'' || str[i] == '\"')
+			ans++;
+		i++;
+	}
+	return (ans);
+}

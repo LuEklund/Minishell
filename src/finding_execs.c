@@ -94,9 +94,9 @@ void	find_execs(t_data *info)
 	info->cmd_to_use = NULL;
 	if (!access(info->args[0], X_OK))
 		info->cmd_to_use = ft_strdup(info->args[0]);
-	else
+	else if (info->args[0] && info->args[0][0])
 		test_paths(info, info->args[0]);
-	if (!info->cmd_to_use)
+	if (!info->cmd_to_use && (info->qt_total > 0 || info->empty))
 	{
 		ft_putstr_fd(info->dino, 2);
 		ft_putstr_fd(info->args[0], 2);
@@ -114,10 +114,14 @@ void	find_execs(t_data *info)
 
 int	arguing(t_data *info)
 {
+	info->empty = 0;
 	info->built_exec = 0;
 	info->exit = 0;
 	info->cmd_to_use = NULL;
 	info->args = parse_split(info->cmds[info->i], ' ', info);
+	while (info->args && info->args[0] && info->args[0][info->empty])
+		info->empty += 1;
+	info->qt_total = info->split->qt_total;
 	wild_card_check(info, 1, 0);
 	is_built_in(info, info->args[0]);
 	if (info->built)

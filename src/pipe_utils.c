@@ -45,7 +45,7 @@ int	init_pipes(t_data *info)
 	{
 		info->pipe = malloc(sizeof(int) * info->pipe_amount);
 		if (!info->pipe)
-			exit(write(2, "memory errawr🦖\n", 16));
+			exit(write(2, "memory errawr🦖\n", 15));
 	}
 	else
 		return (1);
