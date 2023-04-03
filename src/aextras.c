@@ -13,7 +13,7 @@ void	print_ar(char **ar)
 	///IIIIIIIIIIIIIII DELEEETE MEEEEEE
 }
 
-void	print_lists(t_redi *current)
+void	print_list(t_redi *current)
 {
 	int	i = 1;
 

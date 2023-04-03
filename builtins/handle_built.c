@@ -12,8 +12,42 @@
 
 #include "../minishell.h"
 
-void	work_built(t_data *info, char **args)
+int	childless_piper(t_data *info, int safe_in, int safe_out)
 {
+	t_redi	*in_node;
+	t_redi	*out_node;
+	int		in;
+	int		out;
+
+	in = safe_in;
+	out = safe_out;
+	info->i = 0;
+	in_node = find_node(info, 0);
+	out_node = find_node(info, 1);
+	if (in_node)
+		in = in_node->fd;
+	if (out_node)
+		out = out_node->fd;
+	if (in < 0 || out < 0)
+	{
+		close(safe_in);
+		close(safe_out);
+		return (1);
+	}
+	info->check = get_duped(in, out);
+	return (0);
+}
+
+void	work_built(t_data *info, char **args, int safe_in, int safe_out)
+{
+	safe_in = dup(1);
+	safe_out = dup(0);
+	if (childless_piper(info, safe_in, safe_out))
+	{
+		info->return_val = 1;
+		return (empty_redi_list(info));
+	}
+	empty_redi_list(info);
 	info->args = args;
 	if (info->built == 2)
 		info->return_val = change_dir(info);
@@ -26,6 +60,9 @@ void	work_built(t_data *info, char **args)
 		info->return_val = env_unset(info, NULL);
 	else if (info->built == 6)
 		info->return_val = env_export(info, NULL);
+	get_duped(safe_in, safe_out);
+	close(safe_in);
+	close(safe_out);
 }
 
 void	is_built_in(t_data *info, char *arg)

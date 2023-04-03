@@ -12,29 +12,27 @@
 
 #include "../minishell.h"
 
-int	check_if_child(t_data *info, char *str)
+int	check_if_child(t_data *info, char *str, int x, int y)
 {
-	char	**pipes;
 	char	**no_space;
-	size_t	x;
-	size_t	y;
 
-	x = 0;
-	y = 0;
-	pipes = parse_split(str, '|', info);
-	if (!pipes)
+	info->cmds = parse_split(str, '|', info);
+	if (!info->cmds)
 		exit(write(2, "memory errawr🦖\n", 15));
-	while (pipes[y])
+	while (info->cmds[y])
 		y++;
 	if (y > 1)
-		return (free_ar(pipes), 0);
-	no_space = parse_split(pipes[0], ' ', info);
-	free_ar(pipes);
+		return (free_ar(info->cmds), 0);
+	no_space = parse_split(info->cmds[0], ' ', info);
+	free_ar(info->cmds);
 	is_built_in(info, no_space[0]);
 	if (!(info->built == 2 || info->built == 4 || \
 	info->built == 5 || info->built == 6))
 		return (free_ar(no_space), empty_whelp_list(info), 0);
-	work_built(info, no_space);
+	info->cmds = parse_split(str, '|', info);
+	redirection_parser(info, 0, 0);
+	free_ar(info->cmds);
+	work_built(info, no_space, 1, 0);
 	empty_whelp_list(info);
 	free_ar(no_space);
 	return (1);
@@ -80,7 +78,9 @@ int	work_pipe(t_data *info, char *cmd_chain)
 {
 	pid_t	kiddo;
 
-	if (check_if_child(info, cmd_chain))
+	info->redi_list = NULL;
+	info->all_red_n = 0;
+	if (check_if_child(info, cmd_chain, 0, 0))
 		return (info->return_val);
 	kiddo = fork();
 	if (kiddo < 0)

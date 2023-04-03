@@ -49,15 +49,19 @@ int	open_infile(t_redi *current, t_data *info)
 	access(current->file_name, R_OK) < 0)
 	{
 		current->fd = open(current->file_name, O_RDONLY);
+		info->return_val = 1;
 		return (ft_putstr_fd(info->dino, 2), \
 		ft_putstr_fd(current->file_name, 2) \
 			, ft_putendl_fd(": Permission denied", 2), 0);
 	}
 	current->fd = open(current->file_name, O_RDONLY);
 	if (current->fd < 0)
+	{
+		info->return_val = 1;
 		return (ft_putstr_fd(info->dino, 2), \
 		ft_putstr_fd(current->file_name, 2) \
 			, ft_putendl_fd(": No such file or directory", 2), 0);
+	}
 	return (0);
 }
 
@@ -71,6 +75,7 @@ int	open_outfile(t_redi *current, t_data *info)
 	if (!access(current->file_name, F_OK) && \
 	access(current->file_name, W_OK) < 0)
 	{
+		info->return_val = 1;
 		ft_putstr_fd(info->dino, 2);
 		ft_putstr_fd(current->file_name, 2);
 		ft_putendl_fd(": Permission denied", 2);
