@@ -55,6 +55,8 @@ int	append_env_var(t_data *info, char *var, int i)
 	int		append_from;
 
 	append_from = find_sign(var, '=') + 1;
+	if (!find_sign(info->envs[i], '='))
+		append_from--;
 	new_env_var = ft_strjoin(info->envs[i], var + append_from);
 	free(info->envs[i]);
 	info->envs[i] = new_env_var;
@@ -70,7 +72,7 @@ int	uppdate_var(t_data *info, char *var, int i, int append)
 	len = ft_strlen(var);
 	if (append)
 		return (append_env_var(info, var, i));
-	if (find_sign(info->envs[i], '=') && !find_sign(var, '='))
+	if ((find_sign(info->envs[i], '=') && !find_sign(var, '=')) || append)
 		has_equal = 1;
 	free(info->envs[i]);
 	info->envs[i] = (char *)malloc(sizeof(char) * (len + has_equal + 1));
