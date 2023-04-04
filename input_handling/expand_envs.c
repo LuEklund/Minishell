@@ -17,10 +17,7 @@ int	copy_ret(t_data *info, t_split *help, char **ans, int len)
 	int	ret;
 	int	safe;
 
-	if (info->return_val != 258)
-		ret = info->return_val % 255;
-	else
-		ret = 258;
+	ret = info->return_val;
 	if (ret < 0)
 	{
 		ret = -ret;
@@ -44,11 +41,9 @@ int	return_value(t_data *info, t_split *help, char const *str, char **ans)
 	int	ret;
 
 	len = 1;
-	ret = 258;
 	if (help->expand_type > 1)
 		return (redir_input_parser(str, help, 1));
-	if (info->return_val != 258)
-		ret = info->return_val % 255;
+	ret = info->return_val;
 	if (ret < 0)
 	{
 		ret = -ret;
