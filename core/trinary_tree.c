@@ -71,7 +71,7 @@ t_cond	*create_tokenode(t_error help, char *str, t_cond *back, t_cond *up)
 	new = malloc(sizeof(t_cond));
 	if (!new)
 		exit(write(2, "memory errawr🦖\n", 15));
-		new->type = 2;
+	new->type = 2;
 	if (help.or)
 		new->type = 1;
 	new->ret = -1;

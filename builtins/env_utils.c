@@ -72,7 +72,7 @@ int	uppdate_var(t_data *info, char *var, int i, int append)
 	len = ft_strlen(var);
 	if (append)
 		return (append_env_var(info, var, i));
-	if ((find_sign(info->envs[i], '=') && !find_sign(var, '=')) || append)
+	if (find_sign(info->envs[i], '=') && !find_sign(var, '='))
 		has_equal = 1;
 	free(info->envs[i]);
 	info->envs[i] = (char *)malloc(sizeof(char) * (len + has_equal + 1));

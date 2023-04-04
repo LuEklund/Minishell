@@ -79,7 +79,7 @@ void	work_built(t_data *info, char **args, int safe_in, int safe_out)
 	else if (info->built == 4)
 	{
 		info->exit = 1;
-		info->return_val = built_exit(info);
+		info->return_val = built_exit(info, 0, 1, 1);
 	}
 	else if (info->built == 5)
 		info->return_val = env_unset(info, NULL);

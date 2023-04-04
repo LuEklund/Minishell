@@ -279,7 +279,7 @@ int			expand_check(char const *str, t_split *help);
 //Builtins
 
 //bulit.c
-long long	built_exit(t_data *info);
+long long	built_exit(t_data *info, long long return_val, int sign, int var);
 int			execute_built(t_data *info);
 
 //dir_utils.c

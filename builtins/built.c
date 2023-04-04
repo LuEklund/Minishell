@@ -10,19 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
-// -9223372036854775808
-// 9223372036854775807
-long long	built_exit(t_data *info)
-{
-	long long	return_val;
-	int			sign;
 
+void	print_exit(int var)
+{
+	if (var)
+		ft_putendl_fd("\033[0;95mexit\033[0m 🦕", 2);
+}
+
+long long	built_exit(t_data *info, long long return_val, int sign, int var)
+{
 	if (!info->args[1])
-		return (0);
-	sign = 1;
+		return (print_exit(var), 0);
 	return_val = exit_atoi(info, &sign);
 	if (return_val < 0)
 	{
+		print_exit(var);
 		ft_putstr_fd(info->dino, 2);
 		ft_putstr_fd("exit: ", 2);
 		ft_putstr_fd(info->args[1], 2);
@@ -31,11 +33,13 @@ long long	built_exit(t_data *info)
 	}
 	if (info->args[2])
 	{
+		print_exit(var);
 		info->exit = 0;
 		ft_putstr_fd(info->dino, 2);
 		ft_putstr_fd("exit: too many arguments\n", 2);
 		return (1);
 	}
+	print_exit(var);
 	if (sign == -2)
 		return (0);
 	return (return_val * sign);
@@ -89,7 +93,7 @@ int	execute_built(t_data *info)
 	else if (info->built == 3)
 		return (display_curdir(info));
 	else if (info->built == 4)
-		return (built_exit(info));
+		return (built_exit(info, 0, 1, 0));
 	else if (info->built == 5)
 		return (env_unset(info, 0));
 	else if (info->built == 6)

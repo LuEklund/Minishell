@@ -68,7 +68,7 @@ int	apply_change(t_data *info, char *path)
 	}
 	curr_dir = get_curdir();
 	if (!curr_dir)
-		return (0);
+		return (1);
 	return_val = chdir(path);
 	if (return_val == 0)
 		return (changde_dir_success(info, curr_dir));

@@ -76,7 +76,6 @@ int	main(int ac, char **av, char **ev)
 		else
 			the_handler(info);
 	}
-	ft_putstr_fd("\033[0;95mexit\033[0m 🦕\n", 2);
 	get_outed(info);
 	return (info.return_val);
 }

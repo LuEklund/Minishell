@@ -18,8 +18,9 @@ int	parenthesee(t_error *he, char *str)
 		return (1);
 	if (!he->i || he->sq + he->q != 0)
 		return (0);
-	if (he->amper + he->or + he->and == 0 && \
-	str[he->i] == '(' && str[he->i - 1] != '(')
+	if ((he->amper + he->or + he->and == 0 && \
+	str[he->i] == '(' && str[he->i - 1] != '(') || (str[he->i] == '|' \
+	&& str[he->i + 1] != '|' && str[he->i - 1] == ')'))
 		return (1);
 	if (he->pipe && (str[he->i] == ')' || str[he->i] == '('))
 		return (1);
