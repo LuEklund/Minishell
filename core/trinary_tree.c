@@ -16,11 +16,11 @@ char	*content_creator(char *str, t_error help)
 {
 	char	*ans;
 
-	get_tokenized(&help, str, 0);
-	while (str[help.i] && !help.or && !help.and)
+	get_tokenized_even_more(&help, str);
+	while (str[help.i] && (!help.or && !help.and))
 	{
 		help.i = quote_check((char const *)str, help.i, &help.q, &help.sq);
-		get_tokenized(&help, str, 0);
+		get_tokenized_even_more(&help, str);
 	}
 	ans = malloc(sizeof(char) * (help.i + 1));
 	ans[help.i] = '\0';

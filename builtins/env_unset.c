@@ -73,10 +73,10 @@ int	unset_env_function(t_data *info, char *rm_var, int i, int removeable)
 		return (0);
 	new_environ = (char **)malloc(sizeof(char *) * i);
 	if (!new_environ)
-		return (0);
+		return (1);
 	new_environ[i - 1] = NULL;
 	make_new_envirno(info, new_environ, removeable);
-	return (1);
+	return (0);
 }
 
 static int	contain_flag(t_data *info, char *var)
@@ -110,8 +110,9 @@ int	env_unset(t_data *info, char *manual_remove)
 	else
 	{
 		index_args = 1;
-		if (!info->args[index_args]
-			|| contain_flag(info, info->args[index_args]))
+		if (!info->args[index_args])
+			return (0);
+		if (contain_flag(info, info->args[index_args]))
 			return (1);
 		while (info->args[index_args])
 		{

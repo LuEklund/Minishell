@@ -28,7 +28,7 @@ int	display_curdir(t_data *info)
 	}
 	else
 		printf("%s\n", info->envs[i] + 4);
-	return (1);
+	return (0);
 }
 
 char	*get_curdir(void)

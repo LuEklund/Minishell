@@ -22,7 +22,9 @@ void	reset_help(t_error *he)
 void	get_tokenized_even_more(t_error *he, char *str)
 {
 	reset_help(he);
-	if (str && str[he->i] == '|' && str[he->i + 1] == '|')
+	if (he->q || he->sq)
+		;
+	else if (str && str[he->i] == '|' && str[he->i + 1] == '|')
 		he->or = 1;
 	else if (str && str[he->i] == '|')
 		he->pipe = 1;
@@ -45,7 +47,7 @@ int	check_for_logic(char *str, int var)
 	while (str[help.i])
 	{
 		get_tokenized_even_more(&help, str);
-		if (!var && (help.and || help.or || help.par))
+		if (!var && ((help.and || help.or || help.par)))
 			return (0);
 		if (var && !help.par && (help.or || help.and))
 			return (0);
